@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bjn3nu8osa2a5"]
 
-[ext_resource type="Script" uid="uid://kfsysaf5ec8i" path="res://porta.gd" id="1_5rp3s"]
+[ext_resource type="Script" uid="uid://kfsysaf5ec8i" path="res://Scripts/porta.gd" id="1_5rp3s"]
 [ext_resource type="PackedScene" uid="uid://c1tkial1i3iwi" path="res://Itens_Cenário/porta.glb" id="1_setqv"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_umd14"]

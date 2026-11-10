@@ -1,17 +1,17 @@
 [gd_scene load_steps=22 format=3 uid="uid://dxxx8wacp6j46"]
 
-[ext_resource type="Script" uid="uid://vikrd2u01ief" path="res://controlador.gd" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://4mouec66q4l7" path="res://camera_player.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://vikrd2u01ief" path="res://Scripts/controlador.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://4mouec66q4l7" path="res://Scripts/camera_player.gd" id="2_0xm2m"]
 [ext_resource type="VoxelGIData" uid="uid://bum5qiy84kxs0" path="res://main.VoxelGI_data.res" id="2_5vw27"]
 [ext_resource type="PackedScene" uid="uid://n0axa76q4hgg" path="res://deuses/anubis.tscn" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://cqf6uxshb4lmy" path="res://carta_mesa.tscn" id="5_7mycd"]
 [ext_resource type="PackedScene" uid="uid://h8ed13jqh683" path="res://deuses/Itens deuses/balanca_anubis.tscn" id="6_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://byhmojhlf7sln" path="res://Interagiveis/baralho_3d_mesa.tscn" id="7_4c57u"]
 [ext_resource type="PackedScene" uid="uid://c0cotku2qknob" path="res://dot.tscn" id="7_efxa6"]
-[ext_resource type="Script" uid="uid://b1j4cwkb0voe3" path="res://renderizar_mao_3d.gd" id="7_kek77"]
+[ext_resource type="Script" uid="uid://b1j4cwkb0voe3" path="res://Scripts/renderizar_mao_3d.gd" id="7_kek77"]
 [ext_resource type="PackedScene" uid="uid://80uwoxsfwtl4" path="res://itens herdados (modificados)/lampada.tscn" id="11_vivmo"]
 [ext_resource type="AudioStream" uid="uid://b8gbrg8qo6c6u" path="res://Fogo do Olimpo.mp3" id="12_dg77c"]
-[ext_resource type="Script" uid="uid://bfghp703s8mlc" path="res://camera_andar.gd" id="14_cegan"]
+[ext_resource type="Script" uid="uid://bfghp703s8mlc" path="res://Scripts/camera_andar.gd" id="14_cegan"]
 [ext_resource type="PackedScene" uid="uid://clsh0aqr1r78y" path="res://baralho_poder.tscn" id="15_2cqfq"]
 [ext_resource type="PackedScene" uid="uid://pa1xhg24bwl1" path="res://jogador.tscn" id="15_vivmo"]
 [ext_resource type="PackedScene" uid="uid://56ultnqth7ph" path="res://cadeira_player.tscn" id="16_2cqfq"]
@@ -32,13 +32,49 @@ volumetric_fog_density = 0.0561
 
 [node name="Main" type="Node3D" node_paths=PackedStringArray("dot_mira", "baralho_poder", "cerveja") groups=["controlador_jogo"]]
 script = ExtResource("1_ig7tw")
+objetivo_vitorias = null
+tempo_resposta_ia = null
+mostrar_cartas_ia = null
+atraso_voo_carta = null
+duracao_voo_carta = null
+altura_saida_carta = null
+cartas_na_pilha = null
 escala_carta_pilha = 2.0
+distancia_vertical_pilha = null
+distancia_horizontal_pilha = null
+desvio_max_pilha = null
+giro_max_pilha = null
+alcance_mira = null
 dot_mira = NodePath("UI/Dot")
+criar_dot_se_nao_achar = null
+debug_mira = null
 rodadas_para_habilidade = 3
+chance_habilidade_anubis = null
+cartas_jogador_compra = null
+cartas_deus_compra = null
 baralho_poder = NodePath("baralho_poder")
 turnos_recarga_poder = 0
+eixo_virada_poder = null
+duracao_virada_poder = null
+altura_virada_poder = null
+duracao_poder = null
 cerveja = NodePath("garrafa_interativa")
+limite_bebidas = null
+forca_tontura_base = null
+aumento_forca_por_dose = null
+duracao_tontura_base = null
+duracao_extra_por_dose = null
+tempo_fechar_olho = null
+reabrir_apos_apagar = null
+tempo_olho_fechado = null
+altura_queda_balanca = null
+duracao_descida_balanca = null
+anim_balanca_castigo = null
+anim_balanca_sorte = null
 chance_balanca_castigo = 0.6
+duracao_sentar = null
+balanco_passos = null
+queda_ao_sentar = null
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lquwl")
@@ -248,6 +284,35 @@ light_energy = 1.284
 light_indirect_energy = 0.716
 omni_attenuation = -0.978
 
+[node name="LuzHabilidadeA1" type="SpotLight3D" parent="Cenário"]
+transform = Transform3D(1.0669417, 1.7075318, -1.4818807, -0.45753178, 1.767767, 1.7075318, 2.2141137, -0.4575318, 1.0669419, -17, 23.500002, 118)
+visible = false
+light_color = Color(1, 0.39152712, 0.55015844, 1)
+light_energy = 0.725
+spot_range = 8.99
+spot_attenuation = -2.16
+spot_angle = 30.23
+spot_angle_attenuation = 0.9659364
+
+[node name="LuzHabilidadeA2" type="SpotLight3D" parent="Cenário"]
+transform = Transform3D(-1.384008, 1.25, -1.664939, -0.45753178, 1.767767, 1.7075319, 2.0310555, 1.2500001, -0.74987566, -17, 23.25, 103)
+visible = false
+light_color = Color(1, 0.39152712, 0.55015844, 1)
+light_energy = 0.725
+spot_range = 8.99
+spot_attenuation = -1.56
+spot_angle = 31.07
+spot_angle_attenuation = 0.9659364
+
+[node name="EscolhaHabilidade" type="SpotLight3D" parent="Cenário"]
+transform = Transform3D(2.5, 0, 0, 0, 1.7677671, 1.7677671, 0, -1.7677671, 1.7677671, -11.5, 19.75, 102.75001)
+visible = false
+light_color = Color(1, 0.029463768, 0, 1)
+spot_range = 4.683
+spot_attenuation = -3.63
+spot_angle = 28.25
+spot_angle_attenuation = 1.8025036
+
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Dot" parent="UI" instance=ExtResource("7_efxa6")]
@@ -290,6 +355,8 @@ parameters/looping = true
 
 [node name="Jogador" parent="." instance=ExtResource("15_vivmo")]
 transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -18, 3.6, 5)
+velocidade = null
+gravidade = null
 
 [node name="CameraJogador" type="Camera3D" parent="Jogador"]
 transform = Transform3D(0.9961947, 0, -0.08715573, 0, 1, 0, 0.08715573, 0, 0.9961947, 0.04640484, 2.5, -0.7196121)
@@ -307,7 +374,19 @@ transform = Transform3D(-0.16383038, 0, 0.11471533, 0, 0.2, 0, -0.11471533, 0, -
 
 [node name="AhPuch" parent="." instance=ExtResource("17_yaehf")]
 transform = Transform3D(-1.5298986e-07, 0, -3.5, 0, 3.5, 0, 3.5, 0, -1.5298986e-07, -2.6, 4, -18)
+falas = null
+animacoes_falas = null
+animacao_falando = null
+tecla_interagir = null
+completar_antes_de_avancar = null
 olhar_para_jogador = false
+giro_offset_graus = null
+velocidade_texto = null
+ajustar_fundo_ao_texto = null
+margem_fundo = null
+quebra_automatica = null
+modo_quebra = null
+seguir_sem_herdar_rotacao = null
 
 [node name="CameraMenu" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 7, -4.9)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dg3o833kcw3jh"]
 
-[ext_resource type="Script" uid="uid://cu707lyr2012" path="res://ah_puch.gd" id="1_dtvya"]
+[ext_resource type="Script" uid="uid://cu707lyr2012" path="res://Scripts/ah_puch.gd" id="1_dtvya"]
 [ext_resource type="PackedScene" uid="uid://bvo4ms541x3we" path="res://deuses/Ah Puch.glb" id="2_6m31k"]
 [ext_resource type="Animation" uid="uid://dp24q4bwshbg4" path="res://Animações/idle_AP.res" id="3_eq7k6"]
 

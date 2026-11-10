@@ -1,14 +1,28 @@
-[gd_scene load_steps=18 format=3 uid="uid://h8ed13jqh683"]
+[gd_scene load_steps=24 format=3 uid="uid://h8ed13jqh683"]
 
 [ext_resource type="PackedScene" uid="uid://dy36g6pl451a" path="res://deuses/Itens deuses/BalancaAnubis.glb" id="1_ew0ia"]
 [ext_resource type="Animation" uid="uid://di2523vmg6gtc" path="res://deuses/Itens deuses/animações/balanca_D.res" id="2_ebjpd"]
+[ext_resource type="PackedScene" uid="uid://fkfd83iqkjgu" path="res://deuses/Itens deuses/pena.glb" id="2_scfye"]
+[ext_resource type="Animation" uid="uid://c6g0ra52oxrxv" path="res://Animações/Voo_Pena.res" id="3_lkc57"]
 [ext_resource type="Animation" uid="uid://sh2rwjcqwwf" path="res://deuses/Itens deuses/animações/balanca_D_2.res" id="3_y3nfn"]
 [ext_resource type="Animation" uid="uid://dcghwplmbqlth" path="res://deuses/Itens deuses/animações/balanca_E.res" id="4_ibuy0"]
+[ext_resource type="PackedScene" uid="uid://cy7sp3dxnyhqg" path="res://deuses/Itens deuses/coração.glb" id="4_rr78q"]
+[ext_resource type="Animation" uid="uid://cxykga7qfgjcc" path="res://Animações/Batida_Coracao.res" id="5_hb24k"]
 [ext_resource type="Animation" uid="uid://cvxlck8qgev5e" path="res://deuses/Itens deuses/animações/balanca_E_2.res" id="5_scfye"]
 [ext_resource type="Animation" uid="uid://brq1j484va2o0" path="res://deuses/Itens deuses/animações/suporte_D.res" id="6_lkc57"]
 [ext_resource type="Animation" uid="uid://uwyin5iu0a3" path="res://deuses/Itens deuses/animações/suporte_D_2.res" id="7_rr78q"]
 [ext_resource type="Animation" uid="uid://724rsqgo1saj" path="res://deuses/Itens deuses/animações/suporte_E.res" id="8_hb24k"]
 [ext_resource type="Animation" uid="uid://bgoo4vxl31jdc" path="res://deuses/Itens deuses/animações/suporte_E_2.res" id="9_pnr0e"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pnr0e"]
+_data = {
+&"Voo_Pena": ExtResource("3_lkc57")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_37ol5"]
+_data = {
+&"Batida_Coracao": ExtResource("5_hb24k")
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_oj16p"]
 _data = {
@@ -144,8 +158,26 @@ gi_mode = 0
 [node name="Cylinder_003" parent="." index="2"]
 gi_mode = 0
 
+[node name="pena" parent="Cylinder_003" index="0" instance=ExtResource("2_scfye")]
+transform = Transform3D(-0.2528099, 0, 0, 0, 1.2534515, 0, 0, 0, 0.2528099, -5.1976547, 3.1374493, 0.36295718)
+
+[node name="Animacao" type="AnimationPlayer" parent="Cylinder_003/pena" index="3"]
+libraries = {
+&"pena": SubResource("AnimationLibrary_pnr0e")
+}
+autoplay = "pena/Voo_Pena"
+
 [node name="Cylinder_004" parent="." index="3"]
 gi_mode = 0
+
+[node name="coração" parent="Cylinder_004" index="0" instance=ExtResource("4_rr78q")]
+transform = Transform3D(-0.2528099, 0, 0, 0, 1.2534515, 0, 0, 0, 0.2528099, -0.659801, 3.7997599, 0)
+
+[node name="Animacao" type="AnimationPlayer" parent="Cylinder_004/coração" index="3"]
+libraries = {
+&"coracao": SubResource("AnimationLibrary_37ol5")
+}
+autoplay = "coracao/Batida_Coracao"
 
 [node name="Cylinder_005" parent="." index="4"]
 transform = Transform3D(-0.6131089, 0, 0, 0, 0.12365856, 5.359968e-08, 0, -1.0810575e-08, 0.6131089, 1.1042336, 2.7402449, 0)

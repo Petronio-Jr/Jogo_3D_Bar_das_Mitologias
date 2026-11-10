@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cqf6uxshb4lmy"]
 
-[ext_resource type="Script" uid="uid://bcbvwnrj2f2o2" path="res://carta_mesa.gd" id="1_k5qsy"]
+[ext_resource type="Script" uid="uid://bcbvwnrj2f2o2" path="res://Scripts/carta_mesa.gd" id="1_k5qsy"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_76ibk"]
 size = Vector3(0.8, 0.025, 1.22)

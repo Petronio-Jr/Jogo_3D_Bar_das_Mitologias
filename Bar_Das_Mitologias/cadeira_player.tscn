@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://56ultnqth7ph"]
 
 [ext_resource type="PackedScene" uid="uid://dya7pgmpb0rli" path="res://Itens_Cenário/cadeira_bar.glb" id="1_hlxe1"]
-[ext_resource type="Script" uid="uid://dcktpavokq5lw" path="res://cadeira_player.gd" id="2_6v1g2"]
+[ext_resource type="Script" uid="uid://dcktpavokq5lw" path="res://Scripts/cadeira_player.gd" id="2_6v1g2"]
 [ext_resource type="PackedScene" uid="uid://c8gg10b13nusf" path="res://Itens_Cenário/cadeira_madeira.glb" id="3_eg608"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_eg608"]
