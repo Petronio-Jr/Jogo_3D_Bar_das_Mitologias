@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://byhmojhlf7sln"]
+
+[ext_resource type="PackedScene" uid="uid://boclwy1rufip3" path="res://Itens_Cenário/baralho_mesa.glb" id="1_ofjrm"]
+[ext_resource type="Script" uid="uid://cdu6x2moxkk3e" path="res://Interagiveis/baralho_3d_mesa.gd" id="2_gdcua"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yn6j8"]
+size = Vector3(2.5, 2, 3)
+
+[node name="baralho_mesa" instance=ExtResource("1_ofjrm")]
+script = ExtResource("2_gdcua")
+
+[node name="Area3D" type="Area3D" parent="." index="1"]
+transform = Transform3D(0.5087883, 0, -0.090503186, 0, 0.11369375, 0, 0.17515472, 0, 0.26289305, -2.659046, 0.85792434, 4.5392127)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(0.9999987, 0, 0, 0, 1, 0, 0, 0, 1, 0.049996853, 0.5, -0.10002518)
+shape = SubResource("BoxShape3D_yn6j8")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://chyjywm8ycwus"]
+
+[ext_resource type="PackedScene" uid="uid://bmkj7qyfmm042" path="res://Cenario_refeito/mesa_bar.glb" id="1_ebdym"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rjx11"]
+albedo_color = Color(0.26171875, 0.1291305, 0.055165816, 1)
+
+[node name="mesa_bar" instance=ExtResource("1_ebdym")]
+
+[node name="Cube" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_rjx11")

@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://dg3o833kcw3jh"]
+
+[ext_resource type="Script" uid="uid://cu707lyr2012" path="res://ah_puch.gd" id="1_dtvya"]
+[ext_resource type="PackedScene" uid="uid://bvo4ms541x3we" path="res://deuses/Ah Puch.glb" id="2_6m31k"]
+[ext_resource type="Animation" uid="uid://dp24q4bwshbg4" path="res://Animações/idle_AP.res" id="3_eq7k6"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8rsl4"]
+_data = {
+&"idle_AP": ExtResource("3_eq7k6")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dtvya"]
+size = Vector3(4, 2, 4)
+
+[node name="AhPuch" type="Node3D" node_paths=PackedStringArray("animation_player", "area", "label_balao", "label_prompt")]
+script = ExtResource("1_dtvya")
+animation_player = NodePath("Ah Puch2/AnimationPlayer2")
+animacao_idle = "idle_AP"
+travar_jogador = false
+area = NodePath("Area3D")
+label_balao = NodePath("Balao")
+label_prompt = NodePath("Prompt")
+largura_quebra_px = 300.0
+
+[node name="Ah Puch2" parent="." instance=ExtResource("2_6m31k")]
+transform = Transform3D(-1.6610327e-08, 0, 0.38, 0, 0.38, 0, -0.38, 0, -1.6610327e-08, 0, 0, -0.6)
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="Ah Puch2"]
+libraries = {
+&"ah_puch": SubResource("AnimationLibrary_8rsl4")
+}
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.5, -3.7252903e-08)
+shape = SubResource("BoxShape3D_dtvya")
+
+[node name="Balao" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.29999998, 1.3, -0.5000002)
+text = "aaaaaaaaa"
+font_size = 21
+
+[node name="Prompt" type="Label3D" parent="."]
+transform = Transform3D(-5.9604645e-08, 0, 1, 0, 1, 0, -1, 0, -5.9604645e-08, 1.2000002, 0.49999997, 0.2)
+text = "Pressione [E] para conversar"
+font_size = 13

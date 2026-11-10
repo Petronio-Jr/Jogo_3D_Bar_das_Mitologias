@@ -1,0 +1,321 @@
+[gd_scene load_steps=51 format=3 uid="uid://cpn2wirofwt3t"]
+
+[ext_resource type="PackedScene" uid="uid://dpqtcec0jru5c" path="res://Itens_Cenário/cadeira_quebrada.glb" id="2_yjj8j"]
+[ext_resource type="PackedScene" uid="uid://cy52k1o8u2ij1" path="res://Itens_Cenário/mister.glb" id="3_g0wer"]
+[ext_resource type="PackedScene" uid="uid://b06p20upnl321" path="res://Itens_Cenário/bandeira_Brasil.glb" id="4_xxw4b"]
+[ext_resource type="PackedScene" uid="uid://d4ei8cslglllv" path="res://Itens_Cenário/calendario.glb" id="5_qylfv"]
+[ext_resource type="PackedScene" uid="uid://bxypcar130q6t" path="res://Itens_Cenário/dragonslayer.glb" id="6_4boeo"]
+[ext_resource type="PackedScene" uid="uid://b60nynpho4b5x" path="res://Itens_Cenário/espada.glb" id="7_33loj"]
+[ext_resource type="PackedScene" uid="uid://ccf25owqynkwm" path="res://Itens_Cenário/fliperama.glb" id="8_wunlw"]
+[ext_resource type="PackedScene" uid="uid://nw7iqijeom27" path="res://itens herdados (modificados)/mesa.tscn" id="8_yjj8j"]
+[ext_resource type="PackedScene" uid="uid://d36pamad6if8e" path="res://Itens_Cenário/poster_brahma.glb" id="10_6qkn4"]
+[ext_resource type="PackedScene" uid="uid://dl7s7psrdv6ym" path="res://Itens_Cenário/suporte_parede.glb" id="13_fh7l1"]
+[ext_resource type="PackedScene" uid="uid://byksnvuuggqok" path="res://Itens_Cenário/mesa_fundo.glb" id="14_rroka"]
+[ext_resource type="PackedScene" uid="uid://bojjoirk5jckb" path="res://Itens_Cenário/quadro_fiado.glb" id="15_yjj8j"]
+[ext_resource type="PackedScene" uid="uid://dfshshnkf4tq" path="res://Itens_Cenário/mimkyu.glb" id="16_g0wer"]
+[ext_resource type="PackedScene" uid="uid://bkc3kbka4313s" path="res://itens herdados (modificados)/portal.tscn" id="18_qylfv"]
+[ext_resource type="PackedScene" uid="uid://d1hox14gk0a4t" path="res://itens herdados (modificados)/braço.tscn" id="19_4boeo"]
+[ext_resource type="PackedScene" uid="uid://t4e30j7goban" path="res://Itens_Cenário/mesa_redonda.glb" id="20_wdkvm"]
+[ext_resource type="PackedScene" uid="uid://wvs64xcwvnxw" path="res://Itens_Cenário/brahma.glb" id="20_wunlw"]
+[ext_resource type="PackedScene" uid="uid://bltwam6qre4d2" path="res://Itens_Cenário/sniper.glb" id="21_6qkn4"]
+[ext_resource type="Material" uid="uid://84hfu50v2l41" path="res://preto.tres" id="21_3161u"]
+[ext_resource type="PackedScene" uid="uid://y0w8hbayyn07" path="res://Itens_Cenário/alvo.glb" id="21_wdkvm"]
+[ext_resource type="PackedScene" uid="uid://c008lwryqjxgc" path="res://Itens_Cenário/barzin.glb" id="21_wunlw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wdkvm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6qkn4"]
+albedo_color = Color(0, 0.005006591, 0.05078125, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wunlw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fh7l1"]
+albedo_color = Color(1, 0.6773071, 0, 1)
+metallic = 0.5
+emission_energy_multiplier = 1.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rroka"]
+albedo_color = Color(1, 0.6784314, 0, 1)
+metallic = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ja4bk"]
+albedo_color = Color(1, 0.6784314, 0, 1)
+metallic = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ma161"]
+albedo_color = Color(1, 0.6784314, 0, 1)
+metallic = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_33loj"]
+albedo_color = Color(0.30078125, 0.011004199, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s4323"]
+albedo_color = Color(0.3019608, 0.011764706, 0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wunlw"]
+size = Vector3(1.5095215, 21.498352, 37.185425)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wdkvm"]
+size = Vector3(46.12036, 21.388794, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3161u"]
+size = Vector3(44.239685, 21.965515, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_agw4n"]
+size = Vector3(1.2119141, 20.751038, 9.40625)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fh7l1"]
+size = Vector3(12.918457, 21.030884, 1.478241)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rroka"]
+size = Vector3(23.376099, 20.921082, 1.3926392)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ja4bk"]
+size = Vector3(14.079041, 2.8692017, 8.298599)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ma161"]
+size = Vector3(14.906738, 9.616333, 10.00592)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s4323"]
+size = Vector3(49.338257, 1.3339844, 57.48047)
+
+[sub_resource type="BoxMesh" id="BoxMesh_33loj"]
+size = Vector3(1, 22, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6qkn4"]
+material = ExtResource("21_3161u")
+size = Vector3(1, 22, 40)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3161u"]
+material = ExtResource("21_3161u")
+size = Vector3(50, 22, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_agw4n"]
+material = ExtResource("21_3161u")
+size = Vector3(50, 22, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fh7l1"]
+material = ExtResource("21_3161u")
+size = Vector3(26, 22, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rroka"]
+material = ExtResource("21_3161u")
+size = Vector3(15, 22, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ja4bk"]
+material = ExtResource("21_3161u")
+size = Vector3(6.58, 13, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ma161"]
+material = ExtResource("21_3161u")
+size = Vector3(1, 22, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s4323"]
+material = ExtResource("21_3161u")
+size = Vector3(1, 13, 7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wunlw"]
+albedo_color = Color(0.29296875, 0.13370387, 0.01966234, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_e63e1"]
+material = SubResource("StandardMaterial3D_wunlw")
+size = Vector3(1, 10, 6.212)
+
+[node name="Cenário" type="Node3D"]
+
+[node name="Sala_1" type="Node3D" parent="."]
+
+[node name="Teto" type="MeshInstance3D" parent="Sala_1"]
+transform = Transform3D(46.785, 0, 0, 0, -1.2335354e-06, -1, 0, 28.22, -4.371139e-08, 3.75105, 19.142475, 5.793232)
+mesh = SubResource("BoxMesh_wdkvm")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_6qkn4")
+
+[node name="Decoracao_Teto" type="MeshInstance3D" parent="Sala_1/Teto"]
+transform = Transform3D(1.041573, 0, 0, 0, -2.3544047e-09, 0.04110559, 0, -1.52, -5.070521e-08, 0.007829547, -0.47847122, 0.3041916)
+mesh = SubResource("BoxMesh_wunlw")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_fh7l1")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Sala_1/Teto/Decoracao_Teto"]
+transform = Transform3D(0.99999994, 0, 0, 0, 1.0000001, 1.6940659e-21, 0, -6.1253717e-15, 0.9999998, 0.01905708, 0, 23.363258)
+mesh = SubResource("BoxMesh_wunlw")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_rroka")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Sala_1/Teto/Decoracao_Teto"]
+transform = Transform3D(-2.7731119e-08, 0, 0.023804631, -3.7507825e-14, 1.0000001, 2.7872185e-23, -26.650866, -6.125373e-15, -4.3711395e-08, 0.44048265, 0, 12.770413)
+mesh = SubResource("BoxMesh_wunlw")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_ja4bk")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Sala_1/Teto/Decoracao_Teto"]
+transform = Transform3D(-2.7731112e-08, 0, 0.023804633, -2.618898e-13, 1.0000001, -3.900718e-22, -26.650854, -6.1253725e-15, -4.3711378e-08, -0.47287518, 0, 12.750619)
+mesh = SubResource("BoxMesh_wunlw")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_ma161")
+
+[node name="Piso" type="MeshInstance3D" parent="Sala_1"]
+transform = Transform3D(46.785, 0, 0, 0, -1.2335354e-06, -1, 0, 28.22, -4.371139e-08, 3.75105, -3.4808002, 5.793232)
+mesh = SubResource("BoxMesh_wdkvm")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_33loj")
+
+[node name="Decoracoes" type="Node3D" parent="Sala_1"]
+
+[node name="bandeira_Brasil" parent="Sala_1/Decoracoes" instance=ExtResource("4_xxw4b")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -0.43165255, -2.7114944, -1.8268828)
+
+[node name="cadeira_quebrada" parent="Sala_1/Decoracoes" instance=ExtResource("2_yjj8j")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, -7.9089007, 0, 1.5905628)
+
+[node name="calendario" parent="Sala_1/Decoracoes" instance=ExtResource("5_qylfv")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -1.433306, 0, -1.9080062)
+
+[node name="dragonslayer2" parent="Sala_1/Decoracoes" instance=ExtResource("6_4boeo")]
+transform = Transform3D(1.205, 0, 0, 0, 1.205, 0, 0, 0, 1.205, -3.7993853, 0, -0.010607719)
+
+[node name="espada2" parent="Sala_1/Decoracoes" instance=ExtResource("7_33loj")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -2.0006642, 0.090405464, 0.42093801)
+
+[node name="fliperama2" parent="Sala_1/Decoracoes" instance=ExtResource("8_wunlw")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -0.0060448647, 0, -0.024450302)
+
+[node name="mesa2" parent="Sala_1/Decoracoes" instance=ExtResource("8_yjj8j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2021127, 0, 0.1832776)
+
+[node name="mesa_fundo2" parent="Sala_1/Decoracoes" instance=ExtResource("14_rroka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.307781, 0, -0.010607719)
+
+[node name="mister" parent="Sala_1/Decoracoes" instance=ExtResource("3_g0wer")]
+transform = Transform3D(1.23, 0, 0, 0, 1.23, 0, 0, 0, 1.23, -4.420582, -2.387444, -0.010607719)
+
+[node name="poster_brahma" parent="Sala_1/Decoracoes" instance=ExtResource("10_6qkn4")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -1.1677029, 0, -1.871593)
+
+[node name="quadro_fiado" parent="Sala_1/Decoracoes" instance=ExtResource("15_yjj8j")]
+transform = Transform3D(0.975, 0, 0, 0, 0.975, 0, 0, 0, 0.975, -0.08192253, -0.6609659, -0.6314151)
+
+[node name="suporte_parede" parent="Sala_1/Decoracoes" instance=ExtResource("13_fh7l1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.011927128, 0, 0.18859196)
+
+[node name="mimkyu" parent="Sala_1/Decoracoes" instance=ExtResource("16_g0wer")]
+transform = Transform3D(-2.1863894, 0, 1.4796288, 0, 2.64, 0, -1.4796288, 0, -2.1863894, -14.091143, -2.4791186, 16.983105)
+
+[node name="portal" parent="Sala_1/Decoracoes" instance=ExtResource("18_qylfv")]
+transform = Transform3D(-0.28666675, 0.019521806, -0.9578316, 0.0028481283, -0.9997706, -0.021229018, -0.95802623, -0.008813668, 0.28654543, -13.364817, 22.879313, -1.3850884)
+
+[node name="braço" parent="Sala_1/Decoracoes" instance=ExtResource("19_4boeo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.056261, 13.936749, -4.1068406)
+
+[node name="brahma3" parent="Sala_1/Decoracoes" instance=ExtResource("20_wunlw")]
+transform = Transform3D(-0.11759104, 0, 0.17999259, 0, 0.215, 0, -0.17999259, 0, -0.11759104, 6.0085783, 1.0892935, 7.9927645)
+
+[node name="brahma4" parent="Sala_1/Decoracoes" instance=ExtResource("20_wunlw")]
+transform = Transform3D(-0.11759104, 0, 0.17999259, 0, 0.215, 0, -0.17999259, 0, -0.11759104, 2.492875, 1.0892935, 3.2302103)
+
+[node name="alvo" parent="Sala_1/Decoracoes" instance=ExtResource("21_wdkvm")]
+transform = Transform3D(-5.507635e-08, 0, 1.26, 0, 1.26, 0, -1.26, 0, -5.507635e-08, -8.576187, 8.728624, 18.904251)
+
+[node name="sniper" parent="Sala_1/Decoracoes" instance=ExtResource("21_6qkn4")]
+transform = Transform3D(1.5299999, 0, 0, 0, 1.5299999, 0, 0, 0, 1.53, 1.2800751, 12.27252, 19.055138)
+
+[node name="mesa_redonda" parent="Sala_1/Decoracoes" instance=ExtResource("20_wdkvm")]
+transform = Transform3D(1.17, 0, 0, 0, 1.17, 0, 0, 0, 1.17, -12.394636, -3.053921, -17.246517)
+
+[node name="Sala_2" type="Node3D" parent="."]
+
+[node name="Piso_Sala_2" type="MeshInstance3D" parent="Sala_2"]
+transform = Transform3D(46.785, 0, 0, 0, -1.2335354e-06, -1, 0, 28.22, -4.371139e-08, 3.75105, -3.4808002, -22.183422)
+mesh = SubResource("BoxMesh_wdkvm")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_s4323")
+
+[node name="barzin" parent="Sala_2" instance=ExtResource("21_wunlw")]
+transform = Transform3D(-7.6057816e-08, 0, -1.74, 0, 1.74, 0, 1.74, 0, -7.6057816e-08, 1.9764585, -0.9607688, -27.899113)
+
+[node name="Teto2" type="MeshInstance3D" parent="Sala_2"]
+transform = Transform3D(46.785, 0, 0, 0, -1.2335354e-06, -1, 0, 28.22, -4.371139e-08, 3.75105, 19.142475, -22.554789)
+mesh = SubResource("BoxMesh_wdkvm")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_6qkn4")
+
+[node name="Area3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -1, 25)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.7527294, 8.7612, -42.589676)
+shape = SubResource("BoxShape3D_wunlw")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.749937, 8.795959, -61.261524)
+shape = SubResource("BoxShape3D_wdkvm")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.60495, 8.66098, -5.8084908)
+shape = SubResource("BoxShape3D_3161u")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.013176, 8.805206, -10.96825)
+shape = SubResource("BoxShape3D_agw4n")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3975792, 8.54273, -33.113876)
+shape = SubResource("BoxShape3D_fh7l1")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.841728, 8.621248, -33.04762)
+shape = SubResource("BoxShape3D_rroka")
+
+[node name="CollisionShape3D8" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.266825, 0.45321655, -18.954735)
+shape = SubResource("BoxShape3D_ja4bk")
+
+[node name="CollisionShape3D9" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.438686, 2.8565063, -55.633255)
+shape = SubResource("BoxShape3D_ma161")
+
+[node name="CollisionShape3D10" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(0.9999999, 0, 0, 0, 1, 9.947598e-14, 0, 7.1054274e-15, 0.9999969, 17.315495, -2.6177444, -33.990883)
+shape = SubResource("BoxShape3D_s4323")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.297777, 8.000001, -8.566539)
+mesh = SubResource("BoxMesh_33loj")
+surface_material_override/0 = ExtResource("21_3161u")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 8, -0.525)
+mesh = SubResource("BoxMesh_6qkn4")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4817467, 8, 19.628292)
+mesh = SubResource("BoxMesh_3161u")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0855894, 8, -36.699844)
+mesh = SubResource("BoxMesh_agw4n")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2356415, 8, -8.5)
+mesh = SubResource("BoxMesh_fh7l1")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.125, 8, -8.5)
+mesh = SubResource("BoxMesh_rroka")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7108383, 12.239303, -8.5)
+mesh = SubResource("BoxMesh_ja4bk")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 8, -31.842155)
+mesh = SubResource("BoxMesh_ma161")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 13.126255, -23.666542)
+mesh = SubResource("BoxMesh_s4323")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.610485, 1.7538152, -23.693962)
+mesh = SubResource("BoxMesh_e63e1")

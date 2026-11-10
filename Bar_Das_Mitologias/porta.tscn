@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://bjn3nu8osa2a5"]
+
+[ext_resource type="Script" uid="uid://kfsysaf5ec8i" path="res://porta.gd" id="1_5rp3s"]
+[ext_resource type="PackedScene" uid="uid://c1tkial1i3iwi" path="res://Itens_Cenário/porta.glb" id="1_setqv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_umd14"]
+size = Vector3(0.12, 4.5, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_setqv"]
+size = Vector3(0.36773682, 4.5585327, 3.1011353)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5rp3s"]
+size = Vector3(4.99823, 4.027588, 7.6310425)
+
+[node name="Porta" type="Node3D"]
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_umd14")
+script = ExtResource("1_5rp3s")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Mesh"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.041168213, 0.0038146973, 0.003692627)
+shape = SubResource("BoxShape3D_setqv")
+
+[node name="Area3D" type="Area3D" parent="Mesh"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24612427, 0.1217041, -0.50753784)
+shape = SubResource("BoxShape3D_5rp3s")
+debug_color = Color(0.70196074, 0.046156097, 0, 0.41960785)
+
+[node name="porta" parent="Mesh" instance=ExtResource("1_setqv")]
+transform = Transform3D(-0.515, 0, -7.7762834e-08, 0, 0.515, 0, 7.7762834e-08, 0, -0.515, 0, 0, 0)

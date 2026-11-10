@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://cqf6uxshb4lmy"]
+
+[ext_resource type="Script" uid="uid://bcbvwnrj2f2o2" path="res://carta_mesa.gd" id="1_k5qsy"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_76ibk"]
+size = Vector3(0.8, 0.025, 1.22)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2k5r0"]
+albedo_color = Color(0, 0, 0.5137255, 1)
+emission_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k5qsy"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2k5r0"]
+material = SubResource("StandardMaterial3D_k5qsy")
+size = Vector3(0.855, 0.04, 1.26)
+
+[node name="CartaMesa" type="Node3D"]
+script = ExtResource("1_k5qsy")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.014271855, 0.038297564, 0)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_76ibk")
+surface_material_override/0 = SubResource("StandardMaterial3D_2k5r0")
+
+[node name="TextoValor1" type="Label3D" parent="."]
+transform = Transform3D(2.725, 0, 0, 0, -1.1911353e-07, 2.725, 0, -2.725, -1.1911353e-07, 0, 0.051, 0)
+texture_filter = 1
+text = "0"
+
+[node name="TextoValor2" type="Label3D" parent="."]
+transform = Transform3D(1.27, 0, 0, 0, -5.5513464e-08, 1.27, 0, -1.27, -5.5513464e-08, 0.2618897, 0.051, 0.46636575)
+text = "0"
+
+[node name="TextoValor3" type="Label3D" parent="."]
+transform = Transform3D(1.27, 0, 0, 0, -5.5513464e-08, 1.27, 0, -1.27, -5.5513464e-08, -0.2757074, 0.051, -0.48906213)
+text = "0"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015, 0.03, 0)
+mesh = SubResource("BoxMesh_2k5r0")

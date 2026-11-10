@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://80uwoxsfwtl4"]
+
+[ext_resource type="PackedScene" uid="uid://db1uqi3ayf8f2" path="res://Itens_Cenário/lampada.glb" id="1_kxint"]
+
+[node name="lampada" instance=ExtResource("1_kxint")]
+
+[node name="Cilindro_002" parent="." index="0"]
+cast_shadow = 0

@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://clsh0aqr1r78y"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wangp"]
+size = Vector3(1.8, 0.055, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wangp"]
+albedo_color = Color(0.41750285, 0.0008588354, 0.4765625, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0663o"]
+size = Vector3(2.1000001, 0.4, 1.2)
+
+[node name="baralho_poder" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("BoxMesh_wangp")
+surface_material_override/0 = SubResource("StandardMaterial3D_wangp")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05000007, 1.4901161e-08, -4.4703484e-08)
+shape = SubResource("BoxShape3D_0663o")

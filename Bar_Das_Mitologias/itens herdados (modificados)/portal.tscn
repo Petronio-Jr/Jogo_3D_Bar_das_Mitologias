@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkc3kbka4313s"]
+
+[ext_resource type="PackedScene" uid="uid://h637ueig55fa" path="res://Itens_Cenário/portal.glb" id="1_0r486"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ef3v5"]
+albedo_color = Color(0.3529412, 0, 0.4, 1)
+
+[node name="portal" instance=ExtResource("1_0r486")]
+
+[node name="portais_2" parent="." index="0"]
+surface_material_override/1 = SubResource("StandardMaterial3D_ef3v5")

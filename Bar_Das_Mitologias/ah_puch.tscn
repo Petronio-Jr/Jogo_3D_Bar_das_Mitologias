@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=3 uid="uid://b43ela3paafj8"]
+
+[ext_resource type="PackedScene" uid="uid://bvo4ms541x3we" path="res://deuses/Ah Puch.glb" id="1_mh7xq"]
+[ext_resource type="Animation" uid="uid://dp24q4bwshbg4" path="res://Animações/idle_AP.res" id="2_4k7mc"]
+
+[sub_resource type="Animation" id="Animation_1s7f4"]
+resource_name = "Ah PuchAction"
+length = 0.041666668
+tracks/0/type = "position_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ah Puch_001")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, -2.2504845, 1.8296711, 0.47586656)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ah Puch_001")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -0.048273116, -0.3093894, 0.015728224, 0.9495791)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Armature/Skeleton3D:Bone.002")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, -0.11228436, -0.07912149, 0.4297604, 0.89243376)
+tracks/3/type = "rotation_3d"
+tracks/3/imported = true
+tracks/3/enabled = true
+tracks/3/path = NodePath("Armature/Skeleton3D:Bone.003")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 0.20005608, -0.00012864154, 0.030294562, 0.979316)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = true
+tracks/4/enabled = true
+tracks/4/path = NodePath("Armature/Skeleton3D:Bone.004")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0.07800591, 0.012494266, 0.06968609, 0.9944359)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tm3y8"]
+_data = {
+&"Ah PuchAction": SubResource("Animation_1s7f4"),
+&"Ah Puch_001Action": ExtResource("2_4k7mc")
+}
+
+[node name="Ah Puch2" instance=ExtResource("1_mh7xq")]
+
+[node name="Ah Puch_001" parent="." index="0"]
+transform = Transform3D(0.12091152, -1.6942197e-09, -0.032364096, 0.008939104, 0.22622201, 0.004501982, 0.087693214, -0.02306019, 0.04416475, -2.2504845, 1.8296711, 0.47586656)
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/2/rotation = Quaternion(-0.05378086, 0.04098118, 0.4409189, 0.8949965)
+bones/3/rotation = Quaternion(0.20005606, -0.00012864414, 0.030294545, 0.979316)
+bones/4/rotation = Quaternion(0.07800591, 0.0124942735, 0.0696861, 0.994436)
+
+[node name="AnimationPlayer" parent="." index="5"]
+libraries = {
+&"": SubResource("AnimationLibrary_tm3y8")
+}
+autoplay = "Ah Puch_001Action"
