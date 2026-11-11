@@ -155,6 +155,14 @@ func atualizar_foco() -> void:
 
 # --- Clique ---
 
+## Botão direito: marca/desmarca a carta sob a mira para o combo.
+func selecionar_carta() -> void:
+	if ctrl.embriaguez.apagado or not ctrl.vez_do_jogador():
+		return
+	var alvo: Dictionary = detectar_alvo(true)
+	if alvo["tipo"] == Alvo.CARTA:
+		ctrl.acoes_humano.alternar_selecao(alvo["indice"])
+
 func interagir(minha_vez: bool = true) -> void:
 	if ctrl.embriaguez.apagado:
 		return   # de olhos fechados não dá para interagir

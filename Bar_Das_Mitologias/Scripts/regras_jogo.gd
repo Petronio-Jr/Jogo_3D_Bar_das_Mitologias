@@ -15,21 +15,21 @@ func resetar_ronda() -> void:
 	compras_acumuladas = 0
 	passos_para_avancar = 1
 
-func processar_efeito_carta(carta: Carta) -> void:
+func processar_efeito_carta(carta: Carta, tocar_som: bool = true) -> void:
 	# O som do efeito entra um instante depois, quando a carta já está pousando na mesa
 	match carta.valor:
 		Carta.Valor.INVERTER:
 			sentido *= -1
-			Som.sfx("efeito_inverter", 0.0, 0.0, 0.45)
+			if tocar_som: Som.sfx("efeito_inverter", 0.0, 0.0, 0.45)
 		Carta.Valor.BLOQUEIO:
-			passos_para_avancar = 2
-			Som.sfx("efeito_bloqueio", 0.0, 0.0, 0.45)
+			passos_para_avancar += 1   # num combo, cada bloqueio pula mais um jogador
+			if tocar_som: Som.sfx("efeito_bloqueio", 0.0, 0.0, 0.45)
 		Carta.Valor.MAIS_DOIS:
 			compras_acumuladas += 2
-			Som.sfx("efeito_mais2", 0.0, 0.0, 0.45)
+			if tocar_som: Som.sfx("efeito_mais2", 0.0, 0.0, 0.45)
 		Carta.Valor.MAIS_QUATRO:
 			compras_acumuladas += 4
-			Som.sfx("efeito_mais4", 0.0, 0.0, 0.45)
+			if tocar_som: Som.sfx("efeito_mais4", 0.0, 0.0, 0.45)
 
 ## O jogador tem um +2/+4 jogável para rebater a compra acumulada?
 func tem_rebate(jogador: Jogador) -> bool:

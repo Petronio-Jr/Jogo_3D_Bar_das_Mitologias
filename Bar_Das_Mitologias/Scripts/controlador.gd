@@ -16,6 +16,7 @@ var habilidade: HabilidadeAnubis
 var balanca: BalancaAnubis
 var poder_odin: PoderOdin
 var poder: PoderBaralho
+var uno: AvisoUno
 var embriaguez: Embriaguez
 
 # --- Estado da partida ---
@@ -103,6 +104,14 @@ var testar_poder_odin: bool = false                # true = Odin checa em TODA v
 @export var balanco_passos: float = 0.02         # sobe e desce da câmera enquanto "anda" até a cadeira (m)
 @export var queda_ao_sentar: float = 0.04        # afundada rápida no fim, quando "senta" (m)
 
+# --- Combos e aviso de UNO ---
+@export_group("Combos e UNO")
+@export var cartas_minimas_apos_combo: int = 2       # combo nunca deixa menos que isso na mão (2 = não zera nem fica com UNO)
+@export_range(0.0, 1.0, 0.05) var chance_combo_ia: float = 0.5   # chance de um deus combar quando puder
+@export var intervalo_combo: float = 0.18            # tempo entre uma carta e outra do combo (s)
+@export var altura_aviso_uno: float = 0.8            # altura do "UNO!" acima da pilha (m)
+@export var tamanho_aviso_uno: float = 2.2            # escala da escrita "UNO!"
+
 # --- Nós da cena ---
 @onready var anim_anubis: AnimationPlayer = $"Cenário/deuses/anubis/AnimationPlayer2"
 @onready var container_mao_3d = $PosicaoMaoHumano
@@ -130,6 +139,7 @@ func _ready() -> void:
 	poder_odin = PoderOdin.new(self)
 	poder = PoderBaralho.new(self)
 	embriaguez = Embriaguez.new(self)
+	uno = AvisoUno.new(self)
 
 	mira.localizar_dot()
 	balanca.preparar()
@@ -226,6 +236,12 @@ func _input(event: InputEvent) -> void:
 	if habilidade.evento_em_andamento and not habilidade.escolhendo_deus:
 		return
 
+	# Botão direito: marca/desmarca cartas para o combo
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			mira.selecionar_carta()
+		return
+
 	if not (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
 		return
 
@@ -304,6 +320,7 @@ func _definir_primeiro_jogador() -> void:
 func verificar_fim_partida(vencedor: Jogador) -> void:
 	vitorias_jogadores[vencedor.nome] += 1
 	ultimo_vencedor_nome = vencedor.nome
+	uno.limpar()
 	print("[Partida] Vencedor da ronda: ", vencedor.nome, " | Placar: ", vitorias_jogadores)
 
 	if vitorias_jogadores[vencedor.nome] >= objetivo_vitorias:

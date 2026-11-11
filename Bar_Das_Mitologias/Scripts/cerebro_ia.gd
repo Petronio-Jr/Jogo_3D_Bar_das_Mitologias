@@ -26,6 +26,12 @@ func processar_turno(ia: Jogador) -> void:
 	var topo = ctrl.baralho.obter_topo()
 	var index_pra_jogar: int = -1
 
+	# Combo: jogar 2+ cartas de mesmo valor juntas (nunca zera a mão nem deixa só 1 carta)
+	var combo: Array[int] = ComboCartas.escolher_para_ia(ia.mao, topo, ctrl.regras.compras_acumuladas, ctrl.cartas_minimas_apos_combo, ctrl.chance_combo_ia)
+	if not combo.is_empty():
+		await _jogar_combo(ia, combo)
+		return
+
 	if ctrl.regras.compras_acumuladas > 0:
 		for i in range(ia.mao.size()):
 			var c = ia.mao[i]
@@ -71,10 +77,62 @@ func processar_turno(ia: Jogador) -> void:
 	else:
 		var comprada = ctrl.baralho.puxar()
 		if comprada != null:
+			Som.sfx("carta_comprar", -3.0, 0.06)
 			ia.adicionar_carta(comprada)
 			ctrl.visual.atualizar_mao_ia(ia)
 			if ia.nome == "Anubis":
 				AnimUtil.tocar_e_voltar_idle(ctrl.anim_anubis, "COMPRAR_CARTA")
+
+# --- Combo da IA ---
+
+func _jogar_combo(ia: Jogador, indices: Array[int]) -> void:
+	var cartas: Array[Carta] = []
+	for i in indices:
+		cartas.append(ia.mao[i])
+	var remover: Array[int] = indices.duplicate()
+	remover.sort()
+	remover.reverse()
+	for i in remover:
+		ia.remover_carta(i)   # (os visuais só mudam depois do voo)
+
+	# Lógica na hora: a última carta fica no topo da mesa e define a cor
+	for k in range(cartas.size()):
+		ctrl.baralho.descartar(cartas[k])
+		ctrl.regras.processar_efeito_carta(cartas[k], k == cartas.size() - 1)
+
+	var voo: Dictionary = {"espera": null, "voo": null, "mao_atualizada": false, "lancado_tudo": false}
+	var tw: Tween = ctrl.create_tween()
+	voo["espera"] = tw
+	tw.tween_interval(maxf(ctrl.atraso_voo_carta, 0.0))
+	tw.tween_callback(func(): _soltar_combo(voo, ia, indices, cartas))
+
+	await AnimUtil.tocar_e_voltar_idle(animadores.get(ia.nome), "JOGAR_CARTA")
+	await _aguardar_voo(voo)
+	if not voo["mao_atualizada"]:
+		ctrl.visual.atualizar_mao_ia(ia)
+
+# Chamada pelo tween: as cartas saem da mão do deus e voam uma depois da outra
+func _soltar_combo(voo: Dictionary, ia: Jogador, indices: Array[int], cartas: Array[Carta]) -> void:
+	var container = ctrl.visual.maos_ia.get(ia.nome)
+	if container == null or not is_instance_valid(container):
+		voo["lancado_tudo"] = true
+		return
+	var origens: Array[Transform3D] = []
+	for i in indices:
+		var o: Transform3D = (container as Node3D).global_transform
+		if container.has_method("obter_carta_visual"):
+			var visual = container.obter_carta_visual(i)
+			if visual != null:
+				o = visual.global_transform
+		origens.append(o)
+	ctrl.visual.atualizar_mao_ia(ia)   # as cartas saem da mão
+	voo["mao_atualizada"] = true
+	Som.sfx("carta_combo")
+	for k in range(cartas.size()):
+		voo["voo"] = ctrl.pilha.jogar(cartas[k], origens[k])
+		if k < cartas.size() - 1:
+			await ctrl.get_tree().create_timer(ctrl.intervalo_combo).timeout
+	voo["lancado_tudo"] = true
 
 # --- Voo da carta jogada (mão do deus -> pilha da mesa) ---
 
@@ -105,6 +163,8 @@ func _aguardar_voo(voo: Dictionary) -> void:
 	var espera: Tween = voo["espera"]
 	if espera.is_valid() and espera.is_running():
 		await espera.finished
+	while not voo.get("lancado_tudo", true):   # combo: espera a última carta sair
+		await ctrl.get_tree().process_frame
 	var t: Tween = voo["voo"]
 	if t != null and t.is_valid() and t.is_running():
 		await t.finished

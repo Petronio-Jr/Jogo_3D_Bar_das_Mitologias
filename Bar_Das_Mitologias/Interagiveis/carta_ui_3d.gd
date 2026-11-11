@@ -47,6 +47,15 @@ var escala_base_quadrados: Dictionary = {}
 # Visuais que sobem no hover e suas posições originais
 var _bases_visuais: Dictionary = {}
  
+# Seleção para combo
+@export var deslocamento_selecao: Vector3 = Vector3(0, 0.09, 0.0)
+var selecionada: bool = false
+var _tween_sel: Tween
+var sel_t: float = 0.0:
+	set(valor):
+		sel_t = valor
+		_aplicar_hover()
+
 # 0.0 = repouso, 1.0 = totalmente em hover (animado pelo tween)
 var hover_t: float = 0.0:
 	set(valor):
@@ -75,7 +84,16 @@ func _guardar_posicoes_visuais() -> void:
 func _aplicar_hover() -> void:
 	for n in _bases_visuais.keys():
 		if n and is_instance_valid(n):
-			n.position = _bases_visuais[n] + deslocamento_hover * hover_t
+			n.position = _bases_visuais[n] + deslocamento_hover * hover_t + deslocamento_selecao * sel_t
+
+# Carta marcada para o combo (botão direito): fica levantada até ser jogada
+func definir_selecionada(ativa: bool) -> void:
+	selecionada = ativa
+	if _tween_sel and _tween_sel.is_running():
+		_tween_sel.kill()
+	_tween_sel = create_tween()
+	_tween_sel.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_tween_sel.tween_property(self, "sel_t", 1.0 if ativa else 0.0, 0.18)
  
 # Hover dos quadrados de cor enquanto o menu do coringa está aberto
 func _process(_delta: float) -> void:
@@ -284,4 +302,3 @@ func resetar_hover_quadrados():
 		if node and is_instance_valid(node):
 			node.position = pos_base_quadrados[node]
 			node.scale = escala_base_quadrados.get(node, Vector3.ONE)
- 

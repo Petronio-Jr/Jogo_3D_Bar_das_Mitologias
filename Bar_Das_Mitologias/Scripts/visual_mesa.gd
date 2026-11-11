@@ -40,6 +40,8 @@ func atualizar_indicador_turno() -> void:
 	else:
 		label_turno.text = "Vez de " + jogador_atual.nome
 	atualizar_todos_contadores_ia()
+	if ctrl.uno != null:
+		ctrl.uno.atualizar()
 	if label_contador_turnos:
 		label_contador_turnos.text = "Turno " + str(ctrl.numero_turno_atual)
 
@@ -54,6 +56,10 @@ func atualizar_todos_contadores_ia() -> void:
 
 ## modo/quantidade são repassados ao container da mão (ex.: 0 = normal, 1 = início, 2 = compra)
 func atualizar_mao_humano(jogador: Jogador, modo: int, quantidade: int = -1) -> void:
+	if ctrl.acoes_humano != null:
+		ctrl.acoes_humano.limpar_selecao()   # a mão foi refeita: some a seleção do combo
+	if ctrl.uno != null:
+		ctrl.uno.atualizar()
 	var container = ctrl.container_mao_3d
 	if container == null or not container.has_method("atualizar_mao"):
 		return
@@ -67,6 +73,8 @@ func atualizar_mao_player() -> void:
 	atualizar_mao_humano(ctrl.jogadores[0], 0)
 
 func atualizar_mao_ia(jogador: Jogador) -> void:
+	if ctrl.uno != null:
+		ctrl.uno.atualizar()
 	if jogador == null or jogador.eh_o_player:
 		return
 	var container = maos_ia.get(jogador.nome)

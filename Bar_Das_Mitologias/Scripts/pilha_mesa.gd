@@ -30,6 +30,13 @@ func _escala_base() -> Vector3:
 		return (ctrl.container_mao_3d as Node3D).global_transform.basis.get_scale()
 	return Vector3.ONE
 
+## Centro da pilha (para o aviso de UNO ficar acima dela).
+func posicao_centro() -> Vector3:
+	return _ref.origin
+
+func esta_pronta() -> bool:
+	return _pronta
+
 func limpar() -> void:
 	_seq = 0
 	for c in cartas:
@@ -53,16 +60,22 @@ func jogar(carta: Carta, origem: Transform3D, instantaneo: bool = false) -> Twee
 	no.setup(carta, 0)
 	no.global_transform = origem
 
-	# Pilha cheia: a mais antiga sai e as outras descem uma camada
+	# Pilha cheia: a mais antiga sai e as outras descem uma camada.
+	# A camada fica guardada em cada carta: quem ainda está VOANDO (combo) só tem o
+	# destino atualizado; quem já pousou desce com uma animação.
 	while cartas.size() >= maxi(ctrl.cartas_na_pilha, 1):
 		var velha: Node3D = cartas.pop_front()
 		if is_instance_valid(velha):
 			velha.queue_free()
 		for c in cartas:
-			if is_instance_valid(c):
+			if not is_instance_valid(c):
+				continue
+			c.set_meta("camada", int(c.get_meta("camada", 0)) - 1)
+			if not bool(c.get_meta("voando", false)):
 				ctrl.create_tween().tween_property(c, "global_position:y", c.global_position.y - ctrl.distancia_vertical_pilha, 0.15)
 
 	var camada: int = cartas.size()
+	no.set_meta("camada", camada)
 	cartas.append(no)
 
 	# Destino: orientação do Mesh da CartaMesa, com um desvio aleatório
@@ -87,20 +100,24 @@ func jogar(carta: Carta, origem: Transform3D, instantaneo: bool = false) -> Twee
 	var lateral: float = (slot - (n - 1) / 2.0) * ctrl.distancia_horizontal_pilha
 	var alvo_malha: Vector3 = _ref.origin \
 		+ direita * lateral \
-		+ Vector3(randf_range(-j, j), 0.0, randf_range(-j, j)) \
-		+ Vector3.UP * camada * ctrl.distancia_vertical_pilha
+		+ Vector3(randf_range(-j, j), 0.0, randf_range(-j, j))
+	# p1 = destino SEM a altura da camada (ela é somada na hora, pois pode mudar durante o voo)
 	var p1: Vector3 = alvo_malha - Basis(q1).scaled(escala) * malha_local.origin
 
 	if instantaneo:
-		no.global_transform = Transform3D(Basis(q1).scaled(escala), p1)
+		no.global_transform = Transform3D(Basis(q1).scaled(escala), p1 + Vector3.UP * camada * ctrl.distancia_vertical_pilha)
 		return null
 
 	Som.sfx("carta_jogar", 0.0, 0.07)
 
 	var p0: Vector3 = origem.origin
 	var q0: Quaternion = origem.basis.orthonormalized().get_rotation_quaternion()
+	no.set_meta("voando", true)
 	var tw: Tween = ctrl.create_tween()
 	tw.tween_method(func(t: float): _mover(no, t, p0, q0, escala0, escala, p1, q1), 0.0, 1.0, maxf(ctrl.duracao_voo_carta, 0.01))
+	tw.tween_callback(func():
+		if is_instance_valid(no):
+			no.set_meta("voando", false))
 	return tw
 
 ## Rotação que deita a carta com a FRENTE (+Z da carta, onde ficam o número e a cor)
@@ -127,6 +144,8 @@ func _mover(no: Node3D, t: float, p0: Vector3, q0: Quaternion, esc0: Vector3, es
 		return
 	const FASE_SUBIDA: float = 0.3
 	var topo: Vector3 = p0 + Vector3.UP * ctrl.altura_saida_carta
+	# Altura final = camada ATUAL da carta (muda se a pilha encher durante um combo)
+	p1 += Vector3.UP * int(no.get_meta("camada", 0)) * ctrl.distancia_vertical_pilha
 	var pos: Vector3
 	var q: Quaternion
 	if t < FASE_SUBIDA:

@@ -68,6 +68,21 @@ func _init() -> void:
 func _ready() -> void:
 	_aplicar_volumes()
 
+# Vigia: se a música de fundo parar sozinha (acabou, trocou de faixa...), religa.
+var _vigia: float = 0.0
+
+func _process(delta: float) -> void:
+	_vigia += delta
+	if _vigia < 1.0:
+		return
+	_vigia = 0.0
+	if _musica_atual != "":
+		var p: AudioStreamPlayer = _musica[_musica_ativa]
+		if p.stream != null and not p.playing:
+			p.play()
+			_novo_tween_musica(p).tween_property(p, "volume_db", 0.0, 1.0)
+	if _pagode_ligado and not _pagode_pausado and not _pagode.stream_paused and not _pagode.playing:
+		_tocar_proxima_faixa(1.0)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == TECLA_MUDO_MUSICA:
@@ -312,6 +327,8 @@ func _montar_playlist() -> void:
 			_playlist.append(s)
 	_playlist.shuffle()
 	_indice_playlist = -1
+	if _playlist.size() == 1:
+		_loop(_playlist[0], true)   # uma faixa só: repete sem emendas
 
 func _tocar_proxima_faixa(fade: float = 0.0) -> void:
 	if _playlist.is_empty():

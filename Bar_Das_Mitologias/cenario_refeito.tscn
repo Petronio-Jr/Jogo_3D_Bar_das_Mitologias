@@ -86,21 +86,27 @@ transform = Transform3D(-0.3872261, 0, 0.9219848, 0, 1, 0, -0.9219848, 0, -0.387
 
 [node name="quadro_1" parent="bar_remade" instance=ExtResource("8_bkqop")]
 transform = Transform3D(3.9983475, 0, -0.11496678, 0, 4, 0, 0.11496678, 0, 3.9983475, -62.516853, 26.30356, 25.213432)
+visible = false
 
 [node name="quadro_2" parent="bar_remade" instance=ExtResource("9_1mop8")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -62.505863, 26.005133, 3.8638)
+visible = false
 
 [node name="quadro_3" parent="bar_remade" instance=ExtResource("10_lld21")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -62.792915, 25.706804, -18.418064)
+visible = false
 
 [node name="quadro_4" parent="bar_remade" instance=ExtResource("11_1mop8")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -62.565594, 25.692802, -39.155277)
+visible = false
 
 [node name="quadro_5" parent="bar_remade" instance=ExtResource("12_5vkva")]
 transform = Transform3D(-4, 0, -6.039832e-07, 0, 4, 0, 6.039832e-07, 0, -4, 54.77802, 23.754356, -8.747362)
+visible = false
 
 [node name="quadro_6" parent="bar_remade" instance=ExtResource("13_ijcje")]
 transform = Transform3D(-4, 0, 6.039832e-07, 0, 4, 0, -6.039832e-07, 0, -4, 54.686577, 24.117329, 25.380327)
+visible = false
 
 [node name="mister" parent="bar_remade" instance=ExtResource("13_5vkva")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -8.259075, -4.164487, 81.146126)
@@ -148,7 +154,7 @@ transform = Transform3D(-0.71526605, 0, -0.6988522, 0, 1, 0, 0.6988522, 0, -0.71
 shape = SubResource("BoxShape3D_diqg0")
 
 [node name="Porta" parent="." instance=ExtResource("14_ijcje")]
-transform = Transform3D(3.774895e-07, 0, 4.69, 0, 5, 0, -5, 0, 3.5408516e-07, -13.8876095, 10.255952, 42.31674)
+transform = Transform3D(5.962434e-08, 0, -4.6900005, 0, 5.0000005, 0, 5.0000005, 0, 5.5927643e-08, -13.8876095, 10.255952, 42.31674)
 
 [node name="Porta2" parent="." instance=ExtResource("14_ijcje")]
 transform = Transform3D(-4.035, 0, 6.0926806e-07, 0, 4.765, 0, -6.0926806e-07, 0, -4.035, 55.479607, 11.118793, -33.217804)

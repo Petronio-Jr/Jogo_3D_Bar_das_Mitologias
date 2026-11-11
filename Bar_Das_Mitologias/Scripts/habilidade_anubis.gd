@@ -83,7 +83,7 @@ func escolher_deus_pela_mira() -> void:
 		if no.has_method("set_selecionavel"):
 			if not no.is_connected("selecionado", _on_deus_selecionado):
 				no.connect("selecionado", _on_deus_selecionado)
-			no.set_selecionavel(true)
+			no.set_selecionavel(true, _nomes_deuses.find(String(no.get("nome_jogador"))) + 1)   # nº = tecla do deus
 
 	ctrl.visual.mensagem("Seu coração é puro!\nEscolha um deus para comprar %d cartas!" % ctrl.cartas_deus_compra)
 
