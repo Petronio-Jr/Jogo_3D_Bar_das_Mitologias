@@ -119,3 +119,10 @@ static func tontura_fim() -> void:
 	var m := g()
 	if m != null:
 		m.tontura_fim()
+
+# --- Rádio do cenário ---
+## Liga/desliga o "modo rádio": o pagode de fundo some enquanto o rádio toca.
+static func radio(ligado: bool, fade: float = 1.0) -> void:
+	var m := g()
+	if m != null:
+		m.radio_ativar(ligado, fade)

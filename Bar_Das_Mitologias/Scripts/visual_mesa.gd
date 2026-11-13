@@ -17,8 +17,8 @@ func _init(controlador: ControladorJogo) -> void:
 	label_contador_turnos = ctrl.get_node_or_null("UI/LabelContagemTurno") as Label
 	carta_mesa = ctrl.get_node_or_null("Cenário/CartaMesa")
 	
-	label_turno.visible = true
-	label_contador_turnos.visible = true
+	# Indicador de turno e contagem só aparecem quando o jogo começa (mostrar_hud)
+	_definir_hud_visivel(false)
 
 	for nome in ["Anubis", "Hefesto", "Odin"]:
 		var base: String = "Cenário/deuses/" + nome.to_lower()
@@ -26,6 +26,18 @@ func _init(controlador: ControladorJogo) -> void:
 		maos_ia[nome] = ctrl.get_node_or_null(base + "/PosicaoMao")
 
 # --- Textos / HUD ---
+
+func mostrar_hud() -> void:
+	_definir_hud_visivel(true)
+
+func _definir_hud_visivel(v: bool) -> void:
+	if label_turno:
+		label_turno.visible = v
+		var painel := label_turno.get_parent() as Control   # PanelContainer que envolve o texto
+		if painel != null and painel != ctrl.get_node_or_null("UI"):
+			painel.visible = v
+	if label_contador_turnos:
+		label_contador_turnos.visible = v
 
 func mensagem(texto: String) -> void:
 	if label_turno:
@@ -81,7 +93,7 @@ func atualizar_mao_ia(jogador: Jogador) -> void:
 	if container == null or not is_instance_valid(container):
 		return
 	if container.has_method("atualizar_mao"):
-		container.set("mostrar_frente", ctrl.mostrar_cartas_ia)
+		container.set("mostrar_frente", ctrl.mostrar_cartas_ia or bool(Configuracoes.obter("mostrar_cartas_deuses")))
 		container.atualizar_mao(jogador)
 	atualizar_todos_contadores_ia()
 

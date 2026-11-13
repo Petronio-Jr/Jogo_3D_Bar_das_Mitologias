@@ -8,6 +8,7 @@ extends Node
 ##   audio/sfx/          efeitos (carta_jogar, porta_abrir, ...)
 ##   audio/musica/       musica_menu, musica_jogo
 ##   audio/pagode/       TODAS as músicas aqui entram numa playlist aleatória de fundo
+##   audio/pagode_radio/ músicas do RÁDIO do cenário (radio_interativo.gd), fora da playlist de fundo
 ##   audio/voz_ahpuch/   fala_01, fala_02, ... (opcional: voz de cada fala do Ah Puch)
 
 # ------------------------------------------------------------------ AJUSTES
@@ -18,6 +19,11 @@ const VOLUME_VOZ_DB: float = 0.0
 ## Pagode de fundo: "baixinho" andando pelo bar e mais baixinho ainda jogando.
 const PAGODE_PASSEIO_DB: float = -17.0
 const PAGODE_PARTIDA_DB: float = -16.0
+## Rádio do cenário (radio_interativo.gd): volume do barramento "Radio" e filtro de alto-falante
+const RADIO_VOLUME_DB: float = -6.0
+const RADIO_FUNDO_DB: float = -60.0      # quanto o pagode de fundo abaixa enquanto o rádio toca
+const RADIO_GRAVES_HZ: float = 350.0     # corta abaixo disso (alto-falante pequeno)
+const RADIO_AGUDOS_HZ: float = 3800.0    # corta acima disso (som "de lata")
 ## false = durante a partida toca SÓ o pagode (sem a música de jogo por cima)
 const MUSICA_NA_PARTIDA: bool = false
 ## Sons de cartas e efeitos de carta ficam mais baixos que o resto
@@ -46,6 +52,9 @@ var _indice_playlist: int = -1
 var _primeira_faixa: bool = true
 var _tween_pagode: Tween
 var _tween_nivel_pagode: Tween
+
+var _radio_abafa_db: float = 0.0     # pagode de fundo some enquanto o rádio toca
+var _tween_radio: Tween
 
 var _voz: AudioStreamPlayer
 var _blip: AudioStreamPlayer
@@ -92,7 +101,7 @@ func _unhandled_input(event: InputEvent) -> void:
 # ------------------------------------------------------------------ SETUP
 
 func _criar_barramentos() -> void:
-	for nome in ["Musica", "Pagode", "SFX", "Voz"]:
+	for nome in ["Musica", "Pagode", "Radio", "SFX", "Voz"]:
 		if AudioServer.get_bus_index(nome) == -1:
 			AudioServer.add_bus()
 			var i: int = AudioServer.bus_count - 1
@@ -105,6 +114,20 @@ func _criar_barramentos() -> void:
 			var f := AudioEffectLowPassFilter.new()
 			f.cutoff_hz = CUTOFF_LIVRE
 			AudioServer.add_bus_effect(i, f)
+	# Rádio: só passa a faixa do meio (graves e agudos cortados) com um leve estouro de alto-falante
+	var ir: int = AudioServer.get_bus_index("Radio")
+	if AudioServer.get_bus_effect_count(ir) == 0:
+		var graves := AudioEffectHighPassFilter.new()
+		graves.cutoff_hz = RADIO_GRAVES_HZ
+		AudioServer.add_bus_effect(ir, graves)
+		var agudos := AudioEffectLowPassFilter.new()
+		agudos.cutoff_hz = RADIO_AGUDOS_HZ
+		AudioServer.add_bus_effect(ir, agudos)
+		var estouro := AudioEffectDistortion.new()
+		estouro.mode = AudioEffectDistortion.MODE_OVERDRIVE
+		estouro.drive = 0.08
+		estouro.post_gain = -2.0
+		AudioServer.add_bus_effect(ir, estouro)
 
 func _criar_players() -> void:
 	for i in 2:
@@ -133,10 +156,16 @@ func _criar_players() -> void:
 
 func _aplicar_volumes() -> void:
 	var mudo: float = -80.0
-	_set_bus("Musica", mudo if _mudo_musica else VOLUME_MUSICA_DB + _duck_db)
-	_set_bus("Pagode", mudo if _mudo_musica else _pagode_nivel_db + _duck_db)
-	_set_bus("SFX", VOLUME_SFX_DB)
-	_set_bus("Voz", VOLUME_VOZ_DB)
+	# Os volumes das Opções (Configuracoes) entram somados em dB
+	_set_bus("Musica", mudo if _mudo_musica else VOLUME_MUSICA_DB + _duck_db + Configuracoes.db("vol_musica"))
+	_set_bus("Pagode", mudo if _mudo_musica else _pagode_nivel_db + _duck_db + _radio_abafa_db + Configuracoes.db("vol_pagode"))
+	_set_bus("Radio", mudo if _mudo_musica else RADIO_VOLUME_DB + _duck_db + Configuracoes.db("vol_pagode"))
+	_set_bus("SFX", VOLUME_SFX_DB + Configuracoes.db("vol_efeitos"))
+	_set_bus("Voz", VOLUME_VOZ_DB + Configuracoes.db("vol_vozes"))
+
+## Chamado pelas Opções quando algum volume muda.
+func reaplicar_volumes() -> void:
+	_aplicar_volumes()
 
 func _set_bus(nome: String, db: float) -> void:
 	var i: int = AudioServer.get_bus_index(nome)
@@ -347,6 +376,19 @@ func _tocar_proxima_faixa(fade: float = 0.0) -> void:
 			_tween_pagode.kill()
 		_tween_pagode = create_tween()
 		_tween_pagode.tween_property(_pagode, "volume_db", 0.0, fade)
+
+# ------------------------------------------------------------------ RÁDIO DO CENÁRIO
+
+## O rádio (radio_interativo.gd) avisa quando liga/desliga: o pagode de fundo some enquanto ele toca.
+func radio_ativar(ligado: bool, fade: float = 1.0) -> void:
+	if _tween_radio != null and _tween_radio.is_valid():
+		_tween_radio.kill()
+	_tween_radio = create_tween()
+	_tween_radio.tween_method(_set_radio_abafa, _radio_abafa_db, RADIO_FUNDO_DB if ligado else 0.0, maxf(fade, 0.01))
+
+func _set_radio_abafa(v: float) -> void:
+	_radio_abafa_db = v
+	_aplicar_volumes()
 
 func _on_pagode_terminou() -> void:
 	if _pagode_ligado and not _pagode_pausado:

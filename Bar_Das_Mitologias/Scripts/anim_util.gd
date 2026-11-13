@@ -27,7 +27,7 @@ static func tocar(arvore: SceneTree, player: AnimationPlayer, nome: String, reve
 		player.play(anim)
 	var dados: Animation = player.get_animation(anim)
 	if dados.loop_mode != Animation.LOOP_NONE:
-		await arvore.create_timer(dados.length).timeout
+		await arvore.create_timer(dados.length, false).timeout
 	else:
 		await player.animation_finished
 

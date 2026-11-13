@@ -77,7 +77,7 @@ func _apagar(id: int) -> void:
 	if not ctrl.reabrir_apos_apagar:
 		return
 	Som.sfx("coracao", 0.0, 0.0, 0.5)
-	await ctrl.get_tree().create_timer(ctrl.tempo_olho_fechado).timeout
+	await ctrl.get_tree().create_timer(ctrl.tempo_olho_fechado, false).timeout
 	if id != _id:
 		return
 

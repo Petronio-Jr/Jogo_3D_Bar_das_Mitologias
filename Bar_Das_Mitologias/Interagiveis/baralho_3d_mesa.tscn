@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://byhmojhlf7sln"]
 
 [ext_resource type="PackedScene" uid="uid://boclwy1rufip3" path="res://Itens_Cenário/baralho_mesa.glb" id="1_ofjrm"]
-[ext_resource type="Script" uid="uid://cdu6x2moxkk3e" path="res://Interagiveis/baralho_3d_mesa.gd" id="2_gdcua"]
+[ext_resource type="Script" uid="uid://cdu6x2moxkk3e" path="res://Scripts/baralho_3d_mesa.gd" id="2_gdcua"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yn6j8"]
 size = Vector3(2.5, 2, 3)

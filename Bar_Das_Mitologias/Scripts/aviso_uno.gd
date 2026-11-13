@@ -20,7 +20,7 @@ func _init(controlador: ControladorJogo) -> void:
 
 	_titulo = _novo_label("UNO!", 150, Color(1.0, 0.88, 0.1))
 	_sub = _novo_label("\n", 52, Color(1, 1, 1))
-	_sub.position = Vector3(0.0, -0.11, 0.0)
+	_sub.position = Vector3(0.0, -0.19, 0.0)
 	_raiz.add_child(_titulo)
 	_raiz.add_child(_sub)
 

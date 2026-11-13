@@ -34,8 +34,8 @@ func _ready():
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		rot_y -= event.relative.x * sensibilidade_mouse
-		rot_x -= event.relative.y * sensibilidade_mouse
+		rot_y -= event.relative.x * sensibilidade_mouse * Configuracoes.sens()
+		rot_x -= event.relative.y * sensibilidade_mouse * Configuracoes.sens() * Configuracoes.sinal_y()
 		rot_x = clamp(rot_x, deg_to_rad(-limite_pitch), deg_to_rad(limite_pitch))
 func _process(delta: float) -> void:
 	var parent = get_parent()

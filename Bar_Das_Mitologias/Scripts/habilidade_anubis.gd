@@ -55,10 +55,10 @@ func ativar() -> void:
 	if castigo:
 		ctrl.regras.comprar_cartas(ctrl.jogadores[0], ctrl.cartas_jogador_compra)
 		ctrl.visual.mensagem("Culpado! Compre %d cartas!" % ctrl.cartas_jogador_compra)
-		await ctrl.get_tree().create_timer(1.5).timeout
+		await ctrl.get_tree().create_timer(1.5, false).timeout
 	else:
 		await escolher_deus_pela_mira()
-		await ctrl.get_tree().create_timer(1.5).timeout
+		await ctrl.get_tree().create_timer(1.5, false).timeout
 
 	await ctrl.balanca.guardar()
 	if luz1: luz1.visible = true

@@ -127,6 +127,7 @@ func _ready() -> void:
 	# O mouse começa capturado para andar e olhar ao redor no mapa 3D
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	add_to_group("controlador_jogo")
+	MenuPausa.instalar(self)   # ESC abre o menu de pausa (Retomar / Opções / Sair)
 
 	mira = MiraJogo.new(self)
 	visual = VisualMesa.new(self)
@@ -222,13 +223,6 @@ func _input(event: InputEvent) -> void:
 	if not jogo_ativo:
 		return
 
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		return
-
 	if habilidade.escolhendo_deus and event is InputEventKey and event.pressed and not event.echo:
 		habilidade.tratar_tecla(event)
 		return
@@ -266,6 +260,7 @@ func _clique_no_menu_de_cores() -> bool:
 
 func iniciar_jogo() -> void:
 	Som.sfx("carta_embaralhar")
+	visual.mostrar_hud()   # indicador de turno e contagem aparecem só quando o jogo inicia
 	baralho = Baralho.new()
 	poder.resetar()   # o jogador recebe o poder no 1º turno
 	_criar_jogadores()
@@ -331,7 +326,7 @@ func verificar_fim_partida(vencedor: Jogador) -> void:
 	else:
 		Som.sfx("vitoria_ronda" if vencedor.eh_o_player else "derrota")
 		visual.mensagem(vencedor.nome + " venceu esta ronda! A reiniciar...")
-		await get_tree().create_timer(2.5).timeout
+		await get_tree().create_timer(2.5, false).timeout
 		reiniciar_ronda()
 
 func reiniciar_ronda() -> void:
@@ -359,7 +354,6 @@ func proximo_turno() -> void:
 	if jogo_ativo:
 		habilidade.registrar_rodada()
 		poder_odin.registrar_rodada()
-		numero_turno_atual += 1
 		poder.registrar_turno()
 		visual.atualizar_mao_player()
 		Som.sfx("turno_jogador", -6.0)   # "ding": voltou a vez do jogador
@@ -377,3 +371,6 @@ func avancar_indice_jogador() -> void:
 	indice_jogador_atual = (indice_jogador_atual + regras.sentido) % jogadores.size()
 	if indice_jogador_atual < 0:
 		indice_jogador_atual = jogadores.size() - 1
+	# Um turno novo começa toda vez que a vez passa pelo jogador (jogando ou sendo pulado)
+	if jogadores[indice_jogador_atual].eh_o_player:
+		numero_turno_atual += 1

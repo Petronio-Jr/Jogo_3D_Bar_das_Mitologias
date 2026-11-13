@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cbgggt4nqwlox"]
 
 [ext_resource type="PackedScene" uid="uid://wvs64xcwvnxw" path="res://Itens_Cenário/brahma.glb" id="1_eeopk"]
-[ext_resource type="Script" uid="uid://bv3tincxiimr7" path="res://Interagiveis/garrafa_interativa.gd" id="2_qljgt"]
+[ext_resource type="Script" uid="uid://bv3tincxiimr7" path="res://Scripts/garrafa_interativa.gd" id="2_qljgt"]
 
 [node name="garrafa_interativa" instance=ExtResource("1_eeopk")]
 script = ExtResource("2_qljgt")

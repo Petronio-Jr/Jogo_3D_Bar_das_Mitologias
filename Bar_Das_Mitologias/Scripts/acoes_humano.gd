@@ -76,7 +76,7 @@ func _tentar_combo(humano: Jogador, indices: Array[int], clicada: int) -> void:
 		ctrl.visual.mensagem(motivo)
 		Som.sfx("carta_invalida")
 		return
-	_jogar_combo(humano, ComboCartas.ordenar_com_final(indices, clicada))
+	_jogar_combo(humano, ComboCartas.ordenar_com_final(humano.mao, indices, clicada, ctrl.baralho.obter_topo()))
 
 func _jogar_combo(humano: Jogador, indices: Array[int]) -> void:
 	ocupado = true
@@ -102,7 +102,7 @@ func _jogar_combo(humano: Jogador, indices: Array[int]) -> void:
 		ctrl.regras.processar_efeito_carta(cartas[k], ultima)
 		voo = ctrl.pilha.jogar(cartas[k], origens[k])
 		if not ultima:
-			await ctrl.get_tree().create_timer(ctrl.intervalo_combo).timeout
+			await ctrl.get_tree().create_timer(ctrl.intervalo_combo, false).timeout
 	if voo != null and voo.is_valid() and voo.is_running():
 		await voo.finished
 	ocupado = false

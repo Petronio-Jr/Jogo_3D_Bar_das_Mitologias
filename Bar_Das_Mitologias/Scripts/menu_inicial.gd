@@ -19,6 +19,8 @@ extends Control
 @onready var botao_jogar: Button = %BotaoJogar
 @onready var botao_sair: Button = %BotaoSair
 
+var botao_opcoes: Button   # criado por código, entre Jogar e Sair
+
 var _fade: ColorRect
 var _tempo: float = 0.0
 var _rot_base: Vector3 = Vector3.ZERO
@@ -34,9 +36,13 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_criar_fade()   # começa preto, enquanto a cena termina de carregar
 
+	Configuracoes.aplicar_tudo()   # aplica as opções salvas (volumes, tela cheia, etc.)
+	botao_opcoes = _criar_botao_opcoes()
+
 	botao_jogar.pressed.connect(_on_jogar)
+	botao_opcoes.pressed.connect(_on_opcoes)
 	botao_sair.pressed.connect(_on_sair)
-	for b in [botao_jogar, botao_sair]:
+	for b in [botao_jogar, botao_opcoes, botao_sair]:
 		b.mouse_entered.connect(_som_hover)
 		b.focus_entered.connect(_som_hover)
 	botao_jogar.grab_focus()
@@ -82,6 +88,7 @@ func _on_jogar() -> void:
 		return
 	_iniciando = true
 	botao_jogar.disabled = true
+	botao_opcoes.disabled = true
 	botao_sair.disabled = true
 	Som.sfx("ui_click")
 	Som.musica_parar(duracao_fade + 0.4)   # a música do menu some junto com o fade...
@@ -110,6 +117,32 @@ func _on_sair() -> void:
 	_iniciando = true
 	Som.sfx("ui_click")
 	get_tree().quit()
+
+## Cria o botão "Opções" copiando o estilo do botão Sair e põe ele logo abaixo do Jogar.
+func _criar_botao_opcoes() -> Button:
+	var b: Button = botao_sair.duplicate() as Button
+	b.unique_name_in_owner = false
+	b.name = "BotaoOpcoes"
+	b.text = "Opções"
+	b.disabled = false
+	for c in b.pressed.get_connections():          # a cópia não pode herdar a ação de "Sair"
+		b.pressed.disconnect(c.callable)
+	var pai: Node = botao_jogar.get_parent()
+	pai.add_child(b)
+	if pai is Container:
+		pai.move_child(b, botao_jogar.get_index() + 1)
+	else:
+		# sem container: encaixa entre os dois, empurrando o Sair para baixo
+		b.position = botao_sair.position
+		botao_sair.position.y += botao_sair.size.y + 12.0
+	return b
+
+func _on_opcoes() -> void:
+	if _iniciando or not _pronto:
+		return
+	Som.sfx("ui_click")
+	var m := MenuOpcoes.abrir(self)
+	m.fechado.connect(func(): botao_opcoes.grab_focus())
 
 func _som_hover() -> void:
 	if _pronto and not _iniciando:

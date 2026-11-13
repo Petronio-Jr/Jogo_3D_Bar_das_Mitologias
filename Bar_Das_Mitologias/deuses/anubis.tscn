@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://n0axa76q4hgg"]
 
 [ext_resource type="PackedScene" uid="uid://bi6fg7u48se2f" path="res://deuses/Anubis.glb" id="1_1kjf7"]
-[ext_resource type="Script" uid="uid://cv7dvnp71nibo" path="res://deuses/deus_interativo.gd" id="2_dod7h"]
+[ext_resource type="Script" uid="uid://cv7dvnp71nibo" path="res://Scripts/deus_interativo.gd" id="2_dod7h"]
 [ext_resource type="Animation" uid="uid://bia36ra703rgh" path="res://Animações/Habilidade.res" id="2_w31jk"]
 [ext_resource type="Animation" uid="uid://dd3eju5hyxb8p" path="res://Animações/Idle.res" id="3_dod7h"]
 [ext_resource type="Animation" uid="uid://bh5chjey2lpi5" path="res://Animações/Lançar_carta.res" id="4_06qc5"]
@@ -30,7 +30,6 @@ size = Vector3(2.9623413, 5.627014, 3.7452393)
 [node name="anubis" instance=ExtResource("1_1kjf7")]
 script = ExtResource("2_dod7h")
 margem_mira = 0.08
-cor_linha = Color(1, 0, 0.05490196, 1)
 
 [node name="Skeleton3D" parent="Armação" index="0"]
 transform = Transform3D(1, 3.0468073e-11, 3.0331115e-09, 3.0468073e-11, 0.99979824, -0.02008739, -3.0331115e-09, 0.02008739, 0.99979824, 0, 0, 0)

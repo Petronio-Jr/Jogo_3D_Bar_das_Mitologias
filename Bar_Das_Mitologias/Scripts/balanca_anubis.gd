@@ -46,7 +46,7 @@ func descer() -> Tween:
 func inclinar() -> bool:
 	var castigo: bool = randf() < ctrl.chance_balanca_castigo
 	var nome_anim: String = ctrl.anim_balanca_castigo if castigo else ctrl.anim_balanca_sorte
-	await ctrl.get_tree().create_timer(0.6).timeout
+	await ctrl.get_tree().create_timer(0.6, false).timeout
 	var player: AnimationPlayer = _player_com_animacao(nome_anim)
 	if player == null:
 		return castigo

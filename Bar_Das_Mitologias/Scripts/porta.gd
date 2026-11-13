@@ -23,7 +23,7 @@ signal porta_trancada_tentativa
 @export var dobradica_automatica: bool = true       # calcula a dobradiça pela malha (borda da largura)
 @export_enum("Negativo:-1", "Positivo:1") var lado_dobradica: int = -1   # em qual ponta da largura fica a dobradiça
 @export var dobradica: Vector3 = Vector3.ZERO       # só usado se dobradica_automatica estiver desligado
-@export_range(0.0, 180.0, 1.0) var angulo_abertura: float = 100.0   # graus
+@export_range(0.0, 180.0, 1.0) var angulo_abertura: float = 120.0   # graus
 @export var duracao: float = 1                                    # segundos
 @export var transicao: Tween.TransitionType = Tween.TRANS_CUBIC
 @export var abrir_para_longe_do_jogador: bool = true                # senão, sempre no mesmo sentido

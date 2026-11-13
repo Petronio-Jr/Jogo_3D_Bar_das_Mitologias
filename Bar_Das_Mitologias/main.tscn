@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dxxx8wacp6j46"]
+[gd_scene load_steps=23 format=3 uid="uid://dxxx8wacp6j46"]
 
 [ext_resource type="Script" uid="uid://vikrd2u01ief" path="res://Scripts/controlador.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://4mouec66q4l7" path="res://Scripts/camera_player.gd" id="2_0xm2m"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://byhmojhlf7sln" path="res://Interagiveis/baralho_3d_mesa.tscn" id="7_4c57u"]
 [ext_resource type="PackedScene" uid="uid://c0cotku2qknob" path="res://dot.tscn" id="7_efxa6"]
 [ext_resource type="Script" uid="uid://b1j4cwkb0voe3" path="res://Scripts/renderizar_mao_3d.gd" id="7_kek77"]
+[ext_resource type="PackedScene" uid="uid://dsdfoas86egep" path="res://radio.tscn" id="10_getpj"]
 [ext_resource type="PackedScene" uid="uid://80uwoxsfwtl4" path="res://itens herdados (modificados)/lampada.tscn" id="11_vivmo"]
 [ext_resource type="AudioStream" uid="uid://b8gbrg8qo6c6u" path="res://Fogo do Olimpo.mp3" id="12_dg77c"]
 [ext_resource type="Script" uid="uid://bfghp703s8mlc" path="res://Scripts/camera_andar.gd" id="14_cegan"]
@@ -34,11 +35,12 @@ volumetric_fog_density = 0.0561
 script = ExtResource("1_ig7tw")
 escala_carta_pilha = 2.0
 dot_mira = NodePath("UI/Dot")
-rodadas_para_habilidade = 3
+rodadas_para_habilidade = 5
 baralho_poder = NodePath("baralho_poder")
-turnos_recarga_poder = 0
 cerveja = NodePath("garrafa_interativa")
+rodadas_para_poder_odin = 10
 chance_balanca_castigo = 0.6
+cartas_minimas_apos_combo = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lquwl")
@@ -277,12 +279,14 @@ spot_attenuation = -3.63
 spot_angle = 28.25
 spot_angle_attenuation = 1.8025036
 
+[node name="Radio" parent="Cenário" instance=ExtResource("10_getpj")]
+transform = Transform3D(0.52152044, 0, -1.9463407, 0, 2.015, 0, 1.9463407, 0, 0.52152044, 10, 12.5, 79.25)
+
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Dot" parent="UI" instance=ExtResource("7_efxa6")]
 
 [node name="PanelContainer" type="PanelContainer" parent="UI"]
-visible = false
 offset_left = 13.0
 offset_top = 10.0
 offset_right = 196.0
@@ -294,7 +298,6 @@ size_flags_horizontal = 4
 text = "Seu turno"
 
 [node name="LabelContagemTurno" type="Label" parent="UI"]
-visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -319,8 +322,6 @@ parameters/looping = true
 
 [node name="Jogador" parent="." instance=ExtResource("15_vivmo")]
 transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -18, 3.6, 5)
-velocidade = null
-gravidade = null
 
 [node name="CameraJogador" type="Camera3D" parent="Jogador"]
 transform = Transform3D(0.9961947, 0, -0.08715573, 0, 1, 0, 0.08715573, 0, 0.9961947, 0.04640484, 2.5, -0.7196121)
@@ -353,7 +354,7 @@ modo_quebra = null
 seguir_sem_herdar_rotacao = null
 
 [node name="CameraMenu" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 7, -11.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 7, 4.4000015)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 50

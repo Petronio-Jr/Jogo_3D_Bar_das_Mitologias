@@ -80,7 +80,7 @@ func ativar() -> void:
 	ctrl.visual.mensagem("Poder ativado! Cartas reveladas por %d segundos." % int(ctrl.duracao_poder))
 	_pulsar()
 
-	await ctrl.get_tree().create_timer(ctrl.duracao_poder).timeout
+	await ctrl.get_tree().create_timer(ctrl.duracao_poder, false).timeout
 	if id == _id_ativacao and revelando:
 		revelando = false
 		Som.sfx("poder_fim")

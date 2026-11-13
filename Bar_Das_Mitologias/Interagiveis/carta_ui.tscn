@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bmsho383qg1uq"]
 
-[ext_resource type="Script" uid="uid://pcptwbacitoj" path="res://Interagiveis/carta_ui.gd" id="1_n00uf"]
+[ext_resource type="Script" uid="uid://pcptwbacitoj" path="res://Scripts/carta_ui.gd" id="1_n00uf"]
 
 [node name="Carta_UI" type="Control"]
 custom_minimum_size = Vector2(120, 170)

@@ -33,15 +33,37 @@ static func validar(mao: Array[Carta], indices: Array[int], topo: Carta, compras
 		return "Nenhuma carta do combo combina com a mesa."
 	return ""
 
-## Índices em ordem de jogada: as outras em ordem crescente e `final` por último (fica no topo).
-static func ordenar_com_final(indices: Array[int], final: int) -> Array[int]:
+static func _combina_com_mesa(c: Carta, topo: Carta) -> bool:
+	return topo == null or c.cor == topo.cor or c.valor == topo.valor
+
+## Índices em ordem de jogada. A PRIMEIRA carta jogada tem que combinar com a mesa (cor ou valor);
+## as seguintes têm o mesmo valor, então sempre encaixam.
+## `final` (a carta clicada) fica no topo sempre que possível. Se ela é a única que combina com a
+## mesa, ela é obrigada a ir primeiro e uma das outras fica no topo.
+static func ordenar_com_final(mao: Array[Carta], indices: Array[int], final: int, topo: Carta) -> Array[int]:
 	var outros: Array[int] = []
 	for i in indices:
 		if i != final:
 			outros.append(i)
 	outros.sort()
-	outros.append(final)
-	return outros
+	var ordem: Array[int] = []
+	# as que combinam com a mesa vêm antes das que não combinam
+	var combinam: Array[int] = []
+	var demais: Array[int] = []
+	for i in outros:
+		if _combina_com_mesa(mao[i], topo):
+			combinam.append(i)
+		else:
+			demais.append(i)
+	if combinam.is_empty():
+		# só a clicada combina com a mesa: ela abre o combo
+		ordem.append(final)
+		ordem.append_array(demais)
+	else:
+		ordem.append_array(combinam)
+		ordem.append_array(demais)
+		ordem.append(final)
+	return ordem
 
 ## IA: devolve os índices de um combo (última = fica no topo), ou [] se não vai combar.
 ## Nunca zera a mão 
@@ -92,4 +114,4 @@ static func escolher_para_ia(mao: Array[Carta], topo: Carta, compras_acumuladas:
 	for i in melhor:
 		if int(contagem.get(mao[i].cor, 0)) > int(contagem.get(mao[final].cor, 0)):
 			final = i
-	return ordenar_com_final(melhor, final)
+	return ordenar_com_final(mao, melhor, final, topo)

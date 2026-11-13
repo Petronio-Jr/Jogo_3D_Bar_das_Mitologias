@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://c8xttq6o6lpgv"]
 
-[ext_resource type="Script" uid="uid://dd3838vcyl7rv" path="res://Interagiveis/carta_ui_3d.gd" id="1_c2bvw"]
+[ext_resource type="Script" uid="uid://dd3838vcyl7rv" path="res://Scripts/carta_ui_3d.gd" id="1_c2bvw"]
 [ext_resource type="PackedScene" uid="uid://rgjhcdxnokpn" path="res://UNO/carta_UNO.glb" id="2_ccuec"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_r7bcv"]

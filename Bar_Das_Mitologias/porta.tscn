@@ -14,9 +14,10 @@ size = Vector3(4.99823, 4.027588, 7.6310425)
 
 [node name="Porta" type="Node3D"]
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
+[node name="Mesh" type="MeshInstance3D" parent="." node_paths=PackedStringArray("label_prompt")]
 mesh = SubResource("BoxMesh_umd14")
 script = ExtResource("1_5rp3s")
+label_prompt = NodePath("Label3D")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Mesh"]
 
@@ -33,3 +34,7 @@ debug_color = Color(0.70196074, 0.046156097, 0, 0.41960785)
 
 [node name="porta" parent="Mesh" instance=ExtResource("1_setqv")]
 transform = Transform3D(-0.515, 0, -7.7762834e-08, 0, 0.515, 0, 7.7762834e-08, 0, -0.515, 0, 0, 0)
+
+[node name="Label3D" type="Label3D" parent="Mesh"]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -0.27197933, -0.27363336, 0.33426178)
+text = "aaaaaaaaaaaaaa"

@@ -54,8 +54,8 @@ func _unhandled_input(event):
  
 	# 2. Processa a movimentação do mouse para olhar ao redor
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		rot_y -= event.relative.x * sensibilidade_mouse
-		rot_x -= event.relative.y * sensibilidade_mouse
+		rot_y -= event.relative.x * sensibilidade_mouse * Configuracoes.sens()
+		rot_x -= event.relative.y * sensibilidade_mouse * Configuracoes.sens() * Configuracoes.sinal_y()
 		rot_x = clamp(rot_x, deg_to_rad(-limite_pitch), deg_to_rad(limite_pitch))
  
 # A rotação final = olhar do jogador + balanço da tontura (se houver)

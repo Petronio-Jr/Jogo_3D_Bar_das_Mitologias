@@ -45,18 +45,18 @@ func ativar() -> void:
 	ctrl.mira.carta_em_foco = -1
 	Som.sfx("deus_selecionado")   # som de "Odin está avaliando"
 	ctrl.visual.mensagem("Odin compara os baralhos...")
-	await ctrl.get_tree().create_timer(1.2).timeout
+	await ctrl.get_tree().create_timer(1.2, false).timeout
 
 	var tam_odin: int = odin.mao.size()
 	var tam_humano: int = humano.mao.size()
 
 	if tam_odin > tam_humano:
 		ctrl.visual.mensagem("Odin tem %d cartas contra %d suas.\nOdin troca de baralho com você!" % [tam_odin, tam_humano])
-		await ctrl.get_tree().create_timer(0.8).timeout
+		await ctrl.get_tree().create_timer(0.8, false).timeout
 		await _trocar_maos(odin, humano)
 	else:
 		ctrl.visual.mensagem("Odin tem %d cartas contra %d suas.\nOdin mantém o seu baralho." % [tam_odin, tam_humano])
-		await ctrl.get_tree().create_timer(1.5).timeout
+		await ctrl.get_tree().create_timer(1.5, false).timeout
 
 	em_andamento = false
 	ctrl.visual.atualizar_indicador_turno()
@@ -97,7 +97,7 @@ func _trocar_maos(odin: Jogador, humano: Jogador) -> void:
 			f.queue_free()
 
 	ctrl.visual.mensagem("Baralhos trocados! Você agora tem %d cartas." % humano.mao.size())
-	await ctrl.get_tree().create_timer(1.2).timeout
+	await ctrl.get_tree().create_timer(1.2, false).timeout
 
 ## Cria uma carta "fantasma" para cada carta da mão `origem` e a faz voar até o
 ## slot equivalente na mão `destino`. As cartas reais da mão de origem ficam escondidas.

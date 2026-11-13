@@ -23,6 +23,7 @@ static func mostrar(pai: Node, duracao: float = 1.5, jogador: Node = null) -> Lo
 
 func _ready() -> void:
 	layer = 128
+	add_to_group("loading_inicio")   # o menu de pausa não abre durante o loading
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	if _jogador != null:
 		_jogador.process_mode = Node.PROCESS_MODE_DISABLED   # parado durante o loading

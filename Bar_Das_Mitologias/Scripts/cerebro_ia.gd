@@ -21,13 +21,13 @@ func processar_turno(ia: Jogador) -> void:
 	if ia.nome == "Odin" and ctrl.poder_odin.deve_ativar():
 		await ctrl.poder_odin.ativar()
 
-	await ctrl.get_tree().create_timer(ctrl.tempo_resposta_ia).timeout
+	await ctrl.get_tree().create_timer(ctrl.tempo_resposta_ia * Configuracoes.mult_velocidade_deuses(), false).timeout
 
 	var topo = ctrl.baralho.obter_topo()
 	var index_pra_jogar: int = -1
 
 	# Combo: jogar 2+ cartas de mesmo valor juntas (nunca zera a mão nem deixa só 1 carta)
-	var combo: Array[int] = ComboCartas.escolher_para_ia(ia.mao, topo, ctrl.regras.compras_acumuladas, ctrl.cartas_minimas_apos_combo, ctrl.chance_combo_ia)
+	var combo: Array[int] = ComboCartas.escolher_para_ia(ia.mao, topo, ctrl.regras.compras_acumuladas, ctrl.cartas_minimas_apos_combo, ctrl.chance_combo_ia if bool(Configuracoes.obter("combos_deuses")) else 0.0)
 	if not combo.is_empty():
 		await _jogar_combo(ia, combo)
 		return
@@ -131,7 +131,7 @@ func _soltar_combo(voo: Dictionary, ia: Jogador, indices: Array[int], cartas: Ar
 	for k in range(cartas.size()):
 		voo["voo"] = ctrl.pilha.jogar(cartas[k], origens[k])
 		if k < cartas.size() - 1:
-			await ctrl.get_tree().create_timer(ctrl.intervalo_combo).timeout
+			await ctrl.get_tree().create_timer(ctrl.intervalo_combo, false).timeout
 	voo["lancado_tudo"] = true
 
 # --- Voo da carta jogada (mão do deus -> pilha da mesa) ---

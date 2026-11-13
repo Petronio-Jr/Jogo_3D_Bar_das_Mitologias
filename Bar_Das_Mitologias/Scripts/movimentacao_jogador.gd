@@ -13,13 +13,7 @@ func _ready() -> void:
 	# Garante que o rato começa capturado ao iniciar o jogo
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-func _input(event: InputEvent) -> void:
-	# Pressionar ESC alterna entre soltar o rato e capturá-lo de novo
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+# O ESC agora abre o menu de pausa (menu_pausa.gd)
 
 func _physics_process(delta: float) -> void:
 	# Aplica a gravidade se não estiver no chão
