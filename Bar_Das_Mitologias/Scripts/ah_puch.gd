@@ -16,6 +16,8 @@ extends Node3D
 
 signal conversa_iniciada
 signal conversa_terminada
+signal conversa_inicial_concluida   # terminou a 1ª sequência de falas (libera a cadeira do tutorial)
+signal chave_entregue               # terminou a sequência pós-tutorial (as portas destrancam)
 
 # --- Falas ---
 @export var falas: Array[String] = [
@@ -25,10 +27,34 @@ signal conversa_terminada
 	"Bom.. é seu dia de sorte, as cartas estão na mesa",
 	"E a aposta?",
 	"Sua alma",
-	"Pegue essa chave... E que os deuses tenham piedade",
+	"Eu gostaria de te oferecer o desafio principal do estabelecimento",
+	"Mas antes devemos conhecer as regras do jogo não é mesmo?",
+	"Fale com Shiva, ele te mostrará o caminho",
 ]
 # (Opcional) animação de cada fala, na mesma ordem de "falas". Vazio = usa animacao_falando.
 @export var animacoes_falas: Array[String] = []
+
+# --- Sequência DEPOIS do tutorial (a de cima é a de ANTES e não muda) ---
+# Ao terminar de ouvir esta, ele "dá a chave" e as portas destrancam.
+@export var falas_depois: Array[String] = [
+	"Hm... você jogou melhor do que eu esperava, mortal.",
+	"Mas isso foi só um aquecimento. A mesa de verdade espera na próxima sala.",
+	"Atravesse a porta e siga em frente. Os deuses já estão esperando.",
+	"Tome esta chave. Ela abre as portas que estavam trancadas para você.",
+	"Eu já participei desse jogo, então posso te ajudar com algumas dicas",
+	"Anúbis gosta de pesar o jogo a cada 4 rodadas",
+	"O Pai de Todos tentará te enganar a cada 10",
+	"E Hefesto mantém sua forja pronta a cada 8",
+	"Já falei demais, agora vá.",
+	"E lembre-se: sua alma é sua aposta",
+	"E que os deuses tenham piedade!",
+]
+# (Opcional) voz de cada fala de `falas_depois`. Sem isso, essa sequência usa só o "blip".
+@export var sons_falas_depois: Array[AudioStream] = []
+# Portas que destrancam quando ele dá a chave. Vazio = todas as portas do grupo "portas" (porta.gd).
+@export var portas: Array[Node3D] = []
+# Controlador do tutorial (vazio = procura o nó do grupo "controlador_tutorial").
+@export var controlador_tutorial: Node
 
 # --- Animações ---
 # AnimationPlayer usado pelo script. Vazio = procura "AnimationPlayer2" e, se não
@@ -78,6 +104,10 @@ var _nome_idle: String = ""
 var _jogador: Node3D
 var _jogador_na_area: bool = false
 var _conversando: bool = false
+var conversou_antes: bool = false     # ouviu a sequência inicial inteira (a cadeira do tutorial só libera depois)
+var _tutorial_feito: bool = false     # o tutorial já acabou: agora vale a sequência `falas_depois`
+var _sequencia_depois: bool = false   # qual sequência está sendo falada agora
+var _chave_dada: bool = false
 var _indice: int = 0
 var _id_fala: int = 0
 
@@ -96,6 +126,8 @@ var _offset_prompt: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
 	_yaw_original = rotation.y
+	add_to_group("ah_puch")
+	_ligar_tutorial.call_deferred()
 
 	_preparar_animacao()
 	_tocar_idle()
@@ -118,7 +150,7 @@ func _input(event: InputEvent) -> void:
 	if _conversando:
 		get_viewport().set_input_as_handled()
 		_avancar()
-	elif _jogador_na_area and not falas.is_empty():
+	elif _jogador_na_area and not (falas_depois if _tutorial_feito else falas).is_empty():
 		get_viewport().set_input_as_handled()
 		_iniciar()
 
@@ -139,6 +171,7 @@ func _on_body_exited(body: Node3D) -> void:
 
 func _iniciar() -> void:
 	_conversando = true
+	_sequencia_depois = _tutorial_feito
 	_indice = 0
 	_set_prompt(false)
 	if travar_jogador and _jogador != null:
@@ -158,8 +191,9 @@ func _avancar() -> void:
 		_completar_texto()
 		return
 	_indice += 1
-	if _indice >= falas.size():
+	if _indice >= _lista().size():
 		_encerrar()
+		_concluir()
 	else:
 		_mostrar_fala()
 
@@ -183,12 +217,12 @@ func _encerrar() -> void:
 func _mostrar_fala() -> void:
 	_id_fala += 1
 	var id: int = _id_fala
-	_texto_completo = falas[_indice]
+	_texto_completo = _lista()[_indice]
 	Som.parar_voz()
 	_voz_da_fala = _resolver_voz(_indice)
 
 	var anim: String = animacao_falando
-	if _indice < animacoes_falas.size() and animacoes_falas[_indice] != "":
+	if not _sequencia_depois and _indice < animacoes_falas.size() and animacoes_falas[_indice] != "":
 		anim = animacoes_falas[_indice]
 	_tocar(anim)
 
@@ -221,7 +255,38 @@ func _mostrar_fala() -> void:
 	if _voz_da_fala != null:
 		Som.voz(_voz_da_fala)   # voz gravada começa junto com o texto
 
+## Sequência de falas em uso (antes ou depois do tutorial).
+func _lista() -> Array[String]:
+	return falas_depois if _sequencia_depois else falas
+
+## Chegou ao fim da sequência (não vale sair da área no meio da conversa).
+func _concluir() -> void:
+	if _sequencia_depois:
+		if _chave_dada:
+			return
+		_chave_dada = true
+		var alvo: Array[Node3D] = portas.duplicate()
+		if alvo.is_empty():
+			for p in get_tree().get_nodes_in_group("portas"):
+				alvo.append(p as Node3D)
+		for p in alvo:
+			if p != null and p.has_method("destrancar"):
+				p.destrancar()
+		chave_entregue.emit()
+	elif not conversou_antes:
+		conversou_antes = true
+		conversa_inicial_concluida.emit()
+
+func _ligar_tutorial() -> void:
+	var c: Node = controlador_tutorial if controlador_tutorial != null else get_tree().get_first_node_in_group("controlador_tutorial")
+	if c != null and c.has_signal("tutorial_terminou"):
+		c.connect("tutorial_terminou", func(_venceu: bool): _tutorial_feito = true)
+	else:
+		push_warning("[AhPuch] Controlador do tutorial não encontrado: a sequência pós-tutorial não vai tocar.")
+
 func _resolver_voz(indice: int) -> AudioStream:
+	if _sequencia_depois:
+		return sons_falas_depois[indice] if indice < sons_falas_depois.size() else null
 	if indice < sons_falas.size() and sons_falas[indice] != null:
 		return sons_falas[indice]
 	return Som.stream_fala(indice) if voz_automatica else null

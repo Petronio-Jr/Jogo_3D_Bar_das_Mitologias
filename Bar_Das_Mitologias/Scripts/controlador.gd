@@ -113,7 +113,7 @@ var testar_poder_odin: bool = false                # true = Odin checa em TODA v
 @export var tamanho_aviso_uno: float = 2.2            # escala da escrita "UNO!"
 
 # --- Nós da cena ---
-@onready var anim_anubis: AnimationPlayer = $"Cenário/deuses/anubis/AnimationPlayer2"
+@onready var anim_anubis: AnimationPlayer = get_node_or_null("Cenário/deuses/anubis/AnimationPlayer2") as AnimationPlayer
 @onready var container_mao_3d = $PosicaoMaoHumano
 @onready var baralho_visual: Node3D = $Baralho_mesa
 @onready var camera_jogador: Camera3D = $Camera3D

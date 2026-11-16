@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dsdfoas86egep"]
 
-[ext_resource type="Script" uid="uid://c7k8b1e8td27i" path="res://radio_interativo.gd" id="1_flxc7"]
+[ext_resource type="Script" uid="uid://c7k8b1e8td27i" path="res://Scripts/radio_interativo.gd" id="1_flxc7"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_4m4yu"]
 

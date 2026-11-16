@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dh5j3jqg5qh73"]
+[gd_scene load_steps=27 format=3 uid="uid://dh5j3jqg5qh73"]
 
 [ext_resource type="PackedScene" uid="uid://brmxu5d17r44p" path="res://Cenario_refeito/bar_remade.glb" id="1_6dh5c"]
 [ext_resource type="PackedScene" uid="uid://bxypcar130q6t" path="res://Itens_Cenário/dragonslayer.glb" id="2_hd3d6"]
@@ -39,6 +39,9 @@ radius = 10.404785
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_diqg0"]
 size = Vector3(4.5180664, 15.025879, 5.33992)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hv7a1"]
+size = Vector3(19.081818, 24.378052, 29.688843)
 
 [sub_resource type="BoxMesh" id="BoxMesh_bpv57"]
 material = ExtResource("15_eomme")
@@ -111,6 +114,12 @@ visible = false
 [node name="mister" parent="bar_remade" instance=ExtResource("13_5vkva")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -8.259075, -4.164487, 81.146126)
 
+[node name="espada2" parent="bar_remade" instance=ExtResource("17_hv7a1")]
+transform = Transform3D(1.2567402, 0, -2.7240794, 0, 3.0000005, 0, 2.7240794, 0, 1.2567402, 9.235634, -6.3817286, 103.10435)
+
+[node name="sniper" parent="bar_remade" instance=ExtResource("18_i6v7i")]
+transform = Transform3D(-2.996811, 0, -0.13828544, -0.07808887, 2.4759023, 1.6922791, 0.1141271, 1.6940799, -2.4732704, 33.379917, 34.54554, 138.168)
+
 [node name="Colisoes" type="StaticBody3D" parent="."]
 
 [node name="Chao" type="CollisionShape3D" parent="Colisoes"]
@@ -141,8 +150,24 @@ shape = SubResource("BoxShape3D_dvm38")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.779175, 6.4493866, -1.0556216)
 shape = SubResource("CylinderShape3D_w41cm")
 
+[node name="CollisionShape3D10" type="CollisionShape3D" parent="Colisoes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.918318, 6.4493866, 74.86463)
+shape = SubResource("CylinderShape3D_w41cm")
+
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="Colisoes"]
 transform = Transform3D(0.86487997, 0, 0.50197875, 0, 1, 0, -0.50197875, 0, 0.86487997, -53.45777, 8.16301, 7.959944)
+shape = SubResource("BoxShape3D_diqg0")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Colisoes"]
+transform = Transform3D(0.86487997, 0, 0.50197875, 0, 1, 0, -0.50197875, 0, 0.86487997, 12.3758545, 8.16301, 61.802986)
+shape = SubResource("BoxShape3D_diqg0")
+
+[node name="CollisionShape3D8" type="CollisionShape3D" parent="Colisoes"]
+transform = Transform3D(0.9315073, 0, 0.36372274, 0, 1, 0, -0.36372274, 0, 0.9315073, 32.071167, 8.16301, 68.34492)
+shape = SubResource("BoxShape3D_diqg0")
+
+[node name="CollisionShape3D9" type="CollisionShape3D" parent="Colisoes"]
+transform = Transform3D(0.015969098, 0, -0.9998725, 0, 1, 0, 0.9998725, 0, 0.015969098, 17.02418, 8.16301, 87.57258)
 shape = SubResource("BoxShape3D_diqg0")
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="Colisoes"]
@@ -152,6 +177,10 @@ shape = SubResource("BoxShape3D_diqg0")
 [node name="CollisionShape3D5" type="CollisionShape3D" parent="Colisoes"]
 transform = Transform3D(-0.71526605, 0, -0.6988522, 0, 1, 0, 0.6988522, 0, -0.71526605, -29.854355, 8.16301, -10.535713)
 shape = SubResource("BoxShape3D_diqg0")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Colisoes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.320442, 11.689026, 59.336746)
+shape = SubResource("BoxShape3D_hv7a1")
 
 [node name="Porta" parent="." instance=ExtResource("14_ijcje")]
 transform = Transform3D(5.962434e-08, 0, -4.6900005, 0, 5.0000005, 0, 5.0000005, 0, 5.5927643e-08, -13.8876095, 10.255952, 42.31674)
@@ -178,9 +207,3 @@ mesh = SubResource("BoxMesh_bpv57")
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 76.631516, 19.633953, -53.50831)
 mesh = SubResource("BoxMesh_bpv57")
-
-[node name="espada2" parent="." instance=ExtResource("17_hv7a1")]
-transform = Transform3D(1.2567402, 0, -2.7240794, 0, 3.0000005, 0, 2.7240794, 0, 1.2567402, 9.235634, -6.3817286, 103.10435)
-
-[node name="sniper" parent="." instance=ExtResource("18_i6v7i")]
-transform = Transform3D(-2.996811, 0, -0.13828544, -0.07808887, 2.4759023, 1.6922791, 0.1141271, 1.6940799, -2.4732704, 33.379917, 34.54554, 138.168)

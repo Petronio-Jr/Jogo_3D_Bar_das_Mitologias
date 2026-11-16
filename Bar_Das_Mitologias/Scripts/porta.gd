@@ -32,7 +32,9 @@ signal porta_trancada_tentativa
 
 # --- Interação ---
 @export var tecla_interagir: Key = KEY_E
-@export var trancada: bool = false
+@export var trancada: bool = true                  # começa trancada; destrancar() libera (ex.: Ah Puch dá a chave)
+@export_range(0.0, 30.0, 0.5) var angulo_tranca: float = 6.0   # quanto a porta trancada "vai pra frente" ao interagir (graus)
+@export var duracao_tranca: float = 0.35           # duração desse vai-e-volta (s)
 @export var fechar_ao_sair: bool = false           # fecha sozinha quando o jogador se afasta
 @export var area: Area3D                            # vazio = primeira Area3D filha
 @export var label_prompt: Label3D                   # vazio = filho chamado "Prompt"
@@ -57,6 +59,7 @@ var _jogador_na_area: bool = false
 var _audio: AudioStreamPlayer3D
 
 func _ready() -> void:
+	add_to_group("portas")
 	_fechada_xform = transform
 	_calcular_dobradica()
 
@@ -122,16 +125,10 @@ func abrir() -> void:
 	if trancada:
 		_tocar_som(som_trancada, "porta_trancada")
 		porta_trancada_tentativa.emit()
+		_balancar_trancada()
 		return
 	aberta = true
-	var sentido: float = _sentido_padrao()
-	if abrir_para_longe_do_jogador and _jogador != null and is_instance_valid(_jogador):
-		# Lado do jogador no espaço local da porta, no eixo da ESPESSURA
-		var local: Vector3 = to_local(_jogador.global_position)
-		var lado: float = signf(local.x if _largura_em_z else local.z)
-		if lado != 0.0:
-			sentido = -lado * (-1.0 if inverter_sentido else 1.0)
-	_girar_para(sentido * deg_to_rad(angulo_abertura))
+	_girar_para(_sentido_para_abrir() * deg_to_rad(angulo_abertura))
 	_tocar_som(som_abrir, "porta_abrir")
 	porta_abriu.emit()
 
@@ -169,6 +166,26 @@ func _calcular_dobradica() -> void:
 
 func _sentido_padrao() -> float:
 	return -1.0 if inverter_sentido else 1.0
+
+## Para que lado a porta abriria agora (longe do jogador, se `abrir_para_longe_do_jogador`).
+func _sentido_para_abrir() -> float:
+	var sentido: float = _sentido_padrao()
+	if abrir_para_longe_do_jogador and _jogador != null and is_instance_valid(_jogador):
+		# Lado do jogador no espaço local da porta, no eixo da ESPESSURA
+		var local: Vector3 = to_local(_jogador.global_position)
+		var lado: float = signf(local.x if _largura_em_z else local.z)
+		if lado != 0.0:
+			sentido = -lado * (-1.0 if inverter_sentido else 1.0)
+	return sentido
+
+## Porta trancada: empurra um pouco "pra frente" e volta.
+func _balancar_trancada() -> void:
+	if _tween != null and _tween.is_valid() and _tween.is_running():
+		return
+	var alvo: float = _sentido_para_abrir() * deg_to_rad(angulo_tranca)
+	_tween = create_tween()
+	_tween.tween_method(_aplicar_angulo, 0.0, alvo, duracao_tranca * 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_tween.tween_method(_aplicar_angulo, alvo, 0.0, duracao_tranca * 0.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func _girar_para(alvo: float) -> void:
 	if _tween != null and _tween.is_valid():

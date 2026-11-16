@@ -44,6 +44,7 @@ func ativar() -> void:
 	em_andamento = true
 	ctrl.mira.carta_em_foco = -1
 	Som.sfx("deus_selecionado")   # som de "Odin está avaliando"
+	Som.sfx("corvos_odin")        # os corvos grasnam sempre que o poder dispara (troque ou não as mãos)
 	ctrl.visual.mensagem("Odin compara os baralhos...")
 	await ctrl.get_tree().create_timer(1.2, false).timeout
 
