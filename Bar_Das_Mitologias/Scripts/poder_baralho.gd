@@ -28,7 +28,8 @@ func _localizar() -> void:
 	no = ctrl.baralho_poder
 	if no == null:
 		for n in ctrl.find_children("*", "Node3D", true, false):
-			if String(n.name).to_lower().replace("_", "") == "baralhopoder":
+			var nome: String = String(n.name).to_lower().replace("_", "").replace(" ", "")
+			if nome.begins_with("baralhopoder"):
 				no = n
 				break
 	if no == null:
@@ -53,6 +54,8 @@ func resetar() -> void:
 func registrar_turno() -> void:
 	if recarga_restante > 0:
 		recarga_restante -= 1
+		if recarga_restante == 0:
+			ctrl.ao_poder_carregado()
 	ctrl.visual.atualizar_indicador_turno()
 
 # --- Uso ---
@@ -69,6 +72,7 @@ func ativar() -> void:
 		if recarga_restante > 0 and ctrl.vez_do_jogador():
 			Som.sfx("poder_recarga")
 			ctrl.visual.mensagem("Poder em recarga: %d turno(s)." % recarga_restante)
+			ctrl.ao_poder_em_recarga(recarga_restante)
 		return
 	revelando = true
 	recarga_restante = ctrl.turnos_recarga_poder

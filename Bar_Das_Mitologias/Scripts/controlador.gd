@@ -211,6 +211,14 @@ func _quadro_sentar(cam: Camera3D, k: float, p0: Vector3, p1: Vector3, q0: Quate
 	cam.global_transform = Transform3D(Basis(q0.slerp(q1, e)), pos)
 	cam.fov = lerpf(fov0, fov1, e)
 
+## Gancho: o poder do jogador acabou de carregar (o tutorial usa para explicar). Não faz nada no jogo normal.
+func ao_poder_carregado() -> void:
+	pass
+
+## Gancho: o jogador clicou no poder enquanto ele recarrega (restante = turnos que faltam).
+func ao_poder_em_recarga(_restante: int) -> void:
+	pass
+
 func vez_do_jogador() -> bool:
 	return jogo_ativo and not jogadores.is_empty() and jogadores[indice_jogador_atual].eh_o_player
 

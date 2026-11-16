@@ -9,32 +9,12 @@ extends Area3D
 @export var ah_puch: Node   # vazio = procura o nó do grupo "ah_puch"; a cadeira só libera depois de falar com ele
 
 var _dentro: bool = false
-var _camada: CanvasLayer
-var _aviso: Label
+var _aviso: AvisoTela
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	_camada = CanvasLayer.new()
-	_camada.layer = 90
-	add_child(_camada)
-	_aviso = Label.new()
-	_aviso.text = mensagem_interacao
-	_aviso.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_aviso.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_aviso.add_theme_font_size_override("font_size", 24)
-	_aviso.add_theme_color_override("font_outline_color", Color(0, 0, 0))
-	_aviso.add_theme_constant_override("outline_size", 6)
-	_aviso.anchor_left = 0.5
-	_aviso.anchor_right = 0.5
-	_aviso.anchor_top = 1.0
-	_aviso.anchor_bottom = 1.0
-	_aviso.offset_left = -400.0
-	_aviso.offset_right = 400.0
-	_aviso.offset_top = -120.0
-	_aviso.offset_bottom = -70.0
-	_camada.add_child(_aviso)
-	_aviso.visible = false
+	_aviso = AvisoTela.criar(self)
 
 func _on_body_entered(body: Node3D) -> void:
 	if body is CharacterBody3D:
@@ -45,7 +25,10 @@ func _on_body_exited(body: Node3D) -> void:
 		_dentro = false
 
 func _process(_delta: float) -> void:
-	_aviso.visible = _dentro and _pode_iniciar()
+	if _dentro and _pode_iniciar():
+		_aviso.mostrar(mensagem_interacao)
+	else:
+		_aviso.esconder()
 
 func _input(event: InputEvent) -> void:
 	if not _dentro or not (event is InputEventKey and event.pressed and not event.echo and event.keycode == tecla):
@@ -53,7 +36,7 @@ func _input(event: InputEvent) -> void:
 	if not _pode_iniciar():
 		return
 	get_viewport().set_input_as_handled()
-	_aviso.visible = false
+	_aviso.esconder()
 	_achar_controlador().iniciar_jogo_por_interacao()
 
 func _achar_controlador() -> ControladorTutorial:

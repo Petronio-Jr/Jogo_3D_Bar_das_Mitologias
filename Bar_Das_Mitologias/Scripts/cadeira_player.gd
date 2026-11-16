@@ -1,22 +1,25 @@
 extends Area3D
 
-@export var mensagem_interacao: String = "Pressione E para sentar e iniciar o jogo"
+@export var mensagem_interacao: String = "Pressione E para desafiar os deuses"
 var jogador_na_area: bool = false
+var _aviso: AvisoTela
 
 func _ready() -> void:
 	# Conecta os sinais de entrada e saída da área
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	_aviso = AvisoTela.criar(self)
 
 func _on_body_entered(body: Node3D) -> void:
 	# Verifica se o corpo que entrou é o jogador (CharacterBody3D)
 	if body is CharacterBody3D:
 		jogador_na_area = true
-		print(mensagem_interacao)
+		_aviso.mostrar(mensagem_interacao)
 
 func _on_body_exited(body: Node3D) -> void:
 	if body is CharacterBody3D:
 		jogador_na_area = false
+		_aviso.esconder()
 
 func _input(event: InputEvent) -> void:
 	# Quando o jogador está na área eprime a tecla 'E'
@@ -24,7 +27,7 @@ func _input(event: InputEvent) -> void:
 		acionar_cadeira()
 
 func acionar_cadeira() -> void:
-	print("Jogador interagiu com a cadeira. A iniciar o jogo de cartas...")
+	_aviso.esconder()
 	
 	# Procura o controlador do jogo na árvore de nós através do grupo
 	var controlador = get_tree().get_first_node_in_group("controlador_jogo")

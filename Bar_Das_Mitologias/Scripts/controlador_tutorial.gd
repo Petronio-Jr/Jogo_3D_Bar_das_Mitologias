@@ -26,13 +26,29 @@ signal tutorial_terminou(venceu: bool)
 @export var habilidade_do_deus_ativa: bool = true
 @export var rodadas_ate_habilidade_deus: int = 7   # a habilidade do deus pode disparar a cada N rodadas
 @export var tempo_explicacao: float = 7.0    # quanto cada explicação de carta fica na tela (s); depois voltam os comandos
+@export var tempo_aviso_deus: float = 10.0   # o aviso do poder do deus fica fixo na tela por este tempo (nada o substitui)
+@export var pausa_antes_habilidade_deus: float = 3.0   # tempo lendo o aviso antes da habilidade do deus começar (s)
+@export var recarga_inicial_poder: int = 1   # o SEU poder carrega daqui a N turnos seus (1 = no próximo turno)
 @export var pausa_ao_fim: float = 3.0        # tempo olhando o resultado antes de levantar (s)
 
 @export_group("Textos (BBCode)")
 @export var titulo_comandos: String = "COMANDOS"
 @export_multiline var texto_comandos: String = \
 	"[b]Jogar:[/b] botão [color=gold]ESQUERDO[/color] numa carta da mesma cor ou número da carta do centro.\n\n" \
-	+ "[b]Combo:[/b] botão [color=gold]DIREITO[/color] em cartas de mesmo valor; depois ESQUERDO em uma delas."
+	+ "[b]Combo:[/b] botão [color=gold]DIREITO[/color] em cartas de mesmo valor; depois ESQUERDO em uma delas.\n\n" \
+	+ "[b]Comprar:[/b] botão [color=gold]ESQUERDO[/color] no [color=gold]baralho[/color] da mesa: você compra uma carta dele e passa a vez."
+
+@export_group("Avisos dos poderes (BBCode) - não dizem o que o poder faz")
+@export var titulo_poder: String = "SEU PODER"
+@export_multiline var texto_poder: String = \
+	"Você tem uma [b]habilidade especial[/b] deixada na mesa por outro deus: a [color=gold]carta preta[/color] na mesa.\n\n" \
+	+ "Use-a com o botão [color=gold]ESQUERDO[/color] na sua vez. É possível dar zoom usando o scroll do mouse"
+@export var texto_poder_pronto: String = "[color=lime]Disponível agora![/color]"
+@export var texto_poder_recarga: String = "[color=orange]Recarregando: faltam {restante} turno(s).[/color]"
+@export var titulo_deus: String = "PODER DO DEUS"
+@export_multiline var texto_deus: String = \
+	"Todo deus tem uma [b]habilidade especial[/b], assim como o sua.\n\n" \
+	+ "Observe, aprenda e adapte-se a elas. [color=gold]Deuses são seres trapaceiros![/color]"
 
 ## Explicação de cada carta especial: aparece UMA vez, na hora em que a carta é jogada.
 const EXPLICACOES: Dictionary = {
@@ -50,6 +66,9 @@ var hud: HudTutorial
 var _sessao: int = 0   # muda a cada início/fim: cancela textos antigos
 var _texto_id: int = 0 # identifica o texto que está na tela (para o timer não apagar um mais novo)
 var _explicados: Array = []
+var _avisou_poder: bool = false   # o aviso do SEU poder aparece só na 1ª vez
+var _bloqueio_texto: bool = false  # true = aviso do deus na tela: outros textos esperam
+var _avisou_deus: bool = false    # o aviso do poder do DEUS aparece só na 1ª vez
 var _camera_andar: Camera3D = null
 
 
@@ -110,6 +129,8 @@ class HabilidadeTutorial extends HabilidadeAnubis:
 		return true
 
 	func ativar() -> void:
+		evento_em_andamento = true   # trava o jogador enquanto o aviso está na tela
+		await (ctrl as ControladorTutorial).avisar_poder_do_deus()
 		var deus: Jogador = ctrl.jogadores[1]
 		var humano: Jogador = ctrl.jogadores[0]
 		var indice: int = randi() % deus.mao.size()
@@ -235,6 +256,7 @@ func _ready() -> void:
 	hud = HudTutorial.new()
 	add_child(hud)
 	_montar_mesa()
+	_religar_poder_do_jogador()
 
 	# Uma rodada decide. A habilidade do deus é a do tutorial; as do Anubis/Odin do jogo ficam desligadas.
 	rodadas_para_habilidade = rodadas_ate_habilidade_deus if habilidade_do_deus_ativa else 999999
@@ -259,6 +281,23 @@ func _montar_mesa() -> void:
 	v.maos_ia = {nome_deus: _filho_do_deus("PosicaoMao")}
 	visual = v
 	pilha = PilhaMesa.new(self)   # só pode ser criada depois da carta do centro estar ligada
+
+## O baralho de poder TEM que ser o desta mesa (se o campo estiver vazio ou apontar para o da mesa
+## principal, o clique não funcionaria). Procura dentro do tutorial e recria o poder.
+func _religar_poder_do_jogador() -> void:
+	var proprio: Node3D = baralho_poder
+	if proprio == null or not is_ancestor_of(proprio):
+		proprio = null
+		for n in find_children("*", "Node3D", true, false):
+			var nome: String = String(n.name).to_lower().replace("_", "").replace(" ", "")
+			if nome.begins_with("baralhopoder"):
+				proprio = n
+				break
+	if proprio == null:
+		push_error("[Tutorial] Não achei o 'baralho_poder' DENTRO do tutorial: sem ele o poder não funciona. Coloque um (copie o da mesa) e arraste para 'Baralho Poder'.")
+		return
+	baralho_poder = proprio
+	poder = PoderBaralho.new(self)
 
 func _filho_do_deus(nome: String) -> Node:
 	return null if no_deus == null else no_deus.find_child(nome, true, false)
@@ -295,12 +334,17 @@ func iniciar_jogo_por_interacao() -> void:
 	habilidade.resetar_ronda()
 	poder_odin.resetar_ronda()
 	acoes_humano.ocupado = false
+	_avisou_poder = false
+	_avisou_deus = false
+	_bloqueio_texto = false
 	_preparar_jogador()
 	hud.mostrar(true)
 	await super.iniciar_jogo_por_interacao()   # anda até a cadeira, senta e chama iniciar_jogo()
 
 func iniciar_jogo() -> void:
 	super.iniciar_jogo()
+	poder.recarga_restante = maxi(recarga_inicial_poder, 1)   # o poder carrega no próximo turno e aí o jogo avisa
+	visual.atualizar_indicador_turno()
 	_mostrar_textos()
 
 ## Pega do jogo principal o personagem que anda e a mira (o tutorial não tem os seus).
@@ -375,8 +419,32 @@ func _mostrar_textos() -> void:
 	_texto_id += 1
 	hud.mostrar_info(titulo_comandos, texto_comandos)
 
+## O poder do jogador carregou (chamado pelo PoderBaralho): explica só na primeira vez.
+func ao_poder_carregado() -> void:
+	if not em_andamento or _avisou_poder or _bloqueio_texto:
+		return
+	_avisou_poder = true
+	_mostrar(titulo_poder, texto_poder + "\n\n" + texto_poder_pronto, tempo_explicacao)
+
+## O jogador clicou no poder ainda recarregando: repete a explicação e mostra quantos turnos faltam.
+func ao_poder_em_recarga(restante: int) -> void:
+	if not em_andamento or _bloqueio_texto:
+		return
+	_mostrar(titulo_poder, texto_poder + "\n\n" + texto_poder_recarga.format({"restante": restante}), tempo_explicacao)
+
+## A habilidade do deus vai começar: explica só na primeira vez e espera um pouco para dar tempo de ler.
+func avisar_poder_do_deus() -> void:
+	if not em_andamento or _avisou_deus:
+		return
+	_avisou_deus = true
+	_bloqueio_texto = true   # cartas jogadas e outros avisos não trocam este texto
+	var sessao: int = _sessao
+	_mostrar(titulo_deus, texto_deus.format({"deus": nome_deus}), tempo_aviso_deus)
+	get_tree().create_timer(tempo_aviso_deus, false).timeout.connect(func(): if sessao == _sessao: _bloqueio_texto = false)
+	await get_tree().create_timer(pausa_antes_habilidade_deus, false).timeout
+
 func _ao_carta_jogada(carta: Carta) -> void:
-	if not em_andamento or _explicados.has(carta.valor) or not EXPLICACOES.has(carta.valor):
+	if not em_andamento or _bloqueio_texto or _explicados.has(carta.valor) or not EXPLICACOES.has(carta.valor):
 		return
 	_explicados.append(carta.valor)
 	var e: Array = EXPLICACOES[carta.valor]

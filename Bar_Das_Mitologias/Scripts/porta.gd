@@ -57,6 +57,7 @@ var _tween: Tween
 var _jogador: Node3D
 var _jogador_na_area: bool = false
 var _audio: AudioStreamPlayer3D
+var _aviso: AvisoTela   # texto de baixo da tela (no lugar do Label3D)
 
 func _ready() -> void:
 	add_to_group("portas")
@@ -75,7 +76,9 @@ func _ready() -> void:
 
 	if label_prompt == null:
 		label_prompt = find_child("Prompt", true, false) as Label3D
-	_set_prompt(false)
+	if label_prompt != null:
+		label_prompt.visible = false   # o aviso agora aparece embaixo da tela
+	_aviso = AvisoTela.criar(self)
 
 	_audio = AudioStreamPlayer3D.new()
 	_audio.unit_size = 4.0
@@ -207,19 +210,20 @@ func _aplicar_angulo(ang: float) -> void:
 	transform = de_volta * rot * para_origem * _fechada_xform
 
 func _atualizar_prompt() -> void:
-	if label_prompt == null or not _jogador_na_area:
+	if _aviso == null or not _jogador_na_area:
 		return
 	if trancada:
-		label_prompt.text = texto_trancada
+		_aviso.mostrar(texto_trancada)
 	else:
-		label_prompt.text = texto_fechar if aberta else texto_abrir
-	label_prompt.visible = true
+		_aviso.mostrar(texto_fechar if aberta else texto_abrir)
 
 func _set_prompt(v: bool) -> void:
-	if label_prompt != null:
-		label_prompt.visible = v
-		if v:
-			_atualizar_prompt()
+	if _aviso == null:
+		return
+	if v:
+		_atualizar_prompt()
+	else:
+		_aviso.esconder()
 
 ## Usa o som configurado no Inspector; se estiver vazio, usa o padrão de audio/sfx/.
 func _tocar_som(som: AudioStream, nome_padrao: String = "") -> void:

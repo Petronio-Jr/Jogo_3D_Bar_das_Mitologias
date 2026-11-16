@@ -7,8 +7,12 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_flxc7"]
 size = Vector3(2.5, 1.1, 2)
 
-[node name="Radio" type="Node3D"]
+[node name="Radio" type="Node3D" node_paths=PackedStringArray("area", "label_prompt")]
 script = ExtResource("1_flxc7")
+distancia_unidade = 40.0
+distancia_maxima = 70.0
+area = NodePath("Area3D")
+label_prompt = NodePath("Label3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)

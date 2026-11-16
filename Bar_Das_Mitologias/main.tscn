@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dxxx8wacp6j46"]
+[gd_scene load_steps=27 format=3 uid="uid://dxxx8wacp6j46"]
 
 [ext_resource type="Script" uid="uid://vikrd2u01ief" path="res://Scripts/controlador.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://4mouec66q4l7" path="res://Scripts/camera_player.gd" id="2_0xm2m"]
@@ -34,16 +34,21 @@ fog_enabled = true
 fog_light_color = Color(0.57421875, 0.5155597, 0.47583124, 1)
 volumetric_fog_density = 0.0561
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1u8w0"]
+height = 3.0
+radius = 4.4
+
 [node name="Main" type="Node3D" node_paths=PackedStringArray("dot_mira", "baralho_poder", "cerveja") groups=["controlador_jogo"]]
 script = ExtResource("1_ig7tw")
 escala_carta_pilha = 2.0
 dot_mira = NodePath("UI/Dot")
-rodadas_para_habilidade = 5
+rodadas_para_habilidade = 4
 baralho_poder = NodePath("baralho_poder")
 cerveja = NodePath("garrafa_interativa")
 rodadas_para_poder_odin = 10
 chance_balanca_castigo = 0.6
 cartas_minimas_apos_combo = 1
+altura_aviso_uno = 1.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lquwl")
@@ -317,7 +322,7 @@ transform = Transform3D(1.179323e-07, 0.25881892, -0.96592593, -5.502473e-08, 0.
 script = ExtResource("7_kek77")
 
 [node name="Baralho_mesa" parent="." instance=ExtResource("7_4c57u")]
-transform = Transform3D(0.7890258, 0, 0.66207117, 0, 1.03, 0, -0.66207117, 0, 0.7890258, -8.105, 3.128, 37.278)
+transform = Transform3D(0.7890258, 0, 0.66207117, 0, 1.03, 0, -0.66207117, 0, 0.7890258, -8.105, 3.128, 37.478)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_dg77c")
@@ -363,6 +368,7 @@ transform = Transform3D(1, 0, -3.7252903e-08, 0, 1, 0, 3.7252903e-08, 0, 1, -2.4
 script = ExtResource("22_1u8w0")
 no_deus = NodePath("shiva")
 carta_mesa_tutorial = NodePath("CartaMesa")
+tempo_explicacao = 15.0
 dot_mira = NodePath("../UI/Dot")
 baralho_poder = NodePath("../baralho_poder")
 
@@ -387,7 +393,7 @@ transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 8.5, -0.59999996, 7.2)
 transform = Transform3D(-2.9802322e-08, 0, -0.59000003, 0, 0.59, 0, 0.59000003, 0, -2.9802322e-08, -0.052627563, 3.2, 8.123207)
 
 [node name="baralho_poder" parent="TutorialMesa" instance=ExtResource("15_2cqfq")]
-transform = Transform3D(-0.42000002, 0, -7.4505806e-08, 0, 0.42, 0, 7.4505806e-08, 0, -0.42000002, 5.560001, 4.4110003, 9.009999)
+transform = Transform3D(-0.42000002, 0, -7.4505806e-08, 0, 0.42, 0, 7.4505806e-08, 0, -0.42000002, 6.060001, 4.4110003, 9.01)
 
 [node name="shiva" type="Node3D" parent="TutorialMesa"]
 transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, 15.900002, 5, 7)
@@ -395,3 +401,15 @@ transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, 15.9
 [node name="PosicaoMao" type="Node3D" parent="TutorialMesa/shiva"]
 transform = Transform3D(-3.7252903e-08, 0, -1, 0, 1, 0, 1, 0, -3.7252903e-08, 5.3634033, 0.19999981, 0.049051285)
 script = ExtResource("7_kek77")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3, 3.2, 9.1)
+shape = SubResource("CylinderShape3D_1u8w0")
+debug_color = Color(0.11376363, 0.10538084, 0.7019608, 1)
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.1, 3.2, 44.199997)
+shape = SubResource("CylinderShape3D_1u8w0")
+debug_color = Color(0.11376363, 0.10538084, 0.7019608, 1)
