@@ -1,28 +1,29 @@
-[gd_scene load_steps=27 format=3 uid="uid://dh5j3jqg5qh73"]
+[gd_scene load_steps=28 format=3 uid="uid://dh5j3jqg5qh73"]
 
 [ext_resource type="PackedScene" uid="uid://brmxu5d17r44p" path="res://Cenario_refeito/bar_remade.glb" id="1_6dh5c"]
-[ext_resource type="PackedScene" uid="uid://bxypcar130q6t" path="res://Itens_Cenário/dragonslayer.glb" id="2_hd3d6"]
-[ext_resource type="PackedScene" uid="uid://dfshshnkf4tq" path="res://Itens_Cenário/mimkyu.glb" id="3_w41cm"]
-[ext_resource type="PackedScene" uid="uid://t4e30j7goban" path="res://Itens_Cenário/mesa_redonda.glb" id="5_dvm38"]
-[ext_resource type="PackedScene" uid="uid://c8gg10b13nusf" path="res://Itens_Cenário/cadeira_madeira.glb" id="7_c4bb3"]
-[ext_resource type="PackedScene" uid="uid://wvs64xcwvnxw" path="res://Itens_Cenário/brahma.glb" id="7_diqg0"]
-[ext_resource type="PackedScene" uid="uid://d4f2ybdk26rg1" path="res://Itens_Cenário/quadro_1.glb" id="8_bkqop"]
-[ext_resource type="PackedScene" uid="uid://6ttst24qiioc" path="res://Itens_Cenário/quadro_2.glb" id="9_1mop8"]
-[ext_resource type="PackedScene" uid="uid://c6uonmq3sh7vk" path="res://Itens_Cenário/quadro_3.glb" id="10_lld21"]
-[ext_resource type="PackedScene" uid="uid://cwxmrlk81mfhi" path="res://Itens_Cenário/quadro_4.glb" id="11_1mop8"]
-[ext_resource type="PackedScene" uid="uid://burcgdwg7s4s7" path="res://Itens_Cenário/quadro_5.glb" id="12_5vkva"]
-[ext_resource type="PackedScene" uid="uid://cy52k1o8u2ij1" path="res://Itens_Cenário/mister.glb" id="13_5vkva"]
-[ext_resource type="PackedScene" uid="uid://csk6bbsbarn63" path="res://Itens_Cenário/quadro_6.glb" id="13_ijcje"]
-[ext_resource type="PackedScene" uid="uid://bjn3nu8osa2a5" path="res://porta.tscn" id="14_ijcje"]
+[ext_resource type="PackedScene" uid="uid://bxypcar130q6t" path="res://Itens_Cenário/Decorações/dragonslayer.glb" id="2_hd3d6"]
+[ext_resource type="PackedScene" uid="uid://dfshshnkf4tq" path="res://Itens_Cenário/Decorações/mimkyu.glb" id="3_w41cm"]
+[ext_resource type="PackedScene" uid="uid://t4e30j7goban" path="res://Itens_Cenário/Itens_Bar/mesa_redonda.glb" id="5_dvm38"]
+[ext_resource type="PackedScene" uid="uid://c8gg10b13nusf" path="res://Itens_Cenário/Itens_Bar/cadeira_madeira.glb" id="7_c4bb3"]
+[ext_resource type="PackedScene" uid="uid://wvs64xcwvnxw" path="res://Itens_Cenário/Itens_Bar/brahma.glb" id="7_diqg0"]
+[ext_resource type="PackedScene" uid="uid://bo4tljvo6tjii" path="res://Itens_Cenário/quadro2.glb" id="12_eomme"]
+[ext_resource type="PackedScene" uid="uid://dv47r0mgjfdyu" path="res://Itens_Cenário/q1.glb" id="12_lld21"]
+[ext_resource type="PackedScene" uid="uid://cy52k1o8u2ij1" path="res://Itens_Cenário/Decorações/mister.glb" id="13_5vkva"]
+[ext_resource type="PackedScene" uid="uid://duacjgl6jlwew" path="res://Itens_Cenário/quadro3.glb" id="13_bpv57"]
+[ext_resource type="PackedScene" uid="uid://c7ru28pi5dmmv" path="res://Itens_Cenário/quadro4.glb" id="14_hv7a1"]
 [ext_resource type="Material" uid="uid://84hfu50v2l41" path="res://preto.tres" id="15_eomme"]
-[ext_resource type="PackedScene" uid="uid://b60nynpho4b5x" path="res://Itens_Cenário/espada.glb" id="17_hv7a1"]
-[ext_resource type="PackedScene" uid="uid://bltwam6qre4d2" path="res://Itens_Cenário/sniper.glb" id="18_i6v7i"]
+[ext_resource type="PackedScene" uid="uid://by6ri0liobbiu" path="res://Itens_Cenário/quadro5.glb" id="15_i6v7i"]
+[ext_resource type="PackedScene" uid="uid://b60nynpho4b5x" path="res://Itens_Cenário/Decorações/espada.glb" id="17_hv7a1"]
+[ext_resource type="PackedScene" uid="uid://bltwam6qre4d2" path="res://Itens_Cenário/Decorações/sniper.glb" id="18_i6v7i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6dh5c"]
 size = Vector3(118.75333, 1.772583, 202.61853)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fhjde"]
 size = Vector3(3.6970215, 44.177643, 166.78201)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1mop8"]
+size = Vector3(1, 44.41385, 18.432251)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hd3d6"]
 size = Vector3(3.2114563, 44.459534, 201.32507)
@@ -46,6 +47,12 @@ size = Vector3(19.081818, 24.378052, 29.688843)
 [sub_resource type="BoxMesh" id="BoxMesh_bpv57"]
 material = ExtResource("15_eomme")
 size = Vector3(2, 40, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lld21"]
+size = Vector3(60.929817, 47.713745, 2.57312)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5vkva"]
+size = Vector3(39.131287, 42.66803, 2.3798218)
 
 [node name="Cenario_Refeito" type="Node3D"]
 
@@ -87,30 +94,6 @@ transform = Transform3D(-0.6401499, 0, -0.76825005, 0, 1, 0, 0.76825005, 0, -0.6
 [node name="cadeira_madeira3" parent="bar_remade" instance=ExtResource("7_c4bb3")]
 transform = Transform3D(-0.3872261, 0, 0.9219848, 0, 1, 0, -0.9219848, 0, -0.3872261, 25.902786, 6.910987, 83.96641)
 
-[node name="quadro_1" parent="bar_remade" instance=ExtResource("8_bkqop")]
-transform = Transform3D(3.9983475, 0, -0.11496678, 0, 4, 0, 0.11496678, 0, 3.9983475, -62.516853, 26.30356, 25.213432)
-visible = false
-
-[node name="quadro_2" parent="bar_remade" instance=ExtResource("9_1mop8")]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -62.505863, 26.005133, 3.8638)
-visible = false
-
-[node name="quadro_3" parent="bar_remade" instance=ExtResource("10_lld21")]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -62.792915, 25.706804, -18.418064)
-visible = false
-
-[node name="quadro_4" parent="bar_remade" instance=ExtResource("11_1mop8")]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -62.565594, 25.692802, -39.155277)
-visible = false
-
-[node name="quadro_5" parent="bar_remade" instance=ExtResource("12_5vkva")]
-transform = Transform3D(-4, 0, -6.039832e-07, 0, 4, 0, 6.039832e-07, 0, -4, 54.77802, 23.754356, -8.747362)
-visible = false
-
-[node name="quadro_6" parent="bar_remade" instance=ExtResource("13_ijcje")]
-transform = Transform3D(-4, 0, 6.039832e-07, 0, 4, 0, -6.039832e-07, 0, -4, 54.686577, 24.117329, 25.380327)
-visible = false
-
 [node name="mister" parent="bar_remade" instance=ExtResource("13_5vkva")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -8.259075, -4.164487, 81.146126)
 
@@ -129,6 +112,10 @@ shape = SubResource("BoxShape3D_6dh5c")
 [node name="Parede_1" type="CollisionShape3D" parent="Colisoes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.19495, 21.588821, 56.897354)
 shape = SubResource("BoxShape3D_fhjde")
+
+[node name="Parede_5" type="CollisionShape3D" parent="Colisoes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.19495, 21.207642, -49.293777)
+shape = SubResource("BoxShape3D_1mop8")
 
 [node name="Parede_2" type="CollisionShape3D" parent="Colisoes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63.026485, 21.729767, 40.52069)
@@ -182,28 +169,63 @@ shape = SubResource("BoxShape3D_diqg0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.320442, 11.689026, 59.336746)
 shape = SubResource("BoxShape3D_hv7a1")
 
-[node name="Porta" parent="." instance=ExtResource("14_ijcje")]
-transform = Transform3D(5.962434e-08, 0, -4.6900005, 0, 5.0000005, 0, 5.0000005, 0, 5.5927643e-08, -13.8876095, 10.255952, 42.31674)
-
-[node name="Porta2" parent="." instance=ExtResource("14_ijcje")]
-transform = Transform3D(-4.035, 0, 6.0926806e-07, 0, 4.765, 0, -6.0926806e-07, 0, -4.035, 55.479607, 11.118793, -33.217804)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Colisoes"]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 76.79606, 38.245625, -34.17713)
 mesh = SubResource("BoxMesh_bpv57")
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Colisoes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 97.02947, 19.195114, -34.17713)
 mesh = SubResource("BoxMesh_bpv57")
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Colisoes"]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 76.10983, -0.74998665, -34.17713)
 mesh = SubResource("BoxMesh_bpv57")
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Colisoes"]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 76.204185, 19.10844, -14.925583)
 mesh = SubResource("BoxMesh_bpv57")
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Colisoes"]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 76.631516, 19.633953, -53.50831)
 mesh = SubResource("BoxMesh_bpv57")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D11" type="CollisionShape3D" parent="Colisoes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.589407, 19.878721, 42.258522)
+shape = SubResource("BoxShape3D_lld21")
+
+[node name="CollisionShape3D12" type="CollisionShape3D" parent="Colisoes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.039406, 22.426664, 42.114388)
+shape = SubResource("BoxShape3D_5vkva")
+
+[node name="q1" parent="." instance=ExtResource("12_lld21")]
+transform = Transform3D(-1.3113416e-07, 0, 3, 0, 3, 0, -3, 0, -1.3113416e-07, -62.385162, 26.270262, -3.863163)
+
+[node name="quadro2" parent="." instance=ExtResource("12_eomme")]
+transform = Transform3D(3, 0, 7.152558e-07, 0, 3, 0, -7.152558e-07, 0, 3, -44.31599, 25.17951, -60.04451)
+
+[node name="quadro3" parent="." instance=ExtResource("13_bpv57")]
+transform = Transform3D(-3, 0, 2.6226832e-07, 0, 3, 0, -2.6226832e-07, 0, -3, -164.15038, 21.406862, 31.176464)
+
+[node name="q_003" parent="quadro3" index="0"]
+transform = Transform3D(2.7958229, 0, 0, 0, 1.800652, 0, 1.4210855e-13, 0, 0.08828368, -41.01564, 1.0923815, -3.253151)
+
+[node name="quadro4" parent="." instance=ExtResource("14_hv7a1")]
+transform = Transform3D(-3, 0, 2.6226832e-07, 0, 3, 0, -2.6226832e-07, 0, -3, 53.34644, 18.313885, -6.774685)
+
+[node name="q_004" parent="quadro4" index="0"]
+transform = Transform3D(2.7958229, 0, 0, 0, 1.800652, 0, 2.2737368e-13, 0, 0.08828368, 13.564777, 1.7808099, -15.968193)
+
+[node name="quadro5" parent="." instance=ExtResource("15_i6v7i")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 156.8689, 0, 0)
+
+[node name="q" parent="quadro5" index="0"]
+transform = Transform3D(-1.3113416e-07, 0, -0.094000004, 0, 1.932, 0, 3, 0, -4.1088706e-09, -34.07672, 7.724411, -2.8507133)
+
+[editable path="quadro3"]
+[editable path="quadro4"]
+[editable path="quadro5"]

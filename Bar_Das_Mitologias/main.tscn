@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dxxx8wacp6j46"]
+[gd_scene load_steps=40 format=3 uid="uid://dxxx8wacp6j46"]
 
 [ext_resource type="Script" uid="uid://vikrd2u01ief" path="res://Scripts/controlador.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://4mouec66q4l7" path="res://Scripts/camera_player.gd" id="2_0xm2m"]
@@ -9,9 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://byhmojhlf7sln" path="res://Interagiveis/baralho_3d_mesa.tscn" id="7_4c57u"]
 [ext_resource type="PackedScene" uid="uid://c0cotku2qknob" path="res://dot.tscn" id="7_efxa6"]
 [ext_resource type="Script" uid="uid://b1j4cwkb0voe3" path="res://Scripts/renderizar_mao_3d.gd" id="7_kek77"]
+[ext_resource type="PackedScene" uid="uid://tnio2imk7gfm" path="res://odin.tscn" id="7_kq58d"]
+[ext_resource type="Script" uid="uid://cv7dvnp71nibo" path="res://Scripts/deus_interativo.gd" id="8_0rl1p"]
 [ext_resource type="PackedScene" uid="uid://dsdfoas86egep" path="res://radio.tscn" id="10_getpj"]
 [ext_resource type="PackedScene" uid="uid://80uwoxsfwtl4" path="res://itens herdados (modificados)/lampada.tscn" id="11_vivmo"]
-[ext_resource type="AudioStream" uid="uid://b8gbrg8qo6c6u" path="res://Fogo do Olimpo.mp3" id="12_dg77c"]
+[ext_resource type="PackedScene" uid="uid://bjn3nu8osa2a5" path="res://porta.tscn" id="13_0rl1p"]
 [ext_resource type="Script" uid="uid://bfghp703s8mlc" path="res://Scripts/camera_andar.gd" id="14_cegan"]
 [ext_resource type="PackedScene" uid="uid://clsh0aqr1r78y" path="res://baralho_poder.tscn" id="15_2cqfq"]
 [ext_resource type="PackedScene" uid="uid://pa1xhg24bwl1" path="res://jogador.tscn" id="15_vivmo"]
@@ -23,7 +25,16 @@
 [ext_resource type="PackedScene" uid="uid://qku2i70hs1f6" path="res://mesa_redonda.glb" id="20_82xsv"]
 [ext_resource type="Script" uid="uid://d2egrc2e830ge" path="res://Scripts/controlador_tutorial.gd" id="22_1u8w0"]
 [ext_resource type="PackedScene" uid="uid://k41flnsjoond" path="res://cadeira_tutorial.tscn" id="22_ryguw"]
-[ext_resource type="PackedScene" uid="uid://t4e30j7goban" path="res://Itens_Cenário/mesa_redonda.glb" id="23_0odxb"]
+[ext_resource type="PackedScene" uid="uid://t4e30j7goban" path="res://Itens_Cenário/Itens_Bar/mesa_redonda.glb" id="23_0odxb"]
+[ext_resource type="Script" uid="uid://vrtl246ppop" path="res://Scripts/creditos.gd" id="25_0odxb"]
+[ext_resource type="PackedScene" uid="uid://bi386dxi3q745" path="res://shiva.tscn" id="25_lswn8"]
+[ext_resource type="Animation" uid="uid://c8w6g5l7ahrob" path="res://Animações/Shiva/Comprar_carta.res" id="26_kq58d"]
+[ext_resource type="Animation" uid="uid://qrjr5kk5yscu" path="res://Animações/Shiva/idle.res" id="27_seu75"]
+[ext_resource type="Animation" uid="uid://c508opde6qhrr" path="res://Animações/Shiva/Jogar_carta.res" id="28_htxhm"]
+[ext_resource type="Animation" uid="uid://cd1kor1pt0p72" path="res://Animações/Shiva/Reclamar.res" id="29_jq2sk"]
+[ext_resource type="PackedScene" uid="uid://darfyt1sg6ody" path="res://Itens_Cenário/tambor.glb" id="30_jq2sk"]
+[ext_resource type="PackedScene" uid="uid://dw3y57ggm8dxj" path="res://Itens_Cenário/tridente.glb" id="32_4k2k6"]
+[ext_resource type="PackedScene" uid="uid://dvs3vig2tnajm" path="res://Itens_Cenário/pote.glb" id="33_0rl1p"]
 
 [sub_resource type="Environment" id="Environment_lquwl"]
 background_mode = 1
@@ -34,19 +45,35 @@ fog_enabled = true
 fog_light_color = Color(0.57421875, 0.5155597, 0.47583124, 1)
 volumetric_fog_density = 0.0561
 
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kv3nh"]
+_data = {
+&"Comprar_carta": ExtResource("26_kq58d"),
+&"Jogar_carta": ExtResource("28_htxhm"),
+&"Reclamar": ExtResource("29_jq2sk"),
+&"idle": ExtResource("27_seu75")
+}
+
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_1u8w0"]
 height = 3.0
 radius = 4.4
 
-[node name="Main" type="Node3D" node_paths=PackedStringArray("dot_mira", "baralho_poder", "cerveja") groups=["controlador_jogo"]]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1u8w0"]
+size = Vector3(12, 17, 17)
+
+[node name="Main" type="Node3D" node_paths=PackedStringArray("label_habilidade", "label_dica_levantar", "dot_mira", "baralho_poder", "cerveja") groups=["controlador_jogo"]]
 script = ExtResource("1_ig7tw")
+label_habilidade = NodePath("")
+label_dica_levantar = NodePath("UI/LabelLevantar")
 escala_carta_pilha = 2.0
 dot_mira = NodePath("UI/Dot")
 rodadas_para_habilidade = 4
+chance_habilidade_anubis = 0.4
+chance_balanca_castigo = 0.6
 baralho_poder = NodePath("baralho_poder")
 cerveja = NodePath("garrafa_interativa")
-rodadas_para_poder_odin = 10
-chance_balanca_castigo = 0.6
+chance_poder_odin = 1.0
+rodadas_para_poder_hefesto = 8
+chance_poder_hefesto = 0.8
 cartas_minimas_apos_combo = 1
 altura_aviso_uno = 1.0
 
@@ -75,18 +102,47 @@ transform = Transform3D(1.1996515, 0, 0.028920788, 0, 1.2, 0, -0.028920788, 0, 1
 transform = Transform3D(-0.99999976, 0, 8.009374e-08, 0, 0.99999946, 0, -8.009374e-08, 0, -0.99999976, -0.63739014, 1.0833328, 2.2352872)
 script = ExtResource("7_kek77")
 
-[node name="hefesto" type="Node3D" parent="Cenário/deuses"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1000001, 0.99999976, 9)
-
-[node name="PosicaoMao" type="Node3D" parent="Cenário/deuses/hefesto"]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.1000004, 0.19999981, -1.7000008)
-script = ExtResource("7_kek77")
-
-[node name="odin" type="Node3D" parent="Cenário/deuses"]
-transform = Transform3D(-2.1855695e-07, 8.940695e-08, 0.9999999, 1.7763568e-14, 0.9999999, -8.940695e-08, -0.9999999, -7.816207e-15, -2.1855692e-07, 4.2999997, 1.2564733, 5.6000023)
+[node name="odin" parent="Cenário/deuses" instance=ExtResource("7_kq58d")]
+transform = Transform3D(-1.02, 0, -1.5401571e-07, 0, 1.02, 0, 1.5401571e-07, 0, -1.02, -0.7000003, -1.4999998, 11.099998)
+script = ExtResource("8_0rl1p")
+nome_jogador = "Odin"
+margem_mira = 0.08
+altura_plaquinha = -0.4
 
 [node name="PosicaoMao" type="Node3D" parent="Cenário/deuses/odin"]
-transform = Transform3D(-4.3711637e-08, -8.940694e-08, -1, 8.940696e-08, 1, -8.940694e-08, 1, -8.940696e-08, -4.3711637e-08, -5.6000023, -0.45499897, -5.3000007)
+transform = Transform3D(-0.98039204, -7.662936e-15, -2.3381716e-08, 0, 0.98039204, -8.765383e-08, 2.3381702e-08, -8.765383e-08, -0.98039204, 0.29411697, 2.2563481, 0.098033905)
+script = ExtResource("7_kek77")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cenário/deuses/odin"]
+transform = Transform3D(0.98039216, 0, -3.410605e-13, 0, 0.98039216, 0, 3.410605e-13, 0, 0.98039216, 1.0784335, 1.9607837, -2.6470604)
+light_color = Color(1, 0.8138342, 0.7380773, 1)
+light_energy = 0.691
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.893
+light_size = 1.0
+light_specular = 0.0
+omni_range = 3.782
+omni_attenuation = -3.051
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Cenário/deuses/odin"]
+transform = Transform3D(0.98039216, 0, -3.5527137e-13, 0, 0.98039216, 0, 3.5527137e-13, 0, 0.98039216, -1.2745097, 1.9607837, -2.5490227)
+light_color = Color(1, 0.8138342, 0.7380773, 1)
+light_energy = 0.691
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.893
+light_size = 1.0
+light_specular = 0.0
+omni_range = 3.782
+omni_attenuation = -3.051
+
+[node name="hefesto" type="Node3D" parent="Cenário/deuses"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 6.799999)
+script = ExtResource("8_0rl1p")
+nome_jogador = "Hefesto"
+margem_mira = 1.6
+
+[node name="PosicaoMao" type="Node3D" parent="Cenário/deuses/hefesto"]
+transform = Transform3D(-4.3711385e-08, 0, 1, 0, 1, 0, -1, 0, -4.3711385e-08, -3.5000002, 1.1999996, 0.69999695)
 script = ExtResource("7_kek77")
 
 [node name="CartaMesa" parent="Cenário" instance=ExtResource("5_7mycd")]
@@ -288,7 +344,13 @@ spot_angle = 28.25
 spot_angle_attenuation = 1.8025036
 
 [node name="Radio" parent="Cenário" instance=ExtResource("10_getpj")]
-transform = Transform3D(0.52152044, 0, -1.9463407, 0, 2.015, 0, 1.9463407, 0, 0.52152044, 10, 12.5, 79.25)
+transform = Transform3D(0.52152044, 0, -1.9463407, 0, 2.015, 0, 1.9463407, 0, 0.52152044, 10.75, 13.000001, 79.25)
+
+[node name="PortaFim" parent="Cenário" instance=ExtResource("13_0rl1p")]
+transform = Transform3D(4, 0, 0, 0, 4.74, 0, 0, 0, 4, 54.500004, 11.25, -33)
+
+[node name="PortaTutorial" parent="Cenário" instance=ExtResource("13_0rl1p")]
+transform = Transform3D(-1.7484555e-07, 0, -4.8, 0, 4.74, 0, 4, 0, -2.0981467e-07, -13.999997, 11.25, 42.000004)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -297,8 +359,8 @@ transform = Transform3D(0.52152044, 0, -1.9463407, 0, 2.015, 0, 1.9463407, 0, 0.
 [node name="PanelContainer" type="PanelContainer" parent="UI"]
 offset_left = 13.0
 offset_top = 10.0
-offset_right = 196.0
-offset_bottom = 84.0
+offset_right = 222.0
+offset_bottom = 96.0
 
 [node name="LabelTurno" type="Label" parent="UI/PanelContainer"]
 layout_mode = 2
@@ -317,16 +379,23 @@ size_flags_horizontal = 4
 text = "Turno 1"
 horizontal_alignment = 1
 
+[node name="LabelLevantar" type="Label" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = -35.0
+offset_right = 216.0
+offset_bottom = -12.0
+grow_vertical = 0
+text = "Aperte [Q] para levantar"
+
 [node name="PosicaoMaoHumano" type="Node3D" parent="."]
 transform = Transform3D(1.179323e-07, 0.25881892, -0.96592593, -5.502473e-08, 0.96592593, 0.25881892, 1, 2.2626702e-08, 1.2815532e-07, -9.3, 4.4, 44.2)
 script = ExtResource("7_kek77")
 
 [node name="Baralho_mesa" parent="." instance=ExtResource("7_4c57u")]
 transform = Transform3D(0.7890258, 0, 0.66207117, 0, 1.03, 0, -0.66207117, 0, 0.7890258, -8.105, 3.128, 37.478)
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("12_dg77c")
-parameters/looping = true
 
 [node name="Jogador" parent="." instance=ExtResource("15_vivmo")]
 transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -18, 3.6, 5)
@@ -345,9 +414,12 @@ transform = Transform3D(-0.42, 0, -6.3418234e-08, 0, 0.42, 0, 6.3418234e-08, 0, 
 [node name="garrafa_interativa" parent="." instance=ExtResource("17_074og")]
 transform = Transform3D(-0.16383038, 0, 0.11471533, 0, 0.2, 0, -0.11471533, 0, -0.16383038, -7.5999994, 4.3, 46.000004)
 
-[node name="AhPuch" parent="." instance=ExtResource("17_yaehf")]
+[node name="AhPuch" parent="." node_paths=PackedStringArray("porta_apos_tutorial", "porta_apos_vitoria") instance=ExtResource("17_yaehf")]
 transform = Transform3D(-1.5298986e-07, 0, -3.5, 0, 3.5, 0, 3.5, 0, -1.5298986e-07, -2.6, 4, -18)
+porta_apos_tutorial = NodePath("../Cenário/PortaTutorial")
+porta_apos_vitoria = NodePath("../Cenário/PortaFim")
 olhar_para_jogador = false
+largura_quebra_px = 400.0
 
 [node name="CameraMenu" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 7, 4.4000015)
@@ -363,14 +435,18 @@ camera_jogador = NodePath("../../Jogador/CameraJogador")
 [node name="mesa_redonda" parent="." instance=ExtResource("20_82xsv")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -5.2000003, -0.90000004, 44.3)
 
-[node name="TutorialMesa" type="Node3D" parent="." node_paths=PackedStringArray("no_deus", "carta_mesa_tutorial", "dot_mira", "baralho_poder")]
+[node name="TutorialMesa" type="Node3D" parent="." node_paths=PackedStringArray("no_deus", "animador_deus", "carta_mesa_tutorial", "dot_mira", "baralho_poder")]
 transform = Transform3D(1, 0, -3.7252903e-08, 0, 1, 0, 3.7252903e-08, 0, 1, -2.4, 0, 2.0000005)
 script = ExtResource("22_1u8w0")
 no_deus = NodePath("shiva")
+animador_deus = NodePath("shiva/AnimationShiva")
 carta_mesa_tutorial = NodePath("CartaMesa")
 tempo_explicacao = 15.0
 dot_mira = NodePath("../UI/Dot")
+chance_balanca_castigo = 0.6
 baralho_poder = NodePath("../baralho_poder")
+cartas_minimas_apos_combo = 1
+altura_aviso_uno = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="TutorialMesa"]
 transform = Transform3D(-2.7517473e-08, 0.25881904, -0.9659258, 1.735517e-08, 0.9659258, 0.25881904, 1, -9.641761e-09, -3.1071686e-08, 2.5000005, 6.5, 7.1)
@@ -395,12 +471,48 @@ transform = Transform3D(-2.9802322e-08, 0, -0.59000003, 0, 0.59, 0, 0.59000003, 
 [node name="baralho_poder" parent="TutorialMesa" instance=ExtResource("15_2cqfq")]
 transform = Transform3D(-0.42000002, 0, -7.4505806e-08, 0, 0.42, 0, 7.4505806e-08, 0, -0.42000002, 6.060001, 4.4110003, 9.01)
 
-[node name="shiva" type="Node3D" parent="TutorialMesa"]
-transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, 15.900002, 5, 7)
+[node name="shiva" parent="TutorialMesa" instance=ExtResource("25_lswn8")]
+transform = Transform3D(0.08023389, 0, -0.29943702, 0, 0.31, 0, 0.29943702, 0, 0.08023389, 14.200001, -0.7, 6.6)
 
 [node name="PosicaoMao" type="Node3D" parent="TutorialMesa/shiva"]
-transform = Transform3D(-3.7252903e-08, 0, -1, 0, 1, 0, 1, 0, -3.7252903e-08, 5.3634033, 0.19999981, 0.049051285)
+transform = Transform3D(-3.2258067, 0, -1.7881393e-07, 0, 3.2258065, 0, 1.7881393e-07, 0, -3.2258067, -3.551014, 18.709682, 15.021244)
 script = ExtResource("7_kek77")
+
+[node name="AnimationShiva" type="AnimationPlayer" parent="TutorialMesa/shiva"]
+libraries = {
+&"shiva": SubResource("AnimationLibrary_kv3nh")
+}
+autoplay = "shiva/idle"
+
+[node name="OmniLight3D" type="OmniLight3D" parent="TutorialMesa/shiva"]
+transform = Transform3D(3.2258065, 0, -8.34465e-07, 0, 3.2258065, 0, 8.34465e-07, 0, 3.2258065, -1.2523384, 20.000006, 4.6737785)
+light_energy = 3.707
+light_specular = 0.0
+omni_range = 2.559
+omni_attenuation = 0.061
+
+[node name="LuzTridente" type="OmniLight3D" parent="TutorialMesa/shiva"]
+transform = Transform3D(3.2258065, 0, -8.34465e-07, 0, 3.2258065, 0, 8.34465e-07, 0, 3.2258065, -8.72451, 19.354843, -2.3377934)
+light_energy = 3.707
+light_specular = 0.0
+omni_range = 8.497
+omni_attenuation = 0.679
+
+[node name="LuzTridente2" type="OmniLight3D" parent="TutorialMesa/shiva"]
+transform = Transform3D(3.2258065, 0, -8.34465e-07, 0, 3.2258065, 0, 8.34465e-07, 0, 3.2258065, -13.3432255, 25.161297, 2.4359055)
+light_energy = 3.707
+light_specular = 0.0
+omni_range = 2.344
+omni_attenuation = -2.08
+
+[node name="tambor" parent="TutorialMesa/shiva" instance=ExtResource("30_jq2sk")]
+transform = Transform3D(1.3909333, 0.37128118, -0.03248301, 9.6136525e-08, 0.12550439, 1.4345207, 0.3726993, -1.3856404, 0.12122791, -10.695553, 18.709684, 12.496294)
+
+[node name="tridente" parent="TutorialMesa/shiva" instance=ExtResource("32_4k2k6")]
+transform = Transform3D(-2.0735085, 0, 2.4711106, 0, 3.2258062, 0, -2.4711106, 0, -2.0735085, -12.42482, 8.709678, -0.99149513)
+
+[node name="pote" parent="TutorialMesa/shiva" instance=ExtResource("33_0rl1p")]
+transform = Transform3D(-0.8086684, 0, 0.96373326, 0, 1.2580645, 0, -0.96373326, 0, -0.8086684, 3.4482384, 17.419355, 18.289879)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -413,3 +525,57 @@ debug_color = Color(0.11376363, 0.10538084, 0.7019608, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.1, 3.2, 44.199997)
 shape = SubResource("CylinderShape3D_1u8w0")
 debug_color = Color(0.11376363, 0.10538084, 0.7019608, 1)
+
+[node name="Area3D" type="Area3D" parent="StaticBody3D"]
+script = ExtResource("25_0odxb")
+texto_creditos = "# BAR DAS MITOLOGIAS
+
+
+# Desenvolvimento
+Petrônio Dias de Carvalho Jr - Overlevel
+Hugo Lopes Soares 
+Otávio Augusto Miguel
+Alisson Guilherme 
+Lucas Mesquita Freire
+
+
+# Arte e Animações
+Anúbis - Pet
+Ah Puch - Pet
+Shiva - Otávio
+Odin - Hugo
+Hefesto - Alisson
+
+# Cenário e Decorações
+Bar + decorações - Pet
+Junkbox - Otávio
+
+# Implementação na Godot
+Pet
+
+# Críticas adaptadas
+Desmaiar bebendo - Marquin
+
+# Música e Sons
+Sons do cenário - Lucas
+Pagodes - Pet 
+
+
+# Agradecimentos Especiais
+A todos que jogaram
+- Mister Romário
+- Camila
+- Thiago Vasco
+- Jeann
+- Nicolas
+- Claudio (Pedro)
+
+
+E a você, obrigado por jogar!"
+velocidade = 50.0
+cor_titulo = Color(1, 0.46066004, 0.24869907, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.5, 8, -14)
+shape = SubResource("BoxShape3D_1u8w0")
+debug_color = Color(0.45882353, 0, 0.44313726, 1)

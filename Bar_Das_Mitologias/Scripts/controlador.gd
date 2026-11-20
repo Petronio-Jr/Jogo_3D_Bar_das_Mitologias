@@ -4,6 +4,7 @@ extends Node3D
 
 # Emitido quando o jogador escolhe o deus que vai comprar cartas (nome do jogador)
 signal deus_escolhido(nome: String)
+signal serie_terminada(venceu: bool)   # fim do jogo principal: o jogador venceu (true) ou perdeu (false) a série
 
 # --- Módulos (criados no _ready) ---
 var mira: MiraJogo
@@ -15,6 +16,7 @@ var cerebro_ia: CerebroIA
 var habilidade: HabilidadeAnubis
 var balanca: BalancaAnubis
 var poder_odin: PoderOdin
+var poder_hefesto: PoderHefesto
 var poder: PoderBaralho
 var uno: AvisoUno
 var embriaguez: Embriaguez
@@ -25,23 +27,26 @@ var jogadores: Array[Jogador] = []
 var indice_jogador_atual: int = 0
 var jogo_ativo: bool = false # Começa falso até sentar na cadeira
 var numero_turno_atual: int = 1
+var _id_partida: int = 0   # muda a cada (re)início: uma vez de IA que ficou pendurada não mexe na partida nova
 
 # --- Sistema de Melhor de 3 ---
 var vitorias_jogadores: Dictionary = {}
 var ultimo_vencedor_nome: String = ""
+
+@export_group("Jogo")
 @export var objetivo_vitorias: int = 2
-
-# --- Configuração geral / IA ---
 @export var tempo_resposta_ia: float = 1.5
-# false = cartas dos deuses viradas para baixo; true = viradas para cima
 @export var mostrar_cartas_ia: bool = false
+@export_group("Textos da tela (opcional: vazio = procura pelo nome)")
+@export var label_habilidade: Label        # status da habilidade ("Habilidade carregada", "disponível em 5 turno(s)"); nome procurado: LabelHabilidade
+@export var label_dica_levantar: Label     # "Aperte [Q] para levantar"; nome procurado: LabelDicaLevantar (se não existir, é criado abaixo do label do turno)
+@export_group("")
 
-# --- Carta voando da mão do deus até a mesa ---
+@export_group("Cartas")
 @export var atraso_voo_carta: float = 0.5     # segundos após o início da animação do deus
 @export var duracao_voo_carta: float = 0.6
 @export var altura_saida_carta: float = 0.15  # quanto a carta sobe antes de ir ao centro
 
-# --- Pilha de cartas jogadas no centro da mesa ---
 @export var cartas_na_pilha: int = 4           # quantas cartas ficam visíveis
 @export var escala_carta_pilha: float = 1.8     # TAMANHO FINAL da carta na mesa (1.0 = igual à da mão)
 @export var distancia_vertical_pilha: float = 0.012    # altura entre uma carta e a de cima (m); aumente se ainda se sobrescreverem
@@ -49,13 +54,13 @@ var ultimo_vencedor_nome: String = ""
 @export var desvio_max_pilha: float = 0.02     # deslocamento aleatório extra (m)
 @export var giro_max_pilha: float = 20.0       # giro aleatório (graus)
 
-# --- Configuração da mira (dot) ---
+@export_group("Dot")
 @export var alcance_mira: float = 10.0
 @export var dot_mira: CanvasItem
 @export var criar_dot_se_nao_achar: bool = true
-@export var debug_mira: bool = false
 
-# --- Habilidade especial do Anubis ---
+@export_group("Poder de Anubis")
+# --- Balança da habilidade ---
 @export var rodadas_para_habilidade: int = 1
 @export_range(0.0, 1.0, 0.05) var chance_habilidade_anubis: float = 0.5
 @export var cartas_jogador_compra: int = 4
@@ -63,7 +68,13 @@ var ultimo_vencedor_nome: String = ""
 var animacao_habilidade: String = "Habilidade"
 var testar_habilidade: bool = false
 
-# --- Poder do jogador (baralho_poder) ---
+@export var altura_queda_balanca: float = 4.0
+@export var duracao_descida_balanca: float = 3.0
+@export var anim_balanca_castigo: String = "BaixarEsquerda"
+@export var anim_balanca_sorte: String = "BaixarDireita"
+@export_range(0.0, 1.0, 0.05) var chance_balanca_castigo: float = 0.5
+
+@export_group("Poder Jogador")
 # Se ficar vazio, o nó "baralho_poder" é procurado automaticamente na cena.
 @export var baralho_poder: Node3D
 @export var turnos_recarga_poder: int = 5
@@ -72,7 +83,7 @@ var testar_habilidade: bool = false
 @export var altura_virada_poder: float = 0.1            # quanto levanta no meio do giro
 @export var duracao_poder: float = 5.0   # segundos com as cartas dos deuses reveladas
 
-# --- Cerveja (embriaguez) ---
+@export_group("Cerveja")
 # Se ficar vazio, o nó é procurado pelo nome ("cerveja"/"beer").
 @export var cerveja: Node3D
 @export var limite_bebidas: int = 10            # nesta dose a tela escurece
@@ -84,25 +95,33 @@ var testar_habilidade: bool = false
 @export var reabrir_apos_apagar: bool = true
 @export var tempo_olho_fechado: float = 5.0     # tempo preto antes de reabrir
 
-# --- Poder do Odin (troca de baralho) ---
-@export var rodadas_para_poder_odin: int = 6
+@export_group("Poder Odin")
+@export var rodadas_para_poder_odin: int = 10       # a cada N rodadas os corvos grasnam (sempre) e o poder pode ocorrer
+@export_range(0.0, 1.0, 0.05) var chance_poder_odin: float = 0.5   # chance de o poder (comparar e talvez trocar) ocorrer quando os corvos grasnam
 @export var duracao_troca_odin: float = 0.9        # voo de cada carta (s)
 @export var atraso_entre_cartas_troca: float = 0.07 # cascata entre as cartas (s)
 @export var altura_arco_troca_odin: float = 0.35   # quanto as cartas sobem no meio do voo (m)
 var testar_poder_odin: bool = false                # true = Odin checa em TODA vez dele (teste)
 
-# --- Balança da habilidade ---
-@export var altura_queda_balanca: float = 4.0
-@export var duracao_descida_balanca: float = 3.0
-@export var anim_balanca_castigo: String = "BaixarEsquerda"
-@export var anim_balanca_sorte: String = "BaixarDireita"
-@export_range(0.0, 1.0, 0.05) var chance_balanca_castigo: float = 0.5
+# --- Poder do Hefesto (forja a carta da mesa) ---
+@export_group("Poder do Hefesto")
+@export var rodadas_para_poder_hefesto: int = 5     # a cada N rodadas ele tenta forjar
+@export_range(0.0, 1.0, 0.05) var chance_poder_hefesto: float = 0.6 # chance de dar certo a cada tentativa (se falhar, tenta de novo daqui a N rodadas)
+@export var duracao_forja: float = 0.9              # volta que a carta dá ao virar preta (s)
+@export var altura_forja: float = 0.12              # quanto a carta levanta durante o giro (m)
 
 # --- Animação de sentar na mesa ---
 @export_group("Animação de sentar")
 @export var duracao_sentar: float = 1.8          # 0 = sem animação (troca direto de câmera)
 @export var balanco_passos: float = 0.02         # sobe e desce da câmera enquanto "anda" até a cadeira (m)
 @export var queda_ao_sentar: float = 0.04        # afundada rápida no fim, quando "senta" (m)
+
+# --- Levantar durante a partida ---
+@export_group("Levantar durante a partida")
+@export var tecla_levantar: Key = KEY_Q          # na sua vez: levanta e anda; volte à cadeira (E) e o jogo segue igual
+@export var duracao_levantar: float = 0.9        # animação da câmera saindo da mesa (s)
+var levantado: bool = false                      # true = o personagem está andando com a partida pausada na sua vez
+var em_transicao_cadeira: bool = false           # true durante a animação de levantar/sentar
 
 # --- Combos e aviso de UNO ---
 @export_group("Combos e UNO")
@@ -112,6 +131,7 @@ var testar_poder_odin: bool = false                # true = Odin checa em TODA v
 @export var altura_aviso_uno: float = 0.8            # altura do "UNO!" acima da pilha (m)
 @export var tamanho_aviso_uno: float = 2.2            # escala da escrita "UNO!"
 
+@export_group("Nos da cena")
 # --- Nós da cena ---
 @onready var anim_anubis: AnimationPlayer = get_node_or_null("Cenário/deuses/anubis/AnimationPlayer2") as AnimationPlayer
 @onready var container_mao_3d = $PosicaoMaoHumano
@@ -138,6 +158,7 @@ func _ready() -> void:
 	habilidade = HabilidadeAnubis.new(self)
 	balanca = BalancaAnubis.new(self)
 	poder_odin = PoderOdin.new(self)
+	poder_hefesto = PoderHefesto.new(self)
 	poder = PoderBaralho.new(self)
 	embriaguez = Embriaguez.new(self)
 	uno = AvisoUno.new(self)
@@ -163,8 +184,98 @@ func iniciar_jogo_por_interacao() -> void:
 	await _animar_sentar()
 	camera_jogador.make_current()
 
+	levantado = false
+	em_transicao_cadeira = false
 	jogo_ativo = true
 	iniciar_jogo()
+
+# --- Levantar e voltar durante a partida ---
+
+## Só na vez do jogador, sem animação de carta, habilidade ou escolha em andamento.
+func _pode_levantar() -> bool:
+	return vez_do_jogador() and not em_transicao_cadeira and not acoes_humano.ocupado \
+		and not habilidade.evento_em_andamento and not habilidade.escolhendo_deus \
+		and not poder_odin.em_andamento and not poder_hefesto.em_andamento and not embriaguez.apagado \
+		and jogador_andando != null and _camera_do_jogador() != null
+
+func _camera_do_jogador() -> Camera3D:
+	if jogador_andando == null:
+		return null
+	var cams: Array[Node] = jogador_andando.find_children("*", "Camera3D", true, false)
+	return null if cams.is_empty() else cams[0] as Camera3D
+
+## Gancho para o tutorial esconder/mostrar os textos dele.
+func ao_levantar_temporario() -> void:
+	pass
+
+func ao_voltar_a_mesa() -> void:
+	pass
+
+func levantar_temporariamente() -> void:
+	var destino: Camera3D = _camera_do_jogador()
+	if destino == null:
+		return
+	levantado = true
+	em_transicao_cadeira = true
+	# tira o foco (hover) de tudo na mesa
+	mira.carta_em_foco = -1
+	mira.baralho_em_foco = false
+	mira.poder_em_foco = false
+	if container_mao_3d != null and container_mao_3d.has_method("definir_foco"):
+		container_mao_3d.definir_foco(-1)
+	if baralho_visual != null and baralho_visual.has_method("definir_hover"):
+		baralho_visual.definir_hover(false)
+	poder.definir_hover(false)
+	visual.esconder_hud()
+	ao_levantar_temporario()
+
+	await _animar_levantar(destino)
+	jogador_andando.process_mode = Node.PROCESS_MODE_INHERIT
+	destino.make_current()
+	Som.pagode_passeio()
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	em_transicao_cadeira = false
+
+## Chamado pela cadeira quando o jogador, levantado, aperta E de novo: a partida continua de onde parou.
+func voltar_a_sentar() -> void:
+	if not levantado or em_transicao_cadeira or not jogo_ativo:
+		return
+	em_transicao_cadeira = true
+	Som.partida()
+	if jogador_andando != null:
+		jogador_andando.process_mode = Node.PROCESS_MODE_DISABLED
+	await _animar_sentar()
+	camera_jogador.make_current()
+	levantado = false
+	visual.mostrar_hud()
+	visual.atualizar_indicador_turno()
+	ao_voltar_a_mesa()
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	em_transicao_cadeira = false
+
+## Câmera temporária: da mesa até a câmera do personagem (o contrário de sentar).
+func _animar_levantar(destino: Camera3D) -> void:
+	var origem: Camera3D = camera_jogador
+	if duracao_levantar <= 0.0 or origem == null:
+		return
+	var t0: Transform3D = origem.global_transform
+	var q0: Quaternion = t0.basis.orthonormalized().get_rotation_quaternion()
+	var cam := Camera3D.new()
+	cam.near = origem.near
+	cam.far = origem.far
+	cam.cull_mask = origem.cull_mask
+	cam.environment = origem.environment
+	cam.attributes = origem.attributes
+	add_child(cam)
+	cam.global_transform = t0
+	cam.fov = origem.fov
+	cam.make_current()
+	Som.sfx("cadeira")
+	var tw: Tween = create_tween()
+	tw.tween_method(func(k: float): _quadro_levantar(cam, destino, k, t0, q0, origem.fov), 0.0, 1.0, duracao_levantar)
+	await tw.finished
+	destino.make_current()
+	cam.queue_free()
 
 ## Câmera temporária: sai de onde o jogador está, anda até a mesa, desce e "senta".
 func _animar_sentar() -> void:
@@ -199,6 +310,15 @@ func _animar_sentar() -> void:
 	camera_jogador.make_current()
 	cam.queue_free()
 
+func _quadro_levantar(cam: Camera3D, destino: Camera3D, k: float, t0: Transform3D, q0: Quaternion, fov0: float) -> void:
+	if not is_instance_valid(cam) or not is_instance_valid(destino):
+		return
+	var e: float = k * k * (3.0 - 2.0 * k)
+	var t1: Transform3D = destino.global_transform   # acompanha o destino
+	var q1: Quaternion = t1.basis.orthonormalized().get_rotation_quaternion()
+	cam.global_transform = Transform3D(Basis(q0.slerp(q1, e)), t0.origin.lerp(t1.origin, e))
+	cam.fov = lerpf(fov0, destino.fov, e)
+
 func _quadro_sentar(cam: Camera3D, k: float, p0: Vector3, p1: Vector3, q0: Quaternion, q1: Quaternion, fov0: float, fov1: float) -> void:
 	if not is_instance_valid(cam):
 		return
@@ -223,12 +343,16 @@ func vez_do_jogador() -> bool:
 	return jogo_ativo and not jogadores.is_empty() and jogadores[indice_jogador_atual].eh_o_player
 
 func _process(_delta: float) -> void:
-	if not jogo_ativo or jogadores.is_empty():
+	if not jogo_ativo or levantado or jogadores.is_empty():
 		return
 	mira.atualizar_foco()
 
 func _input(event: InputEvent) -> void:
-	if not jogo_ativo:
+	if jogo_ativo and not levantado and event is InputEventKey and event.pressed and not event.echo \
+			and event.keycode == tecla_levantar and _pode_levantar():
+		levantar_temporariamente()
+		return
+	if not jogo_ativo or levantado:
 		return
 
 	if habilidade.escolhendo_deus and event is InputEventKey and event.pressed and not event.echo:
@@ -267,6 +391,9 @@ func _clique_no_menu_de_cores() -> bool:
 #========================================================================
 
 func iniciar_jogo() -> void:
+	_id_partida += 1
+	poder_hefesto.resetar_ronda()
+	acoes_humano.ocupado = false
 	Som.sfx("carta_embaralhar")
 	visual.mostrar_hud()   # indicador de turno e contagem aparecem só quando o jogo inicia
 	baralho = Baralho.new()
@@ -329,13 +456,61 @@ func verificar_fim_partida(vencedor: Jogador) -> void:
 	if vitorias_jogadores[vencedor.nome] >= objetivo_vitorias:
 		jogo_ativo = false
 		Som.sfx("vitoria_serie" if vencedor.eh_o_player else "derrota")
-		visual.mensagem(vencedor.nome + " venceu a série (Melhor de 3)! Pressione ESC.")
+		visual.mensagem(vencedor.nome + " venceu a série (Melhor de 3)!")
 		print("[Série] O jogador ", vencedor.nome, " venceu a melhor de 3!")
+		await get_tree().create_timer(3.5, false).timeout
+		await levantar_da_mesa()
+		serie_terminada.emit(vencedor.eh_o_player)   # o Ah Puch passa a falar as falas de vitória/derrota
 	else:
 		Som.sfx("vitoria_ronda" if vencedor.eh_o_player else "derrota")
 		visual.mensagem(vencedor.nome + " venceu esta ronda! A reiniciar...")
 		await get_tree().create_timer(2.5, false).timeout
 		reiniciar_ronda()
+
+## Fim da série: escurece, limpa a mesa, devolve o personagem ao mapa e deixa sentar de novo.
+func levantar_da_mesa() -> void:
+	var camada := CanvasLayer.new()
+	camada.layer = 130
+	add_child(camada)
+	var preto := ColorRect.new()
+	preto.color = Color(0, 0, 0, 0)
+	preto.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	preto.set_anchors_preset(Control.PRESET_FULL_RECT)
+	camada.add_child(preto)
+	var tw: Tween = create_tween()
+	tw.tween_property(preto, "color:a", 1.0, 0.5)
+	await tw.finished
+
+	for j in jogadores:   # limpa a mesa para a próxima vez
+		j.mao.clear()
+	visual.atualizar_mao_humano(jogadores[0], 0)
+	visual.atualizar_maos_ia()
+	pilha.limpar()
+	poder.resetar()
+	mira.carta_em_foco = -1
+	visual.esconder_hud()
+	levantado = false
+	vitorias_jogadores.clear()
+	ultimo_vencedor_nome = ""
+	numero_turno_atual = 1
+	regras.resetar_ronda()
+	regras.sentido = 1
+	habilidade.resetar_ronda()
+	poder_odin.resetar_ronda()
+	acoes_humano.ocupado = false
+
+	if jogador_andando != null:
+		jogador_andando.process_mode = Node.PROCESS_MODE_INHERIT
+		for cam in jogador_andando.find_children("*", "Camera3D", true, false):
+			(cam as Camera3D).make_current()
+			break
+	Som.pagode_passeio()
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+	var tw2: Tween = create_tween()
+	tw2.tween_property(preto, "color:a", 0.0, 0.5)
+	await tw2.finished
+	camada.queue_free()
 
 func reiniciar_ronda() -> void:
 	regras.resetar_ronda()
@@ -352,16 +527,20 @@ func reiniciar_ronda() -> void:
 func proximo_turno() -> void:
 	if not jogo_ativo:
 		return
+	var partida: int = _id_partida
 	_avancar_vez()
 
 	while not jogadores[indice_jogador_atual].eh_o_player and jogo_ativo:
 		await cerebro_ia.processar_turno(jogadores[indice_jogador_atual])
+		if partida != _id_partida:
+			return   # a rodada recomeçou enquanto o deus jogava: este turno não vale mais
 		if jogo_ativo:
 			_avancar_vez()
 
 	if jogo_ativo:
 		habilidade.registrar_rodada()
 		poder_odin.registrar_rodada()
+		poder_hefesto.registrar_rodada()
 		poder.registrar_turno()
 		visual.atualizar_mao_player()
 		Som.sfx("turno_jogador", -6.0)   # "ding": voltou a vez do jogador

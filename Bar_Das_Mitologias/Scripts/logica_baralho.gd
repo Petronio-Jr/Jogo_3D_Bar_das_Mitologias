@@ -56,6 +56,10 @@ func reembaralhar_pilha_descarte():
 		return
 	else:
 		var topo = pilha_descarte.pop_back()
+		# A carta forjada do Hefesto não é do baralho: ao cobrir, ela some
+		for i in range(pilha_descarte.size() - 1, -1, -1):
+			if pilha_descarte[i].valor == Carta.Valor.FORJA:
+				pilha_descarte.remove_at(i)
 		for c in pilha_descarte:
 			# Se for coringa (Mais Quatro ou Mudar Cor), reseta a cor para PRETA
 			if c.valor == Carta.Valor.MAIS_QUATRO or c.valor == Carta.Valor.MUDAR_COR:
@@ -64,4 +68,3 @@ func reembaralhar_pilha_descarte():
 		pilha_descarte.clear()
 		pilha_descarte.append(topo)
 		cartas_baralho.shuffle()
- 

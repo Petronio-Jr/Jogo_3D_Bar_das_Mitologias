@@ -73,6 +73,15 @@ static func partida() -> void:
 		m.pagode_ligar(GerenciadorAudio.PAGODE_PARTIDA_DB)
 		m.pagode_nivel(GerenciadorAudio.PAGODE_PARTIDA_DB, 2.0)
 
+## Jukebox: troca a música de fundo; devolve o nome da faixa nova.
+static func pagode_trocar() -> String:
+	var m := g()
+	return m.pagode_trocar() if m != null else ""
+
+static func pagode_faixa() -> String:
+	var m := g()
+	return m.pagode_faixa_atual() if m != null else ""
+
 static func pagode_pausar(fade: float = 0.8) -> void:
 	var m := g()
 	if m != null:

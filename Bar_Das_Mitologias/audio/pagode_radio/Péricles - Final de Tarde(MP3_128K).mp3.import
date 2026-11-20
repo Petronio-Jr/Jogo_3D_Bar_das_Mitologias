@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dvna5fpmowjvj"
+path="res://.godot/imported/Péricles - Final de Tarde(MP3_128K).mp3-2a44472e6b9e7f7a59d3c2ec688037bb.mp3str"
+
+[deps]
+
+source_file="res://audio/pagode_radio/Péricles - Final de Tarde(MP3_128K).mp3"
+dest_files=["res://.godot/imported/Péricles - Final de Tarde(MP3_128K).mp3-2a44472e6b9e7f7a59d3c2ec688037bb.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b5wtj3msjpfj8"
+path="res://.godot/imported/hackearam me.mp3-d860438c159e04442b1c4770233d19b2.mp3str"
+
+[deps]
+
+source_file="res://audio/pagode_radio/hackearam me.mp3"
+dest_files=["res://.godot/imported/hackearam me.mp3-d860438c159e04442b1c4770233d19b2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

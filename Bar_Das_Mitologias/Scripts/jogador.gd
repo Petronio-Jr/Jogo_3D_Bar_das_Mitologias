@@ -23,7 +23,8 @@ func remover_carta(indice: int) -> Carta:
 func pode_jogar_carta(carta: Carta, topo: Carta) -> bool:
 	if carta.cor == Carta.Cor.PRETA:
 		return true
+	if topo.valor == Carta.Valor.FORJA:
+		return false   # carta forjada pelo Hefesto: só cartas pretas
 	if carta.cor == topo.cor or carta.valor == topo.valor:
 		return true
 	return false
- 

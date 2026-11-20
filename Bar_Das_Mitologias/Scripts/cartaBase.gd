@@ -4,8 +4,11 @@ extends RefCounted
 # Definindo as possíveis cores e valores de cartas 
 enum Cor {VERMELHA, AZUL, VERDE, AMARELA, PRETA}
 enum Valor {ZERO, UM, DOIS, TRES, QUATRO, CINCO, SEIS, SETE, OITO, NOVE,
-			MAIS_DOIS, INVERTER, BLOQUEIO, MAIS_QUATRO, MUDAR_COR}
+			MAIS_DOIS, INVERTER, BLOQUEIO, MAIS_QUATRO, MUDAR_COR,
+			FORJA}   # FORJA: carta da mesa forjada pelo Hefesto (preta com símbolo; nunca fica em mãos)
  
+const SIMBOLO_FORJA: String = "⚒"   # símbolo da carta forjada (se a fonte não tiver, troque por outro caractere)
+
 var cor: Cor
 var valor: Valor
  
@@ -32,5 +35,5 @@ func para_texto() -> String:
 		Valor.BLOQUEIO: return "Ø"
 		Valor.MAIS_QUATRO: return "+4"
 		Valor.MUDAR_COR: return "★"
+		Valor.FORJA: return SIMBOLO_FORJA
 		_: return "?"
- 

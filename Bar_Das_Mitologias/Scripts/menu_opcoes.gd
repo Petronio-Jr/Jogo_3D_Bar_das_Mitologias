@@ -104,7 +104,6 @@ func _construir_abas() -> void:
 	var a := _nova_aba("Áudio")
 	_slider(a, "Volume geral", "vol_geral", 0.0, 1.0, 0.05, "pct")
 	_slider(a, "Música", "vol_musica", 0.0, 1.0, 0.05, "pct")
-	_slider(a, "Pagode de fundo", "vol_pagode", 0.0, 1.0, 0.05, "pct")
 	_slider(a, "Efeitos sonoros", "vol_efeitos", 0.0, 1.0, 0.05, "pct", func(): Som.sfx("carta_jogar"))
 	_slider(a, "Vozes (Ah Puch)", "vol_vozes", 0.0, 1.0, 0.05, "pct", func(): Som.blip())
 	_checkbox(a, "Mudo (desliga todo o som)", "mudo")
@@ -139,7 +138,6 @@ func _construir_abas() -> void:
 	var j := _nova_aba("Jogo")
 	_opcao(j, "Velocidade dos deuses", "vel_deuses", ["Lenta", "Normal", "Rápida"])
 	_checkbox(j, "Deuses podem jogar combos", "combos_deuses")
-	_checkbox(j, "Mostrar as cartas dos deuses (modo treino)", "mostrar_cartas_deuses")
 
 func _nova_aba(nome: String) -> VBoxContainer:
 	var m := MarginContainer.new()

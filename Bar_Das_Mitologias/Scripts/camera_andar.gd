@@ -14,17 +14,6 @@ var rot_z_base: float = 0.0
 var _tempo_movimento: float = 0.0
 var offset_z_atual: float = 0.0
 
-# --- Pré-aquecimento (evita a "travadinha" ao virar a câmera pela 1ª vez) ---
-# A Godot só compila shaders / sobe malhas, texturas e sombras para a GPU quando
-# o objeto aparece na tela pela primeira vez. Ao girar a câmera no começo do
-# jogo, tudo que estava "fora de vista" é carregado de uma vez -> engasgo.
-# Aqui giramos a câmera escondida atrás de uma tela preta para forçar esse
-# carregamento antes do jogador ter o controle.
-@export var pre_aquecer: bool = true
-@export var passos_pre_aquecimento: int = 12   # passos do giro de 360°
-@export var frames_por_passo: int = 2
-var _aquecendo: bool = false
-
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	rot_x = rotation.x

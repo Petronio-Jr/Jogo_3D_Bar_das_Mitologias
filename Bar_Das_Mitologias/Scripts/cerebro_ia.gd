@@ -27,7 +27,10 @@ func processar_turno(ia: Jogador) -> void:
 	var index_pra_jogar: int = -1
 
 	# Combo: jogar 2+ cartas de mesmo valor juntas (nunca zera a mão nem deixa só 1 carta)
-	var combo: Array[int] = ComboCartas.escolher_para_ia(ia.mao, topo, ctrl.regras.compras_acumuladas, ctrl.cartas_minimas_apos_combo, ctrl.chance_combo_ia if bool(Configuracoes.obter("combos_deuses")) else 0.0)
+	# Hefesto com o poder pronto joga UMA carta comum (sem combo) para forjá-la
+	var forja: bool = ia.nome == "Hefesto" and ctrl.poder_hefesto.pronto and ctrl.regras.compras_acumuladas == 0
+	var chance_combo: float = ctrl.chance_combo_ia if bool(Configuracoes.obter("combos_deuses")) and not forja else 0.0
+	var combo: Array[int] = ComboCartas.escolher_para_ia(ia.mao, topo, ctrl.regras.compras_acumuladas, ctrl.cartas_minimas_apos_combo, chance_combo)
 	if not combo.is_empty():
 		await _jogar_combo(ia, combo)
 		return
@@ -45,10 +48,16 @@ func processar_turno(ia: Jogador) -> void:
 			ctrl.regras.processar_compra_cartas(ia)
 			return
 	else:
-		for i in range(ia.mao.size()):
-			if ia.pode_jogar_carta(ia.mao[i], topo):
-				index_pra_jogar = i
-				break
+		if forja:
+			for i in range(ia.mao.size()):
+				if ia.pode_jogar_carta(ia.mao[i], topo) and ctrl.poder_hefesto.eh_comum(ia.mao[i]):
+					index_pra_jogar = i
+					break
+		if index_pra_jogar == -1:
+			for i in range(ia.mao.size()):
+				if ia.pode_jogar_carta(ia.mao[i], topo):
+					index_pra_jogar = i
+					break
 
 	var animador: AnimationPlayer = animadores.get(ia.nome)
 
@@ -70,6 +79,10 @@ func processar_turno(ia: Jogador) -> void:
 
 		if not voo["mao_atualizada"]:
 			ctrl.visual.atualizar_mao_ia(ia)
+
+		# Poder do Hefesto: a carta comum que ele acabou de jogar é forjada (vira preta)
+		if forja and ia.mao.size() > 0 and ctrl.poder_hefesto.eh_comum(carta_jogada):
+			await ctrl.poder_hefesto.ativar()
 
 		if ia.mao.size() == 0:
 			ctrl.jogo_ativo = false

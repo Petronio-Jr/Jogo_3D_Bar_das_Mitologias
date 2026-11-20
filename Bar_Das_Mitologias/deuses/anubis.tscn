@@ -2,11 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://bi6fg7u48se2f" path="res://deuses/Anubis.glb" id="1_1kjf7"]
 [ext_resource type="Script" uid="uid://cv7dvnp71nibo" path="res://Scripts/deus_interativo.gd" id="2_dod7h"]
-[ext_resource type="Animation" uid="uid://bia36ra703rgh" path="res://Animações/Habilidade.res" id="2_w31jk"]
-[ext_resource type="Animation" uid="uid://dd3eju5hyxb8p" path="res://Animações/Idle.res" id="3_dod7h"]
-[ext_resource type="Animation" uid="uid://bh5chjey2lpi5" path="res://Animações/Lançar_carta.res" id="4_06qc5"]
-[ext_resource type="Animation" uid="uid://b0nym75hm283j" path="res://Animações/Comprar_carta.res" id="6_06qc5"]
-[ext_resource type="Animation" uid="uid://6o7flcxi88rs" path="res://Animações/Reclamar.res" id="7_6v6s2"]
+[ext_resource type="Animation" uid="uid://bia36ra703rgh" path="res://Animações/Anubis/Habilidade.res" id="2_w31jk"]
+[ext_resource type="Animation" uid="uid://dd3eju5hyxb8p" path="res://Animações/Anubis/Idle.res" id="3_dod7h"]
+[ext_resource type="Animation" uid="uid://bh5chjey2lpi5" path="res://Animações/Anubis/Lançar_carta.res" id="4_06qc5"]
+[ext_resource type="Animation" uid="uid://b0nym75hm283j" path="res://Animações/Anubis/Comprar_carta.res" id="6_06qc5"]
+[ext_resource type="Animation" uid="uid://6o7flcxi88rs" path="res://Animações/Anubis/Reclamar.res" id="7_6v6s2"]
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vpgwd"]
 _data = {

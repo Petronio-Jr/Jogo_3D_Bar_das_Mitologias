@@ -17,7 +17,8 @@ extends Node3D
 signal conversa_iniciada
 signal conversa_terminada
 signal conversa_inicial_concluida   # terminou a 1ª sequência de falas (libera a cadeira do tutorial)
-signal chave_entregue               # terminou a sequência pós-tutorial (as portas destrancam)
+signal chave_entregue               # terminou a conversa pós-VITÓRIA no tutorial (a porta da DIREITA destranca)
+signal chave_vitoria_entregue       # terminou a conversa pós-VITÓRIA no jogo principal (a porta da ESQUERDA destranca)
 
 # --- Falas ---
 @export var falas: Array[String] = [
@@ -29,32 +30,74 @@ signal chave_entregue               # terminou a sequência pós-tutorial (as po
 	"Sua alma",
 	"Eu gostaria de te oferecer o desafio principal do estabelecimento",
 	"Mas antes devemos conhecer as regras do jogo não é mesmo?",
-	"Fale com Shiva, ele te mostrará o caminho",
+	"Fale com Shiva, ele jogará com você",
+	"Pode usar a carta especial da mesa, Órus esqueceu ela aqui, sua recarga é de 5 turnos",
+	"Vamos ver se você tem talento mortal, me procure quando acabar"
 ]
 # (Opcional) animação de cada fala, na mesma ordem de "falas". Vazio = usa animacao_falando.
 @export var animacoes_falas: Array[String] = []
 
-# --- Sequência DEPOIS do tutorial (a de cima é a de ANTES e não muda) ---
-# Ao terminar de ouvir esta, ele "dá a chave" e as portas destrancam.
+# =====================================================================================
+# O que ele fala DEPOIS de cada partida. Vale sempre o resultado da ÚLTIMA partida jogada.
+#   Tutorial  (contra o Shiva):  perdeu -> `falas_tutorial_derrota`   | venceu -> `falas_depois` (+ porta da DIREITA)
+#   Principal (contra os deuses): perdeu -> `falas_jogo_derrota`      | venceu -> `falas_jogo_vitoria` (+ porta da ESQUERDA)
+# =====================================================================================
+@export_group("Depois do tutorial")
+# PERDEU o tutorial: ele fala uma frase e manda tentar de novo. Nada destranca.
+@export var falas_tutorial_derrota: Array[String] = [
+	"Hehehe... Shiva ainda está sorrindo, mortal.",
+	"Não se desespere. Volte à mesa e tente outra vez.",
+]
+# VENCEU o tutorial (a fala clássica): ao terminar, a porta da DIREITA destranca.
 @export var falas_depois: Array[String] = [
 	"Hm... você jogou melhor do que eu esperava, mortal.",
 	"Mas isso foi só um aquecimento. A mesa de verdade espera na próxima sala.",
 	"Atravesse a porta e siga em frente. Os deuses já estão esperando.",
-	"Tome esta chave. Ela abre as portas que estavam trancadas para você.",
+	"Tome esta chave. Ela abre a porta do salão de jogos principal.",
 	"Eu já participei desse jogo, então posso te ajudar com algumas dicas",
 	"Anúbis gosta de pesar o jogo a cada 4 rodadas",
-	"O Pai de Todos tentará te enganar a cada 10",
-	"E Hefesto mantém sua forja pronta a cada 8",
+	"O Pai de Todos tentará te enganar a cada 10 rodadas",
+	"E Hefesto mantém sua forja pronta a cada 8 rodadas",
 	"Já falei demais, agora vá.",
 	"E lembre-se: sua alma é sua aposta",
 	"E que os deuses tenham piedade!",
+	"Me procure quando terminar",
 ]
-# (Opcional) voz de cada fala de `falas_depois`. Sem isso, essa sequência usa só o "blip".
+# (Opcional) voz de cada fala. Sem isso, usam só o "blip".
+@export var sons_falas_tutorial_derrota: Array[AudioStream] = []
 @export var sons_falas_depois: Array[AudioStream] = []
-# Portas que destrancam quando ele dá a chave. Vazio = todas as portas do grupo "portas" (porta.gd).
-@export var portas: Array[Node3D] = []
+
+@export_group("Depois do jogo principal")
+# PERDEU a série contra os deuses: ele zomba e incentiva a tentar de novo. Nada destranca.
+@export var falas_jogo_derrota: Array[String] = [
+	"Hehehe... a morte sempre vence no fim, mortal.",
+	"Os deuses riram muito de você. Eu também, confesso.",
+	"Mas não fuja agora. Volte à mesa e tente de novo... eu gosto de ver você suar.",
+]
+# VENCEU a série: ele reconhece, e ao terminar a porta da ESQUERDA destranca.
+@export var falas_jogo_vitoria: Array[String] = [
+	"Impossível... você venceu os deuses!",
+	"Faz séculos que ninguém deixa esta mesa com a própria alma.",
+	"Você me surpreendeu, mortal. Isso é raro.",
+	"Bom, você conquistou seu lugar aqui, fique o quanto quiser",
+	"Jogue o quanto quiser, divirta-se, e quando estiver pronto use essa chave",
+	"Ela abre a última porta desta sala. O que está além dela agora é seu.",
+	"Vá. E não olhe para trás.",
+	"Obrigado por jogar conosco mortal",
+]
+@export var sons_falas_jogo_derrota: Array[AudioStream] = []
+@export var sons_falas_jogo_vitoria: Array[AudioStream] = []
+
+@export_group("Portas (ambas começam trancadas)")
+# Porta da DIREITA: destranca quando você VENCE o tutorial e termina de falar com ele.
+@export var porta_apos_tutorial: Node3D
+# Porta da ESQUERDA: destranca quando você VENCE o jogo principal e termina de falar com ele.
+@export var porta_apos_vitoria: Node3D
+@export_group("")
 # Controlador do tutorial (vazio = procura o nó do grupo "controlador_tutorial").
 @export var controlador_tutorial: Node
+# Controlador do jogo principal (vazio = procura o nó do grupo "controlador_jogo").
+@export var controlador_jogo: Node
 
 # --- Animações ---
 # AnimationPlayer usado pelo script. Vazio = procura "AnimationPlayer2" e, se não
@@ -105,9 +148,11 @@ var _jogador: Node3D
 var _jogador_na_area: bool = false
 var _conversando: bool = false
 var conversou_antes: bool = false     # ouviu a sequência inicial inteira (a cadeira do tutorial só libera depois)
-var _tutorial_feito: bool = false     # o tutorial já acabou: agora vale a sequência `falas_depois`
-var _sequencia_depois: bool = false   # qual sequência está sendo falada agora
-var _chave_dada: bool = false
+enum Sequencia { ANTES, TUT_DERROTA, TUT_VITORIA, JOGO_DERROTA, JOGO_VITORIA }
+var _ultimo_resultado: Sequencia = Sequencia.ANTES   # resultado da ÚLTIMA partida (decide o que ele fala)
+var _sequencia: Sequencia = Sequencia.ANTES          # qual sequência está sendo falada agora
+var _porta_tutorial_aberta: bool = false
+var _porta_vitoria_aberta: bool = false
 var _indice: int = 0
 var _id_fala: int = 0
 
@@ -127,7 +172,7 @@ var _offset_prompt: Vector3 = Vector3.ZERO
 func _ready() -> void:
 	_yaw_original = rotation.y
 	add_to_group("ah_puch")
-	_ligar_tutorial.call_deferred()
+	_ligar_controladores.call_deferred()
 
 	_preparar_animacao()
 	_tocar_idle()
@@ -150,7 +195,7 @@ func _input(event: InputEvent) -> void:
 	if _conversando:
 		get_viewport().set_input_as_handled()
 		_avancar()
-	elif _jogador_na_area and not (falas_depois if _tutorial_feito else falas).is_empty():
+	elif _jogador_na_area and not _lista_atual().is_empty():
 		get_viewport().set_input_as_handled()
 		_iniciar()
 
@@ -171,7 +216,7 @@ func _on_body_exited(body: Node3D) -> void:
 
 func _iniciar() -> void:
 	_conversando = true
-	_sequencia_depois = _tutorial_feito
+	_sequencia = _sequencia_atual()
 	_indice = 0
 	_set_prompt(false)
 	if travar_jogador and _jogador != null:
@@ -222,7 +267,7 @@ func _mostrar_fala() -> void:
 	_voz_da_fala = _resolver_voz(_indice)
 
 	var anim: String = animacao_falando
-	if not _sequencia_depois and _indice < animacoes_falas.size() and animacoes_falas[_indice] != "":
+	if _sequencia == Sequencia.ANTES and _indice < animacoes_falas.size() and animacoes_falas[_indice] != "":
 		anim = animacoes_falas[_indice]
 	_tocar(anim)
 
@@ -255,41 +300,98 @@ func _mostrar_fala() -> void:
 	if _voz_da_fala != null:
 		Som.voz(_voz_da_fala)   # voz gravada começa junto com o texto
 
-## Sequência de falas em uso (antes ou depois do tutorial).
+## Qual sequência vale AGORA: o resultado da última partida (ou a inicial, se ainda não jogou).
+func _sequencia_atual() -> Sequencia:
+	return _ultimo_resultado
+
+func _lista_de(seq: Sequencia) -> Array[String]:
+	match seq:
+		Sequencia.TUT_DERROTA: return falas_tutorial_derrota
+		Sequencia.TUT_VITORIA: return falas_depois
+		Sequencia.JOGO_DERROTA: return falas_jogo_derrota
+		Sequencia.JOGO_VITORIA: return falas_jogo_vitoria
+	return falas
+
+func _lista_atual() -> Array[String]:
+	return _lista_de(_sequencia_atual())
+
+## Sequência de falas em uso na conversa que está rolando.
 func _lista() -> Array[String]:
-	return falas_depois if _sequencia_depois else falas
+	return _lista_de(_sequencia)
 
 ## Chegou ao fim da sequência (não vale sair da área no meio da conversa).
 func _concluir() -> void:
-	if _sequencia_depois:
-		if _chave_dada:
-			return
-		_chave_dada = true
-		var alvo: Array[Node3D] = portas.duplicate()
-		if alvo.is_empty():
-			for p in get_tree().get_nodes_in_group("portas"):
-				alvo.append(p as Node3D)
-		for p in alvo:
-			if p != null and p.has_method("destrancar"):
-				p.destrancar()
-		chave_entregue.emit()
-	elif not conversou_antes:
-		conversou_antes = true
-		conversa_inicial_concluida.emit()
+	print("[AhPuch] Conversa concluída: ", Sequencia.keys()[_sequencia])
+	match _sequencia:
+		Sequencia.TUT_VITORIA:
+			if not _porta_tutorial_aberta:
+				_porta_tutorial_aberta = true
+				_destrancar(porta_apos_tutorial)      # porta da DIREITA
+				chave_entregue.emit()
+		Sequencia.JOGO_VITORIA:
+			if not _porta_vitoria_aberta:
+				_porta_vitoria_aberta = true
+				_destrancar(porta_apos_vitoria)       # porta da ESQUERDA
+				chave_vitoria_entregue.emit()
+		Sequencia.ANTES:
+			if not conversou_antes:
+				conversou_antes = true
+				conversa_inicial_concluida.emit()
+		_:
+			pass   # derrotas: só conversa, nada destranca
 
-func _ligar_tutorial() -> void:
-	var c: Node = controlador_tutorial if controlador_tutorial != null else get_tree().get_first_node_in_group("controlador_tutorial")
-	if c != null and c.has_signal("tutorial_terminou"):
-		c.connect("tutorial_terminou", func(_venceu: bool): _tutorial_feito = true)
+## Destranca a porta. Se o campo apontar para um nó dentro da porta (malha, área...), sobe até achar
+## o que tem o script porta.gd. Escreve no Output o que aconteceu (ajuda a achar erro de ligação).
+func _destrancar(porta: Node3D) -> void:
+	if porta == null:
+		push_warning("[AhPuch] A porta não foi arrastada para o Inspector: nada para destrancar.")
+		return
+	var alvo: Node = porta
+	while alvo != null and not alvo.has_method("destrancar"):
+		alvo = alvo.get_parent()
+	if alvo == null:   # talvez o script esteja num filho
+		for filho in porta.find_children("*", "", true, false):
+			if filho.has_method("destrancar"):
+				alvo = filho
+				break
+	if alvo == null:
+		push_warning("[AhPuch] '%s' não tem o script porta.gd (nem pai nem filho): não consigo destrancar." % porta.name)
+		return
+	alvo.call("destrancar")
+	print("[AhPuch] Porta destrancada: ", alvo.get_path())
+
+func _on_tutorial_terminou(venceu: bool) -> void:
+	_ultimo_resultado = Sequencia.TUT_VITORIA if venceu else Sequencia.TUT_DERROTA
+	print("[AhPuch] Tutorial terminou (venceu = ", venceu, "). Fale com ele para ouvir a frase.")
+
+func _on_serie_terminada(venceu: bool) -> void:
+	_ultimo_resultado = Sequencia.JOGO_VITORIA if venceu else Sequencia.JOGO_DERROTA
+	print("[AhPuch] Jogo principal terminou (venceu = ", venceu, "). Fale com ele para ouvir a frase.")
+
+func _ligar_controladores() -> void:
+	var t: Node = controlador_tutorial if controlador_tutorial != null else get_tree().get_first_node_in_group("controlador_tutorial")
+	if t != null and t.has_signal("tutorial_terminou"):
+		t.connect("tutorial_terminou", _on_tutorial_terminou)
 	else:
-		push_warning("[AhPuch] Controlador do tutorial não encontrado: a sequência pós-tutorial não vai tocar.")
+		push_warning("[AhPuch] Controlador do tutorial não encontrado: as falas pós-tutorial não vão tocar.")
+	var j: Node = controlador_jogo if controlador_jogo != null else get_tree().get_first_node_in_group("controlador_jogo")
+	if j != null and j.has_signal("serie_terminada"):
+		j.connect("serie_terminada", _on_serie_terminada)
+	else:
+		push_warning("[AhPuch] Controlador do jogo principal não encontrado: as falas pós-jogo não vão tocar.")
 
 func _resolver_voz(indice: int) -> AudioStream:
-	if _sequencia_depois:
-		return sons_falas_depois[indice] if indice < sons_falas_depois.size() else null
-	if indice < sons_falas.size() and sons_falas[indice] != null:
-		return sons_falas[indice]
-	return Som.stream_fala(indice) if voz_automatica else null
+	var vozes: Array[AudioStream] = []
+	match _sequencia:
+		Sequencia.TUT_DERROTA: vozes = sons_falas_tutorial_derrota
+		Sequencia.TUT_VITORIA: vozes = sons_falas_depois
+		Sequencia.JOGO_DERROTA: vozes = sons_falas_jogo_derrota
+		Sequencia.JOGO_VITORIA: vozes = sons_falas_jogo_vitoria
+		_:
+			if indice < sons_falas.size() and sons_falas[indice] != null:
+				return sons_falas[indice]
+			return Som.stream_fala(indice) if voz_automatica else null
+	return vozes[indice] if indice < vozes.size() else null
 
 func _completar_texto() -> void:
 	_digitando = false

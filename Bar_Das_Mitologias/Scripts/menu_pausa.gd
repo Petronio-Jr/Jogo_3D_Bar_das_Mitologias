@@ -8,10 +8,18 @@ var _raiz: Control
 var _opcoes_abertas: bool = false
 var _botao_retomar: Button
 
+## Só existe UM menu de pausa por vez (o jogo e o tutorial são dois controladores e cada um chamava
+## instalar: ficavam dois menus, um por cima do outro, e o ESC só fechava um deles).
 static func instalar(pai: Node) -> MenuPausa:
+	for existente in pai.get_tree().get_nodes_in_group("menu_pausa"):
+		if is_instance_valid(existente) and not existente.is_queued_for_deletion():
+			return existente as MenuPausa
 	var m := MenuPausa.new()
 	pai.add_child(m)
 	return m
+
+func _enter_tree() -> void:
+	add_to_group("menu_pausa")
 
 func _ready() -> void:
 	layer = 150
@@ -33,9 +41,12 @@ func _input(event: InputEvent) -> void:
 func _pode_abrir() -> bool:
 	var arvore := get_tree()
 	return arvore.get_first_node_in_group("menu_inicial") == null \
-		and arvore.get_first_node_in_group("loading_inicio") == null
+		and arvore.get_first_node_in_group("loading_inicio") == null \
+		and arvore.get_first_node_in_group("creditos_rolando") == null
 
 func _abrir() -> void:
+	if _raiz.visible:
+		return
 	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_raiz.visible = true

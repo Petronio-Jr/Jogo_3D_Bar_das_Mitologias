@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://go0kv24x5bua"
+path="res://.godot/imported/11 - Manda Áudio_44341001.mp3-3d09a54b97d867959dd19712b44052e0.mp3str"
+
+[deps]
+
+source_file="res://audio/pagode_radio/11 - Manda Áudio_44341001.mp3"
+dest_files=["res://.godot/imported/11 - Manda Áudio_44341001.mp3-3d09a54b97d867959dd19712b44052e0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

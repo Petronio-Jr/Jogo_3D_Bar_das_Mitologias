@@ -29,7 +29,7 @@ static func _indice_fps(v: int) -> int:
 
 static func _montar_padrao() -> void:
 	_padrao = {
-		"vol_geral": 1.0, "vol_musica": 1.0, "vol_pagode": 1.0, "vol_efeitos": 1.0, "vol_vozes": 1.0, "mudo": false,
+		"vol_geral": 1.0, "vol_musica": 1.0, "vol_efeitos": 1.0, "vol_vozes": 1.0, "mudo": false,
 		"modo_tela": _modo_tela_atual(),
 		# Gráficos: padrão ALTO (MSAA 4x, resolução 100%, VSync ligado, FPS máx. 60)
 		"vsync": true,
@@ -38,7 +38,7 @@ static func _montar_padrao() -> void:
 		"fps_max": FPS_OPCOES.find(60),
 		"mostrar_fps": false,
 		"sens": 1.0, "inverter_y": false,
-		"vel_deuses": 1, "combos_deuses": true, "mostrar_cartas_deuses": false,
+		"vel_deuses": 1, "combos_deuses": true,
 	}
 
 static func garantir() -> void:

@@ -157,9 +157,11 @@ func _criar_players() -> void:
 func _aplicar_volumes() -> void:
 	var mudo: float = -80.0
 	# Os volumes das Opções (Configuracoes) entram somados em dB
-	_set_bus("Musica", mudo if _mudo_musica else VOLUME_MUSICA_DB + _duck_db + Configuracoes.db("vol_musica"))
-	_set_bus("Pagode", mudo if _mudo_musica else _pagode_nivel_db + _duck_db + _radio_abafa_db + Configuracoes.db("vol_pagode"))
-	_set_bus("Radio", mudo if _mudo_musica else RADIO_VOLUME_DB + _duck_db + Configuracoes.db("vol_pagode"))
+	# O controle "Música" do menu vale para TODA a música: trilha, pagode de fundo, jukebox e rádio
+	var vol_musica: float = Configuracoes.db("vol_musica")
+	_set_bus("Musica", mudo if _mudo_musica else VOLUME_MUSICA_DB + _duck_db + vol_musica)
+	_set_bus("Pagode", mudo if _mudo_musica else _pagode_nivel_db + _duck_db + _radio_abafa_db + vol_musica)
+	_set_bus("Radio", mudo if _mudo_musica else RADIO_VOLUME_DB + _duck_db + vol_musica)
 	_set_bus("SFX", VOLUME_SFX_DB + Configuracoes.db("vol_efeitos"))
 	_set_bus("Voz", VOLUME_VOZ_DB + Configuracoes.db("vol_vozes"))
 
@@ -304,16 +306,6 @@ func pagode_ligar(nivel_db: float = PAGODE_PASSEIO_DB, fade: float = 3.0) -> voi
 	_pagode_pausado = false
 	_tocar_proxima_faixa(fade)
 
-func pagode_desligar(fade: float = 2.0) -> void:
-	_pagode_ligado = false
-	if _tween_pagode != null and _tween_pagode.is_valid():
-		_tween_pagode.kill()
-	if _pagode.playing:
-		_tween_pagode = create_tween()
-		_tween_pagode.tween_property(_pagode, "volume_db", -60.0, fade)
-		_tween_pagode.tween_callback(_pagode.stop)
-
-## Muda o volume do pagode com suavidade (passeio -> partida).
 func pagode_nivel(db: float, tempo: float = 2.0) -> void:
 	if _tween_nivel_pagode != null and _tween_nivel_pagode.is_valid():
 		_tween_nivel_pagode.kill()
@@ -340,6 +332,38 @@ func pagode_retomar(fade: float = 2.0) -> void:
 		_tween_pagode.kill()
 	_tween_pagode = create_tween()
 	_tween_pagode.tween_property(_pagode, "volume_db", 0.0, fade)
+
+## JUKEBOX: troca o pagode de fundo por OUTRA faixa (sorteada, diferente da atual). Ela toca do começo
+## até o fim (aí a playlist segue sozinha) ou até alguém trocar de novo. Devolve o nome da faixa ("" se não deu).
+func pagode_trocar(fade: float = 0.6) -> String:
+	if not is_inside_tree() or _pagode_pausado:
+		return ""
+	if _playlist.is_empty():
+		_montar_playlist()
+	if _playlist.is_empty():
+		return ""
+	var novo: int = _indice_playlist
+	if _playlist.size() > 1:
+		while novo == _indice_playlist:
+			novo = randi() % _playlist.size()
+	else:
+		novo = 0
+	_indice_playlist = novo - 1       # _tocar_proxima_faixa avança 1
+	_pagode_ligado = true
+	_primeira_faixa = false           # começa do início, não de um ponto aleatório
+	_tocar_proxima_faixa(fade)
+	return pagode_faixa_atual()
+
+## Nome "bonito" da faixa de fundo que está tocando (ex.: "samba_da_tarde.ogg" -> "Samba da Tarde").
+func pagode_faixa_atual() -> String:
+	if _pagode == null or _pagode.stream == null or _pagode.stream.resource_path == "":
+		return ""
+	var base: String = _pagode.stream.resource_path.get_file().get_basename().replace("_", " ")
+	var palavras: PackedStringArray = base.split(" ")
+	for i in range(palavras.size()):
+		if palavras[i].length() > 3 or i == 0:
+			palavras[i] = palavras[i].capitalize()
+	return " ".join(palavras)
 
 func _montar_playlist() -> void:
 	_playlist.clear()

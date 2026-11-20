@@ -38,6 +38,7 @@ var _base_marcador: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
 	add_to_group("deuses")
+	set_process(false)
 	_malhas = find_children("*", "MeshInstance3D", true, false)
 	var este: Node = self
 	if este is MeshInstance3D:
@@ -116,6 +117,7 @@ func _texto(mirado: bool) -> String:
 func set_selecionavel(ativo: bool, numero: int = 0) -> void:
 	_selecionavel = ativo
 	_numero = numero
+	set_process(ativo)   # a plaquinha só "boia" enquanto dá para escolher o deus
 	if ativo:
 		add_to_group("deuses_selecionaveis")
 		_posicionar()
@@ -179,6 +181,8 @@ func distancia_do_raio(origem: Vector3, direcao: Vector3) -> float:
 		if not is_instance_valid(m) or m.mesh == null or not m.is_visible_in_tree():
 			continue
 		var t: Transform3D = m.global_transform
+		if absf(t.basis.determinant()) < 0.000001:
+			continue
 		var inv: Transform3D = t.affine_inverse()
 		var caixa: AABB = m.get_aabb().grow(margem_mira)
 		var hit = caixa.intersects_ray(inv * origem, inv.basis * direcao)

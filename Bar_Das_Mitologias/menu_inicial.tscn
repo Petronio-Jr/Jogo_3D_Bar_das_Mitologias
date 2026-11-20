@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bm5khra8nam70"]
+[gd_scene load_steps=3 format=3 uid="uid://bm5khra8nam70"]
 
 [ext_resource type="Script" uid="uid://1b2cbjftiq5m" path="res://Scripts/menu_inicial.gd" id="1_u4fxu"]
+[ext_resource type="FontFile" uid="uid://cjnpjthq0784c" path="res://fontes/Gloock-Regular.ttf" id="2_3exob"]
 
 [node name="MenuInicial" type="Control"]
 layout_mode = 3
@@ -16,13 +17,15 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -306.5
-offset_top = 53.0
-offset_right = 306.5
-offset_bottom = 148.0
+offset_left = -334.0
+offset_top = 86.0
+offset_right = 368.5
+offset_bottom = 197.0
 grow_horizontal = 2
 size_flags_vertical = 0
-theme_override_font_sizes/font_size = 69
+theme_override_colors/font_color = Color(1, 0.58263296, 0, 1)
+theme_override_fonts/font = ExtResource("2_3exob")
+theme_override_font_sizes/font_size = 79
 text = "Bar das Mitologias"
 
 [node name="BotaoJogar" type="Button" parent="."]
@@ -30,9 +33,9 @@ unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.7586806
-anchor_top = 0.4228395
+anchor_top = 0.46141976
 anchor_right = 0.8359375
-anchor_bottom = 0.4228395
+anchor_bottom = 0.46141976
 offset_left = -41.0
 offset_top = -25.0
 offset_right = 41.0

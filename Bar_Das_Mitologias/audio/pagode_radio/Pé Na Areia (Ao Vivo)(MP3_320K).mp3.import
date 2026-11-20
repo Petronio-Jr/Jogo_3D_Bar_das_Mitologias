@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://53o34n8qaba8"
+path="res://.godot/imported/Pé Na Areia (Ao Vivo)(MP3_320K).mp3-7a1061ea1af5ef4b4786ae4fd92d1a0e.mp3str"
+
+[deps]
+
+source_file="res://audio/pagode_radio/Pé Na Areia (Ao Vivo)(MP3_320K).mp3"
+dest_files=["res://.godot/imported/Pé Na Areia (Ao Vivo)(MP3_320K).mp3-7a1061ea1af5ef4b4786ae4fd92d1a0e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

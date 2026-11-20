@@ -6,6 +6,8 @@ extends RefCounted
 ##   por `duracao_poder` segundos (5 s); depois elas voltam para baixo.
 ## - Depois de usar, precisa esperar `turnos_recarga_poder` turnos para usar de novo.
 
+const VOLUME_SOM_DB: float = -9.0   # volume dos sons do seu poder (mais negativo = mais baixo)
+
 var ctrl: ControladorJogo
 
 var no: Node3D
@@ -18,6 +20,8 @@ var _q_base: Quaternion = Quaternion.IDENTITY
 var _pos_base: Vector3 = Vector3.ZERO
 var _angulo_virada: float = 0.0
 var _tween_virada: Tween
+var _malhas: Array = []          # malhas do baralho de poder (calculadas uma vez: a mira testa isso todo frame)
+var _malhas_prontas: bool = false
 
 
 func _init(controlador: ControladorJogo) -> void:
@@ -70,24 +74,24 @@ func pode_ativar() -> bool:
 func ativar() -> void:
 	if not pode_ativar():
 		if recarga_restante > 0 and ctrl.vez_do_jogador():
-			Som.sfx("poder_recarga")
-			ctrl.visual.mensagem("Poder em recarga: %d turno(s)." % recarga_restante)
+			Som.sfx("poder_recarga", VOLUME_SOM_DB)
+			ctrl.visual.mensagem_poder("Habilidade em recarga: %d turno(s)." % recarga_restante)
 			ctrl.ao_poder_em_recarga(recarga_restante)
 		return
 	revelando = true
 	recarga_restante = ctrl.turnos_recarga_poder
 	_id_ativacao += 1
 	var id: int = _id_ativacao
-	Som.sfx("poder_ativar")
+	Som.sfx("poder_ativar", VOLUME_SOM_DB)
 	_aplicar_revelacao(true)   # vira as cartas de todos os deuses
 	_virar(true)               # o baralho de poder vira para o outro lado
-	ctrl.visual.mensagem("Poder ativado! Cartas reveladas por %d segundos." % int(ctrl.duracao_poder))
+	ctrl.visual.mensagem_poder("O olho que tudo vê! Cartas reveladas por %d segundos." % int(ctrl.duracao_poder))
 	_pulsar()
 
 	await ctrl.get_tree().create_timer(ctrl.duracao_poder, false).timeout
 	if id == _id_ativacao and revelando:
 		revelando = false
-		Som.sfx("poder_fim")
+		Som.sfx("poder_fim", VOLUME_SOM_DB)
 		_aplicar_revelacao(false)   # as cartas voltam para baixo
 		_virar(false)               # o baralho de poder desvira
 		if ctrl.jogo_ativo and not ctrl.jogadores.is_empty():
@@ -126,10 +130,10 @@ func _aplicar_revelacao(ativo: bool, animar: bool = true) -> void:
 
 func texto_status() -> String:
 	if revelando:
-		return "Poder ativo!"
+		return "Habilidade ativa!"
 	if recarga_restante <= 0:
-		return "Poder pronto! Clique no baralho de poder"
-	return "Poder disponível em %d turno(s)" % recarga_restante
+		return "     Habilidade Carregada"
+	return "Habilidade disponível em %d turno(s)" % recarga_restante
 
 # --- Interação pela mira ---
 
@@ -138,15 +142,21 @@ func distancia_do_raio(origem: Vector3, direcao: Vector3) -> float:
 	if no == null or not is_instance_valid(no) or not no.is_visible_in_tree():
 		return INF
 	var melhor: float = INF
-	var malhas: Array = []
-	if no is MeshInstance3D:
-		malhas.append(no)
-	malhas.append_array(no.find_children("*", "MeshInstance3D", true, false))
-	for m in malhas:
+	if not _malhas_prontas:
+		_malhas_prontas = true
+		if no is MeshInstance3D:
+			_malhas.append(no)
+		_malhas.append_array(no.find_children("*", "MeshInstance3D", true, false))
+	for m in _malhas:
+		if not is_instance_valid(m):
+			continue
 		var mi: MeshInstance3D = m
 		if mi.mesh == null or not mi.is_visible_in_tree():
 			continue
-		var inv: Transform3D = mi.global_transform.affine_inverse()
+		var gt: Transform3D = mi.global_transform
+		if absf(gt.basis.determinant()) < 0.000001:
+			continue
+		var inv: Transform3D = gt.affine_inverse()
 		var acerto = mi.get_aabb().intersects_ray(inv * origem, (inv.basis * direcao).normalized())
 		if acerto != null:
 			var ponto: Vector3 = mi.global_transform * (acerto as Vector3)

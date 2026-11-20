@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://br0wdg5tfn6e1"]
+
+[ext_resource type="PackedScene" uid="uid://coiryjs70rvdv" path="res://Itens_Cenário/junkbox.glb" id="1_wf80l"]
+[ext_resource type="Script" uid="uid://06iey5n2f6yx" path="res://junkbox_interativa.gd" id="2_y2me2"]
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_y2me2"]
+albedo_color = Color(0.55078125, 0.55078125, 0.55078125, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jhugh"]
+albedo_color = Color(0.34765625, 0.17749156, 0.0006265275, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wf80l"]
+size = Vector3(4.871582, 6.8, 4.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jhugh"]
+size = Vector3(5.4, 8.1, 3.1000001)
+
+[node name="junkbox" instance=ExtResource("1_wf80l")]
+
+[node name="JunkBoox" parent="." index="0"]
+surface_material_override/1 = SubResource("ORMMaterial3D_y2me2")
+surface_material_override/2 = SubResource("StandardMaterial3D_jhugh")
+
+[node name="Area3D" type="Area3D" parent="." index="1"]
+script = ExtResource("2_y2me2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29769087, 2.5, -0.4399414)
+shape = SubResource("BoxShape3D_wf80l")
+debug_color = Color(0.70196074, 0.049988735, 0, 0.41960785)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.40000015, 1.7500001, -1.85)
+shape = SubResource("BoxShape3D_jhugh")

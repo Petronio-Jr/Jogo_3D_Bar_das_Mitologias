@@ -34,18 +34,3 @@ func girar_graus(graus: float) -> void:
 	tween_rotacao.set_ease(Tween.EASE_OUT)
 	tween_rotacao.set_trans(Tween.TRANS_CUBIC)
 	tween_rotacao.tween_property(self, "rotation:y", angulo_destino, duracao_giro)
-
-func atualizar_visual_carta(carta_dado: Carta) -> void:
-	if carta_dado == null:
-		return
-		
-	if label_texto:
-		label_texto.text = carta_dado.para_texto()
-		label_texto2.text = carta_dado.para_texto()
-		label_texto3.text = carta_dado.para_texto()
-	
-	if mesh_instance:
-		var mat_original = mesh_instance.get_surface_override_material(0)
-		var mat_unico: StandardMaterial3D = mat_original.duplicate() if mat_original else StandardMaterial3D.new()
-		mat_unico.albedo_color = CORES_CARTA.get(carta_dado.cor, Color.WHITE)
-		mesh_instance.set_surface_override_material(0, mat_unico)

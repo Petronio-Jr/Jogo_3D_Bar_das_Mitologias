@@ -13,6 +13,8 @@ var carta_em_foco: int = -1
 var baralho_em_foco: bool = false
 var objeto_em_foco: Node = null
 var poder_em_foco: bool = false
+var _cache_interativos: Array[Node] = []
+var _quadro_cache: int = -100
 
 func _init(controlador: ControladorJogo) -> void:
 	ctrl = controlador
@@ -106,13 +108,25 @@ func detectar_alvo(incluir_jogo: bool = true) -> Dictionary:
 			resultado = {"tipo": Alvo.PODER, "indice": -1, "no": null}
 
 	var grupo: String = "deuses_selecionaveis" if escolhendo_deus else "interativos_mira"
-	for no in ctrl.get_tree().get_nodes_in_group(grupo):
+	for no in _nos_do_grupo(grupo):
 		if is_instance_valid(no) and no.has_method("distancia_do_raio"):
 			var dist: float = no.distancia_do_raio(origem, direcao)
 			if dist < melhor:
 				melhor = dist
 				resultado = {"tipo": Alvo.OBJETO, "indice": -1, "no": no}
 	return resultado
+
+## Lista do grupo com cache curto: não pede a lista inteira à árvore a cada frame.
+## (a escolha de deus muda o grupo na hora, então esse não usa cache)
+func _nos_do_grupo(grupo: String) -> Array[Node]:
+	var quadro: int = Engine.get_process_frames()
+	if grupo != "interativos_mira" or quadro - _quadro_cache > 20 or _cache_interativos.is_empty():
+		var lista: Array[Node] = ctrl.get_tree().get_nodes_in_group(grupo)
+		if grupo == "interativos_mira":
+			_cache_interativos = lista
+			_quadro_cache = quadro
+		return lista
+	return _cache_interativos
 
 # --- Foco (hover) — chamado todo frame pelo _process do controlador ---
 

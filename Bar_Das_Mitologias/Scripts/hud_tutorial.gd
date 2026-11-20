@@ -2,7 +2,7 @@ class_name HudTutorial
 extends CanvasLayer
 ## Textos pequenos do tutorial, montados por código (não precisa de cena):
 ##  - painel de INFORMAÇÃO no canto superior direito (comandos, cartas, explicação das habilidades);
-##  - OBJETIVO no topo ("derrote o deus");
+## 
 ##  - linha de STATUS embaixo ("Sua vez!", "Poder ativado!"...);
 ##  - fade preto (usado ao sair do tutorial).
 ## Tudo começa escondido: use mostrar(true) quando o tutorial começar.
@@ -12,12 +12,9 @@ var _info: PanelContainer
 var _info_titulo: Label
 var _info_texto: RichTextLabel
 var _info_rodape: Label
-var _objetivo: PanelContainer
-var _objetivo_texto: Label
 var _status: Label
 var _fade: ColorRect
 var _tween_info: Tween
-var _tween_obj: Tween
 
 func _ready() -> void:
 	layer = 120
@@ -28,7 +25,6 @@ func mostrar(ativo: bool) -> void:
 	visible = ativo
 	if not ativo:
 		esconder_info()
-		limpar_objetivo()
 		definir_status("")
 		_fade.color.a = 0.0
 
@@ -53,18 +49,6 @@ func esconder_info() -> void:
 	_info.visible = false
 
 # ------------------------------------------------------------------ Objetivo e status
-
-func definir_objetivo(texto: String) -> void:
-	_objetivo_texto.text = texto
-	_objetivo.visible = true
-	_objetivo.modulate.a = 0.0
-	if _tween_obj != null and _tween_obj.is_valid():
-		_tween_obj.kill()
-	_tween_obj = create_tween()
-	_tween_obj.tween_property(_objetivo, "modulate:a", 1.0, 0.5)
-
-func limpar_objetivo() -> void:
-	_objetivo.visible = false
 
 func definir_status(texto: String) -> void:
 	_status.text = texto
@@ -138,18 +122,6 @@ func _construir() -> void:
 	_info_rodape = _rotulo(14, Color(1, 1, 1, 0.55))
 	_info_rodape.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	v.add_child(_info_rodape)
-
-	# --- Objetivo (topo) ---
-	_objetivo = PanelContainer.new()
-	_ignorar(_objetivo)
-	_objetivo.add_theme_stylebox_override("panel", _caixa(dourado))
-	_objetivo.anchor_left = 0.5
-	_objetivo.anchor_right = 0.5
-	_objetivo.offset_top = 18.0
-	_objetivo.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	_raiz.add_child(_objetivo)
-	_objetivo_texto = _rotulo(24, dourado)
-	_objetivo.add_child(_objetivo_texto)
 
 	# --- Status (embaixo) ---
 	_status = _rotulo(20, Color(1, 1, 1, 0.9))

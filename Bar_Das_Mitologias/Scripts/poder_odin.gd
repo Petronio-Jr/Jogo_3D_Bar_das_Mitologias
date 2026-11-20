@@ -4,6 +4,8 @@ extends RefCounted
 ## o tamanho da sua mão com a do jogador. Se a dele for MAIOR, as mãos são trocadas
 ## (com animação das cartas voando de uma mão para a outra); senão, ele mantém.
 
+const VOLUME_SOM_DB: float = -10.0   # volume dos corvos (mais negativo = mais baixo)
+
 var ctrl: ControladorJogo
 
 var rodadas_desde_checagem: int = 0
@@ -43,8 +45,15 @@ func ativar() -> void:
 
 	em_andamento = true
 	ctrl.mira.carta_em_foco = -1
-	Som.sfx("deus_selecionado")   # som de "Odin está avaliando"
-	Som.sfx("corvos_odin")        # os corvos grasnam sempre que o poder dispara (troque ou não as mãos)
+	Som.sfx("odin_corvos", VOLUME_SOM_DB)        # bando de corvos: toca sempre que o poder dispara (a checagem), troque ou não as mãos
+	# Os corvos grasnam SEMPRE na checagem (a cada `rodadas_para_poder_odin`), mas o poder só ocorre com uma chance
+	if not ctrl.testar_poder_odin and randf() >= ctrl.chance_poder_odin:
+		ctrl.visual.mensagem("Os corvos de Odin sobrevoam a mesa...")
+		await ctrl.get_tree().create_timer(1.8, false).timeout
+		em_andamento = false
+		ctrl.visual.atualizar_indicador_turno()
+		return
+
 	ctrl.visual.mensagem("Odin compara os baralhos...")
 	await ctrl.get_tree().create_timer(1.2, false).timeout
 
@@ -75,7 +84,7 @@ func _trocar_maos(odin: Jogador, humano: Jogador) -> void:
 	# Dados que as cartas "fantasma" precisam, capturados ANTES da troca
 	var fantasmas: Array[Node3D] = []
 	var tween: Tween = null
-	Som.sfx("poder_ativar")       # as cartas começam a voar
+	Som.sfx("odin_troca", VOLUME_SOM_DB)         # revoada de corvos quando as cartas começam a voar
 	if pode_animar:
 		tween = ctrl.create_tween().set_parallel(true)
 		fantasmas.append_array(_lancar_fantasmas(tween, humano, cont_humano, cont_odin, false))  # humano -> Odin
@@ -88,7 +97,6 @@ func _trocar_maos(odin: Jogador, humano: Jogador) -> void:
 
 	if tween != null:
 		await tween.finished
-	Som.sfx("poder_fim")          # as mãos pousaram trocadas
 
 	# Reconstrói as mãos já com as cartas novas (aparecem exatamente onde os fantasmas pousaram)
 	ctrl.visual.atualizar_mao_player()

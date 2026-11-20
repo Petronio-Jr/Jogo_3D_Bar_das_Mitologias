@@ -1,0 +1,342 @@
+[gd_scene load_steps=11 format=3 uid="uid://bi386dxi3q745"]
+
+[ext_resource type="PackedScene" uid="uid://cswiuen3sfthn" path="res://deuses/shiva.glb" id="1_kv3nh"]
+[ext_resource type="Animation" uid="uid://c8w6g5l7ahrob" path="res://Animações/Shiva/Comprar_carta.res" id="2_d0r07"]
+[ext_resource type="Animation" uid="uid://qrjr5kk5yscu" path="res://Animações/Shiva/idle.res" id="3_11sdw"]
+[ext_resource type="Animation" uid="uid://c508opde6qhrr" path="res://Animações/Shiva/Jogar_carta.res" id="4_wl1ts"]
+[ext_resource type="Animation" uid="uid://cd1kor1pt0p72" path="res://Animações/Shiva/Reclamar.res" id="5_s7x3t"]
+
+[sub_resource type="Animation" id="Animation_k140l"]
+resource_name = "Idle"
+length = 3.0416667
+tracks/0/type = "rotation_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Armação/Skeleton3D:bacia")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 1, 0, 0, 0)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Armação/Skeleton3D:adutor.L")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 1.8197756e-08, -7.1489545e-08, -0.40237957, 0.9154729)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Armação/Skeleton3D:perna.L")
+tracks/2/interp = 0
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0.049166564, 0.018500421, 0.31905493, 0.9462792)
+tracks/3/type = "rotation_3d"
+tracks/3/imported = true
+tracks/3/enabled = true
+tracks/3/path = NodePath("Armação/Skeleton3D:canela.L")
+tracks/3/interp = 0
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, -0.03864048, 0.00020841205, 0.06406093, 0.9971976)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = true
+tracks/4/enabled = true
+tracks/4/path = NodePath("Armação/Skeleton3D:pe.L")
+tracks/4/interp = 0
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, -0.71677136, 0.019056221, 0.045863956, 0.69553745)
+tracks/5/type = "rotation_3d"
+tracks/5/imported = true
+tracks/5/enabled = true
+tracks/5/path = NodePath("Armação/Skeleton3D:adutor.R")
+tracks/5/interp = 0
+tracks/5/loop_wrap = true
+tracks/5/keys = PackedFloat32Array(0, 1, 1.8197756e-08, 7.1489545e-08, 0.40237957, 0.9154729)
+tracks/6/type = "rotation_3d"
+tracks/6/imported = true
+tracks/6/enabled = true
+tracks/6/path = NodePath("Armação/Skeleton3D:perna.R")
+tracks/6/interp = 0
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(0, 1, 0.049166564, -0.018500421, -0.31905493, 0.9462792)
+tracks/7/type = "rotation_3d"
+tracks/7/imported = true
+tracks/7/enabled = true
+tracks/7/path = NodePath("Armação/Skeleton3D:canela.R")
+tracks/7/interp = 0
+tracks/7/loop_wrap = true
+tracks/7/keys = PackedFloat32Array(0, 1, -0.03864048, -0.00020841205, -0.06406093, 0.9971976)
+tracks/8/type = "rotation_3d"
+tracks/8/imported = true
+tracks/8/enabled = true
+tracks/8/path = NodePath("Armação/Skeleton3D:Coluna")
+tracks/8/interp = 0
+tracks/8/loop_wrap = true
+tracks/8/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/9/type = "rotation_3d"
+tracks/9/imported = true
+tracks/9/enabled = true
+tracks/9/path = NodePath("Armação/Skeleton3D:cravi.L")
+tracks/9/interp = 0
+tracks/9/loop_wrap = true
+tracks/9/keys = PackedFloat32Array(0, 1, -2.6692542e-08, -2.6692542e-08, -0.7071068, 0.7071068)
+tracks/10/type = "rotation_3d"
+tracks/10/imported = true
+tracks/10/enabled = true
+tracks/10/path = NodePath("Armação/Skeleton3D:braço.L")
+tracks/10/interp = 0
+tracks/10/loop_wrap = true
+tracks/10/keys = PackedFloat32Array(0, 1, -0.044153314, -0.0012436747, -0.61498976, 0.787297)
+tracks/11/type = "rotation_3d"
+tracks/11/imported = true
+tracks/11/enabled = true
+tracks/11/path = NodePath("Armação/Skeleton3D:antebraço.L")
+tracks/11/interp = 0
+tracks/11/loop_wrap = true
+tracks/11/keys = PackedFloat32Array(0, 1, 0.18121666, 0.0031840857, 0.016325848, 0.98330253)
+tracks/12/type = "rotation_3d"
+tracks/12/imported = true
+tracks/12/enabled = true
+tracks/12/path = NodePath("Armação/Skeleton3D:mão.L")
+tracks/12/interp = 0
+tracks/12/loop_wrap = true
+tracks/12/keys = PackedFloat32Array(0, 1, -0.069065854, 0.009510328, -0.08699657, 0.9937661)
+tracks/13/type = "rotation_3d"
+tracks/13/imported = true
+tracks/13/enabled = true
+tracks/13/path = NodePath("Armação/Skeleton3D:cravi.R")
+tracks/13/interp = 0
+tracks/13/loop_wrap = true
+tracks/13/keys = PackedFloat32Array(0, 1, -2.6692542e-08, 2.6692542e-08, 0.7071068, 0.7071068)
+tracks/14/type = "rotation_3d"
+tracks/14/imported = true
+tracks/14/enabled = true
+tracks/14/path = NodePath("Armação/Skeleton3D:braço.R")
+tracks/14/interp = 0
+tracks/14/loop_wrap = true
+tracks/14/keys = PackedFloat32Array(0, 1, -0.044153314, 0.0012436747, 0.61498976, 0.787297)
+tracks/15/type = "rotation_3d"
+tracks/15/imported = true
+tracks/15/enabled = true
+tracks/15/path = NodePath("Armação/Skeleton3D:antebraço.R")
+tracks/15/interp = 0
+tracks/15/loop_wrap = true
+tracks/15/keys = PackedFloat32Array(0, 1, 0.18121666, -0.0031840857, -0.016325848, 0.98330253)
+tracks/16/type = "rotation_3d"
+tracks/16/imported = true
+tracks/16/enabled = true
+tracks/16/path = NodePath("Armação/Skeleton3D:mão.R")
+tracks/16/interp = 0
+tracks/16/loop_wrap = true
+tracks/16/keys = PackedFloat32Array(0, 1, -0.069065854, -0.009510328, 0.08699657, 0.9937661)
+tracks/17/type = "rotation_3d"
+tracks/17/imported = true
+tracks/17/enabled = true
+tracks/17/path = NodePath("Armação/Skeleton3D:pescoço")
+tracks/17/interp = 0
+tracks/17/loop_wrap = true
+tracks/17/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/18/type = "rotation_3d"
+tracks/18/imported = true
+tracks/18/enabled = true
+tracks/18/path = NodePath("Armação/Skeleton3D:cabeça")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = PackedFloat32Array(0, 1, 0.123103194, 0.042035695, 0.0041004783, 0.9914947, 0.033333335, 1, 0.12253187, 0.042038053, 0.0040762564, 0.9915656, 0.06666667, 1, 0.121152095, 0.042043682, 0.004017761, 0.9917351, 0.1, 1, 0.11901205, 0.042052258, 0.0039270385, 0.99199414, 0.13333334, 1, 0.116159685, 0.04206337, 0.0038061268, 0.99233216, 0.16666667, 1, 0.11264274, 0.042076584, 0.003657057, 0.99273753, 0.2, 1, 0.1083362, 0.042092055, 0.0034745368, 0.99321675, 0.23333333, 1, 0.103508994, 0.042108446, 0.0032699748, 0.99373144, 0.26666668, 1, 0.09820922, 0.042125277, 0.0030454174, 0.99426913, 0.3, 1, 0.092485234, 0.042142116, 0.0028029215, 0.994818, 0.33333334, 1, 0.086385585, 0.042158507, 0.0025445512, 0.9953662, 0.36666667, 1, 0.079884246, 0.042174224, 0.0022692126, 0.99590904, 0.4, 1, 0.07315488, 0.04218858, 0.0019842668, 0.99642587, 0.43333334, 1, 0.06624731, 0.042201318, 0.0016918273, 0.996909, 0.46666667, 1, 0.059211493, 0.042212203, 0.0013940139, 0.99735165, 0.53333336, 1, 0.04498107, 0.042227793, 0.00079183443, 0.9980947, 0.56666666, 1, 0.037937418, 0.042232342, 0.0004938563, 0.9983872, 0.6, 1, 0.031017087, 0.04223474, 0.0002011493, 0.9986261, 0.6333333, 1, 0.024270512, 0.04223514, -8.415711e-05, 0.9988129, 0.6666667, 1, 0.017747989, 0.04223369, -0.00035994075, 0.9989501, 0.7, 1, 0.011624395, 0.042230673, -0.0006188133, 0.9990401, 0.73333335, 1, 0.0058743805, 0.042226415, -0.00086185534, 0.99909043, 0.76666665, 1, 0.0005474478, 0.042221233, -0.001086982, 0.9991076, 0.8, 1, -0.0043071215, 0.042215455, -0.0012921178, 0.9990984, 0.8333333, 1, -0.0086401915, 0.04220945, -0.0014751948, 0.99907035, 0.8666667, 1, -0.012180207, 0.04220396, -0.0016247486, 0.99903345, 0.9, 1, -0.015052252, 0.042199116, -0.0017460729, 0.99899435, 0.93333334, 1, -0.017207626, 0.042195242, -0.0018371167, 0.99895954, 0.96666664, 1, -0.01859755, 0.042192645, -0.0018958244, 0.9989346, 1.0333333, 1, -0.019171549, 0.041211374, -0.0019131127, 0.99896467, 1.0666667, 1, -0.019167623, 0.038844094, -0.0018961448, 0.9990597, 1.1, 1, -0.019161362, 0.035172068, -0.001869811, 0.9991958, 1.1333333, 1, -0.019152686, 0.030277368, -0.001834681, 0.9993564, 1.1666666, 1, -0.019141458, 0.024241922, -0.0017913184, 0.9995213, 1.2, 1, -0.019126946, 0.016850058, -0.0017381462, 0.9996736, 1.2333333, 1, -0.019109612, 0.008564621, -0.0016784557, 0.99977934, 1.2666667, 1, -0.01908928, -0.0005307272, -0.00161282, 0.9998164, 1.3, 1, -0.01906579, -0.010351539, -0.0015418186, 0.9997635, 1.3333334, 1, -0.019039009, -0.020812623, -0.0014660399, 0.999601, 1.3666667, 1, -0.019008609, -0.031956296, -0.0013851578, 0.99930763, 1.4, 1, -0.018975062, -0.043480977, -0.001301332, 0.99887323, 1.4333333, 1, -0.018938448, -0.055298522, -0.0012151885, 0.9982895, 1.4666667, 1, -0.018898934, -0.067320645, -0.0011273617, 0.9975518, 1.5333333, 1, -0.018812658, -0.091581024, -0.0009495754, 0.99561954, 1.5666667, 1, -0.018767035, -0.10355815, -0.0008615472, 0.994446, 1.6, 1, -0.018720418, -0.11530441, -0.00077505736, 0.9931536, 1.6333333, 1, -0.018673396, -0.12673502, -0.0006907515, 0.9917606, 1.6666666, 1, -0.018626632, -0.13776636, -0.0006092735, 0.99028945, 1.7, 1, -0.018582279, -0.14810756, -0.00053284864, 0.9887966, 1.7333333, 1, -0.018540217, -0.15780723, -0.00046112595, 0.98729575, 1.7666667, 1, -0.018501297, -0.16678792, -0.00039472186, 0.9858191, 1.8, 1, -0.018466385, -0.17497303, -0.00033424798, 0.98440003, 1.8333334, 1, -0.01843636, -0.18228687, -0.00028031072, 0.9830725, 1.8666667, 1, -0.018414706, -0.18829049, -0.00023628838, 0.98194075, 1.9, 1, -0.018400287, -0.1931957, -0.00020059821, 0.9809878, 1.9333333, 1, -0.01839395, -0.19692644, -0.00017384527, 0.9802457, 1.9666667, 1, -0.018396508, -0.19940564, -0.00015664019, 0.9797443, 2, 1, -0.018408703, -0.20055452, -0.00014959965, 0.97950953, 2.0333333, 1, -0.019413961, -0.20030051, -0.00032749466, 0.9795421, 2.0666666, 1, -0.021821924, -0.19938853, -0.00075821497, 0.97967726, 2.1, 1, -0.025556084, -0.19785172, -0.001428012, 0.97989774, 2.1333334, 1, -0.030539691, -0.19572219, -0.002323113, 0.980181, 2.1666667, 1, -0.03669555, -0.19303125, -0.0034296794, 0.98050016, 2.2, 1, -0.04425959, -0.18965998, -0.0047903573, 0.98084015, 2.2333333, 1, -0.05276026, -0.18582515, -0.0063202195, 0.981145, 2.2666667, 1, -0.062115792, -0.18155922, -0.00800462, 0.9813837, 2.3, 1, -0.07224311, -0.17689537, -0.009828673, 0.98152554, 2.3333333, 1, -0.08305785, -0.17186786, -0.011777253, 0.98154175, 2.3666666, 1, -0.094622195, -0.1664382, -0.013861706, 0.9814036, 2.4, 1, -0.10661468, -0.16075802, -0.01602408, 0.9810879, 2.4333334, 1, -0.118945226, -0.15486702, -0.018248182, 0.9805791, 2.4666667, 1, -0.13152368, -0.14880592, -0.020517778, 0.97986597, 2.5666666, 1, -0.16970651, -0.13009284, -0.027412072, 0.97648567, 2.6, 1, -0.18218023, -0.123879865, -0.029665835, 0.97497904, 2.6333334, 1, -0.19437309, -0.11775984, -0.031869564, 0.9733119, 2.6666667, 1, -0.20620143, -0.11177828, -0.034008086, 0.97150916, 2.7, 1, -0.21739496, -0.10607609, -0.03603246, 0.96963346, 2.7333333, 1, -0.2279873, -0.10064394, -0.037948664, 0.9677048, 2.7666667, 1, -0.2379053, -0.09552539, -0.039743364, 0.96576214, 2.8, 1, -0.24707788, -0.090763494, -0.04140361, 0.96384656, 2.8333333, 1, -0.25543585, -0.08640075, -0.042916764, 0.96200085, 2.8666666, 1, -0.26257783, -0.08265412, -0.04421005, 0.9603472, 2.9, 1, -0.26870257, -0.07942776, -0.045319337, 0.95887244, 2.9333334, 1, -0.27374536, -0.07676189, -0.046232805, 0.9576187, 2.9666667, 1, -0.27764115, -0.074696414, -0.046938587, 0.9566257, 3, 1, -0.28032374, -0.07327093, -0.04742462, 0.95592934, 3.0333333, 1, -0.2812501, -0.072778024, -0.047592483, 0.9556865, 3.0416667, 1, -0.28148162, -0.07265479, -0.04763444, 0.95562565)
+
+[sub_resource type="Animation" id="Animation_50hlq"]
+resource_name = "Idle_001"
+length = 3.0416667
+tracks/0/type = "rotation_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Armação/Skeleton3D:bacia")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 1, 0, 0, 0)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Armação/Skeleton3D:adutor.L")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 1.8197756e-08, -7.1489545e-08, -0.40237957, 0.9154729)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Armação/Skeleton3D:perna.L")
+tracks/2/interp = 0
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0.049166564, 0.018500421, 0.31905493, 0.9462792)
+tracks/3/type = "rotation_3d"
+tracks/3/imported = true
+tracks/3/enabled = true
+tracks/3/path = NodePath("Armação/Skeleton3D:canela.L")
+tracks/3/interp = 0
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, -0.03864048, 0.00020841205, 0.06406093, 0.9971976)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = true
+tracks/4/enabled = true
+tracks/4/path = NodePath("Armação/Skeleton3D:pe.L")
+tracks/4/interp = 0
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, -0.71677136, 0.019056221, 0.045863956, 0.69553745)
+tracks/5/type = "rotation_3d"
+tracks/5/imported = true
+tracks/5/enabled = true
+tracks/5/path = NodePath("Armação/Skeleton3D:adutor.R")
+tracks/5/interp = 0
+tracks/5/loop_wrap = true
+tracks/5/keys = PackedFloat32Array(0, 1, 1.8197756e-08, 7.1489545e-08, 0.40237957, 0.9154729)
+tracks/6/type = "rotation_3d"
+tracks/6/imported = true
+tracks/6/enabled = true
+tracks/6/path = NodePath("Armação/Skeleton3D:perna.R")
+tracks/6/interp = 0
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(0, 1, 0.049166564, -0.018500421, -0.31905493, 0.9462792)
+tracks/7/type = "rotation_3d"
+tracks/7/imported = true
+tracks/7/enabled = true
+tracks/7/path = NodePath("Armação/Skeleton3D:canela.R")
+tracks/7/interp = 0
+tracks/7/loop_wrap = true
+tracks/7/keys = PackedFloat32Array(0, 1, -0.03864048, -0.00020841205, -0.06406093, 0.9971976)
+tracks/8/type = "rotation_3d"
+tracks/8/imported = true
+tracks/8/enabled = true
+tracks/8/path = NodePath("Armação/Skeleton3D:Coluna")
+tracks/8/interp = 0
+tracks/8/loop_wrap = true
+tracks/8/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/9/type = "rotation_3d"
+tracks/9/imported = true
+tracks/9/enabled = true
+tracks/9/path = NodePath("Armação/Skeleton3D:cravi.L")
+tracks/9/interp = 0
+tracks/9/loop_wrap = true
+tracks/9/keys = PackedFloat32Array(0, 1, -2.6692542e-08, -2.6692542e-08, -0.7071068, 0.7071068)
+tracks/10/type = "rotation_3d"
+tracks/10/imported = true
+tracks/10/enabled = true
+tracks/10/path = NodePath("Armação/Skeleton3D:braço.L")
+tracks/10/interp = 0
+tracks/10/loop_wrap = true
+tracks/10/keys = PackedFloat32Array(0, 1, -0.044153314, -0.0012436747, -0.61498976, 0.787297)
+tracks/11/type = "rotation_3d"
+tracks/11/imported = true
+tracks/11/enabled = true
+tracks/11/path = NodePath("Armação/Skeleton3D:antebraço.L")
+tracks/11/interp = 0
+tracks/11/loop_wrap = true
+tracks/11/keys = PackedFloat32Array(0, 1, 0.18121666, 0.0031840857, 0.016325848, 0.98330253)
+tracks/12/type = "rotation_3d"
+tracks/12/imported = true
+tracks/12/enabled = true
+tracks/12/path = NodePath("Armação/Skeleton3D:mão.L")
+tracks/12/interp = 0
+tracks/12/loop_wrap = true
+tracks/12/keys = PackedFloat32Array(0, 1, -0.069065854, 0.009510328, -0.08699657, 0.9937661)
+tracks/13/type = "rotation_3d"
+tracks/13/imported = true
+tracks/13/enabled = true
+tracks/13/path = NodePath("Armação/Skeleton3D:cravi.R")
+tracks/13/interp = 0
+tracks/13/loop_wrap = true
+tracks/13/keys = PackedFloat32Array(0, 1, -2.6692542e-08, 2.6692542e-08, 0.7071068, 0.7071068)
+tracks/14/type = "rotation_3d"
+tracks/14/imported = true
+tracks/14/enabled = true
+tracks/14/path = NodePath("Armação/Skeleton3D:braço.R")
+tracks/14/interp = 0
+tracks/14/loop_wrap = true
+tracks/14/keys = PackedFloat32Array(0, 1, -0.044153314, 0.0012436747, 0.61498976, 0.787297)
+tracks/15/type = "rotation_3d"
+tracks/15/imported = true
+tracks/15/enabled = true
+tracks/15/path = NodePath("Armação/Skeleton3D:antebraço.R")
+tracks/15/interp = 0
+tracks/15/loop_wrap = true
+tracks/15/keys = PackedFloat32Array(0, 1, 0.18121666, -0.0031840857, -0.016325848, 0.98330253)
+tracks/16/type = "rotation_3d"
+tracks/16/imported = true
+tracks/16/enabled = true
+tracks/16/path = NodePath("Armação/Skeleton3D:mão.R")
+tracks/16/interp = 0
+tracks/16/loop_wrap = true
+tracks/16/keys = PackedFloat32Array(0, 1, -0.069065854, -0.009510328, 0.08699657, 0.9937661)
+tracks/17/type = "rotation_3d"
+tracks/17/imported = true
+tracks/17/enabled = true
+tracks/17/path = NodePath("Armação/Skeleton3D:pescoço")
+tracks/17/interp = 0
+tracks/17/loop_wrap = true
+tracks/17/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/18/type = "rotation_3d"
+tracks/18/imported = true
+tracks/18/enabled = true
+tracks/18/path = NodePath("Armação/Skeleton3D:cabeça")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = PackedFloat32Array(0, 1, 0.123103194, 0.042035695, 0.0041004783, 0.9914947, 0.033333335, 1, 0.12253187, 0.042038053, 0.0040762564, 0.9915656, 0.06666667, 1, 0.121152095, 0.042043682, 0.004017761, 0.9917351, 0.1, 1, 0.11901205, 0.042052258, 0.0039270385, 0.99199414, 0.13333334, 1, 0.116159685, 0.04206337, 0.0038061268, 0.99233216, 0.16666667, 1, 0.11264274, 0.042076584, 0.003657057, 0.99273753, 0.2, 1, 0.1083362, 0.042092055, 0.0034745368, 0.99321675, 0.23333333, 1, 0.103508994, 0.042108446, 0.0032699748, 0.99373144, 0.26666668, 1, 0.09820922, 0.042125277, 0.0030454174, 0.99426913, 0.3, 1, 0.092485234, 0.042142116, 0.0028029215, 0.994818, 0.33333334, 1, 0.086385585, 0.042158507, 0.0025445512, 0.9953662, 0.36666667, 1, 0.079884246, 0.042174224, 0.0022692126, 0.99590904, 0.4, 1, 0.07315488, 0.04218858, 0.0019842668, 0.99642587, 0.43333334, 1, 0.06624731, 0.042201318, 0.0016918273, 0.996909, 0.46666667, 1, 0.059211493, 0.042212203, 0.0013940139, 0.99735165, 0.53333336, 1, 0.04498107, 0.042227793, 0.00079183443, 0.9980947, 0.56666666, 1, 0.037937418, 0.042232342, 0.0004938563, 0.9983872, 0.6, 1, 0.031017087, 0.04223474, 0.0002011493, 0.9986261, 0.6333333, 1, 0.024270512, 0.04223514, -8.415711e-05, 0.9988129, 0.6666667, 1, 0.017747989, 0.04223369, -0.00035994075, 0.9989501, 0.7, 1, 0.011624395, 0.042230673, -0.0006188133, 0.9990401, 0.73333335, 1, 0.0058743805, 0.042226415, -0.00086185534, 0.99909043, 0.76666665, 1, 0.0005474478, 0.042221233, -0.001086982, 0.9991076, 0.8, 1, -0.0043071215, 0.042215455, -0.0012921178, 0.9990984, 0.8333333, 1, -0.0086401915, 0.04220945, -0.0014751948, 0.99907035, 0.8666667, 1, -0.012180207, 0.04220396, -0.0016247486, 0.99903345, 0.9, 1, -0.015052252, 0.042199116, -0.0017460729, 0.99899435, 0.93333334, 1, -0.017207626, 0.042195242, -0.0018371167, 0.99895954, 0.96666664, 1, -0.01859755, 0.042192645, -0.0018958244, 0.9989346, 1.0333333, 1, -0.019171549, 0.041211374, -0.0019131127, 0.99896467, 1.0666667, 1, -0.019167623, 0.038844094, -0.0018961448, 0.9990597, 1.1, 1, -0.019161362, 0.035172068, -0.001869811, 0.9991958, 1.1333333, 1, -0.019152686, 0.030277368, -0.001834681, 0.9993564, 1.1666666, 1, -0.019141458, 0.024241922, -0.0017913184, 0.9995213, 1.2, 1, -0.019126946, 0.016850058, -0.0017381462, 0.9996736, 1.2333333, 1, -0.019109612, 0.008564621, -0.0016784557, 0.99977934, 1.2666667, 1, -0.01908928, -0.0005307272, -0.00161282, 0.9998164, 1.3, 1, -0.01906579, -0.010351539, -0.0015418186, 0.9997635, 1.3333334, 1, -0.019039009, -0.020812623, -0.0014660399, 0.999601, 1.3666667, 1, -0.019008609, -0.031956296, -0.0013851578, 0.99930763, 1.4, 1, -0.018975062, -0.043480977, -0.001301332, 0.99887323, 1.4333333, 1, -0.018938448, -0.055298522, -0.0012151885, 0.9982895, 1.4666667, 1, -0.018898934, -0.067320645, -0.0011273617, 0.9975518, 1.5333333, 1, -0.018812658, -0.091581024, -0.0009495754, 0.99561954, 1.5666667, 1, -0.018767035, -0.10355815, -0.0008615472, 0.994446, 1.6, 1, -0.018720418, -0.11530441, -0.00077505736, 0.9931536, 1.6333333, 1, -0.018673396, -0.12673502, -0.0006907515, 0.9917606, 1.6666666, 1, -0.018626632, -0.13776636, -0.0006092735, 0.99028945, 1.7, 1, -0.018582279, -0.14810756, -0.00053284864, 0.9887966, 1.7333333, 1, -0.018540217, -0.15780723, -0.00046112595, 0.98729575, 1.7666667, 1, -0.018501297, -0.16678792, -0.00039472186, 0.9858191, 1.8, 1, -0.018466385, -0.17497303, -0.00033424798, 0.98440003, 1.8333334, 1, -0.01843636, -0.18228687, -0.00028031072, 0.9830725, 1.8666667, 1, -0.018414706, -0.18829049, -0.00023628838, 0.98194075, 1.9, 1, -0.018400287, -0.1931957, -0.00020059821, 0.9809878, 1.9333333, 1, -0.01839395, -0.19692644, -0.00017384527, 0.9802457, 1.9666667, 1, -0.018396508, -0.19940564, -0.00015664019, 0.9797443, 2, 1, -0.018408703, -0.20055452, -0.00014959965, 0.97950953, 2.0333333, 1, -0.019413961, -0.20030051, -0.00032749466, 0.9795421, 2.0666666, 1, -0.021821924, -0.19938853, -0.00075821497, 0.97967726, 2.1, 1, -0.025556084, -0.19785172, -0.001428012, 0.97989774, 2.1333334, 1, -0.030539691, -0.19572219, -0.002323113, 0.980181, 2.1666667, 1, -0.03669555, -0.19303125, -0.0034296794, 0.98050016, 2.2, 1, -0.04425959, -0.18965998, -0.0047903573, 0.98084015, 2.2333333, 1, -0.05276026, -0.18582515, -0.0063202195, 0.981145, 2.2666667, 1, -0.062115792, -0.18155922, -0.00800462, 0.9813837, 2.3, 1, -0.07224311, -0.17689537, -0.009828673, 0.98152554, 2.3333333, 1, -0.08305785, -0.17186786, -0.011777253, 0.98154175, 2.3666666, 1, -0.094622195, -0.1664382, -0.013861706, 0.9814036, 2.4, 1, -0.10661468, -0.16075802, -0.01602408, 0.9810879, 2.4333334, 1, -0.118945226, -0.15486702, -0.018248182, 0.9805791, 2.4666667, 1, -0.13152368, -0.14880592, -0.020517778, 0.97986597, 2.5666666, 1, -0.16970651, -0.13009284, -0.027412072, 0.97648567, 2.6, 1, -0.18218023, -0.123879865, -0.029665835, 0.97497904, 2.6333334, 1, -0.19437309, -0.11775984, -0.031869564, 0.9733119, 2.6666667, 1, -0.20620143, -0.11177828, -0.034008086, 0.97150916, 2.7, 1, -0.21739496, -0.10607609, -0.03603246, 0.96963346, 2.7333333, 1, -0.2279873, -0.10064394, -0.037948664, 0.9677048, 2.7666667, 1, -0.2379053, -0.09552539, -0.039743364, 0.96576214, 2.8, 1, -0.24707788, -0.090763494, -0.04140361, 0.96384656, 2.8333333, 1, -0.25543585, -0.08640075, -0.042916764, 0.96200085, 2.8666666, 1, -0.26257783, -0.08265412, -0.04421005, 0.9603472, 2.9, 1, -0.26870257, -0.07942776, -0.045319337, 0.95887244, 2.9333334, 1, -0.27374536, -0.07676189, -0.046232805, 0.9576187, 2.9666667, 1, -0.27764115, -0.074696414, -0.046938587, 0.9566257, 3, 1, -0.28032374, -0.07327093, -0.04742462, 0.95592934, 3.0333333, 1, -0.2812501, -0.072778024, -0.047592483, 0.9556865, 3.0416667, 1, -0.28148162, -0.07265479, -0.04763444, 0.95562565)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1pjwu"]
+_data = {
+&"CompraCarta_001": ExtResource("2_d0r07"),
+&"IDLE": ExtResource("3_11sdw"),
+&"Idle": SubResource("Animation_k140l"),
+&"Idle_001": SubResource("Animation_50hlq"),
+&"JogaCarta  ": ExtResource("4_wl1ts"),
+&"Reclamar": ExtResource("5_s7x3t")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kv3nh"]
+_data = {
+&"Comprar_carta": ExtResource("2_d0r07"),
+&"Jogar_carta": ExtResource("4_wl1ts"),
+&"Reclamar": ExtResource("5_s7x3t"),
+&"idle": ExtResource("3_11sdw")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kv3nh"]
+size = Vector3(17, 28, 13)
+
+[node name="shiva" instance=ExtResource("1_kv3nh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -11, 0)
+
+[node name="Skeleton3D" parent="Armação" index="0"]
+bones/0/rotation = Quaternion(0.9975386, 0, 0, 0.0701193)
+bones/1/rotation = Quaternion(-0.5529006, -0.2430176, -0.32070515, 0.7296517)
+bones/2/rotation = Quaternion(0.01988751, 0.0023946252, 0.31966934, 0.9473174)
+bones/3/rotation = Quaternion(0.62369424, 0.07455487, 0.043059666, 0.77691245)
+bones/4/rotation = Quaternion(-0.7167713, 0.019056225, 0.045863956, 0.6955374)
+bones/5/rotation = Quaternion(-0.5529006, 0.2430176, 0.32070515, 0.7296517)
+bones/6/rotation = Quaternion(-0.0061164396, 0.011901666, -0.31991532, 0.9473517)
+bones/7/rotation = Quaternion(0.7063977, -0.08361861, -0.037402395, 0.7018628)
+bones/9/rotation = Quaternion(0.013143191, 0, 0, 0.99991363)
+bones/10/rotation = Quaternion(4.552723e-05, -4.558061e-05, -0.7089524, 0.70525634)
+bones/11/rotation = Quaternion(0.6080013, 0.032659102, -0.2937986, 0.7368516)
+bones/12/rotation = Quaternion(0.3861541, -0.1402403, 0.122759685, 0.903409)
+bones/13/rotation = Quaternion(-0.017000336, -0.28815, -0.047876593, 0.95623666)
+bones/14/rotation = Quaternion(0.0073834565, 0.007874087, 0.7001413, 0.71392274)
+bones/15/rotation = Quaternion(0.6467922, -0.16443044, 0.16734715, 0.72568417)
+bones/16/rotation = Quaternion(0.34336928, 0.35887834, -0.2152096, 0.84082633)
+bones/17/rotation = Quaternion(0.05390404, 0.27094144, 0.24642614, 0.928956)
+bones/20/rotation = Quaternion(0.13763219, -0.04654706, -0.073356174, 0.98666596)
+
+[node name="AnimationPlayer" parent="." index="2"]
+libraries = {
+&"": SubResource("AnimationLibrary_1pjwu")
+}
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="." index="3"]
+libraries = {
+&"shiva": SubResource("AnimationLibrary_kv3nh")
+}
+autoplay = "shiva/idle"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3999999, 13.5, 1)
+shape = SubResource("BoxShape3D_kv3nh")

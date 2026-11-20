@@ -66,6 +66,8 @@ func distancia_do_raio(origem: Vector3, direcao: Vector3) -> float:
 			continue
 		var t: Transform3D = m.global_transform
 		t.origin -= elevacao
+		if absf(t.basis.determinant()) < 0.000001:
+			continue
 		var inv: Transform3D = t.affine_inverse()
 		var caixa: AABB = m.get_aabb().grow(margem_mira)
 		var hit = caixa.intersects_ray(inv * origem, inv.basis * direcao)

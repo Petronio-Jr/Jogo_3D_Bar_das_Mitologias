@@ -143,10 +143,6 @@ func fechar() -> void:
 	_tocar_som(som_fechar, "porta_fechar")
 	porta_fechou.emit()
 
-func trancar() -> void:
-	trancada = true
-	_atualizar_prompt()
-
 func destrancar() -> void:
 	trancada = false
 	_atualizar_prompt()

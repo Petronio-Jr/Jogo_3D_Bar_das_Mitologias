@@ -1,8 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dsdfoas86egep"]
 
 [ext_resource type="Script" uid="uid://c7k8b1e8td27i" path="res://Scripts/radio_interativo.gd" id="1_flxc7"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_4m4yu"]
+[ext_resource type="PackedScene" uid="uid://bc5q8jk5qg5b8" path="res://Cenario_refeito/radio.glb" id="2_543sh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_flxc7"]
 size = Vector3(2.5, 1.1, 2)
@@ -14,10 +13,6 @@ distancia_maxima = 70.0
 area = NodePath("Area3D")
 label_prompt = NodePath("Label3D")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("CapsuleMesh_4m4yu")
-
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
@@ -25,4 +20,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05000005, 0.15000004, 0.5)
 shape = SubResource("BoxShape3D_flxc7")
 
 [node name="Label3D" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 1.7, 0.29999995)
+text = "aaaaaaaaaaaaaaaaaaaaaaa"
+
+[node name="radio" parent="." instance=ExtResource("2_543sh")]
+transform = Transform3D(0.53, 0, 0, 0, 0.53, 0, 0, 0, 0.53, -0.1, 0.2, 0)

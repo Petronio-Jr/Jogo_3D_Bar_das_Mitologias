@@ -111,6 +111,7 @@ class RegrasTutorial extends RegrasJogo:
 ## Não dispara com UNO (só 1 carta) e só a cada `rodadas_para_habilidade` rodadas.
 class HabilidadeTutorial extends HabilidadeAnubis:
 	const CARTA_UI_3D_SCENE = preload("res://Interagiveis/carta_ui_3d.tscn")
+	const VOLUME_SOM_DB: float = -10.0   # volume do som da habilidade do Shiva (mais negativo = mais baixo)
 	const SOM_HABILIDADE: String = "habilidade_deus"   # res://audio/sfx/habilidade_deus.(ogg|mp3|wav)
 
 	func _init(controlador: ControladorJogo) -> void:
@@ -118,7 +119,7 @@ class HabilidadeTutorial extends HabilidadeAnubis:
 
 	## Som próprio da habilidade (se o arquivo ainda não existir, cai no som de poder do jogo).
 	func _som(nome_fallback: String = "poder_ativar") -> void:
-		Som.sfx(SOM_HABILIDADE if Som.stream_sfx(SOM_HABILIDADE) != null else nome_fallback)
+		Som.sfx(SOM_HABILIDADE if Som.stream_sfx(SOM_HABILIDADE) != null else nome_fallback, VOLUME_SOM_DB)
 
 	func deve_ativar() -> bool:
 		if rodadas_desde_checagem < ctrl.rodadas_para_habilidade:
@@ -307,7 +308,7 @@ func _achar_animador() -> AnimationPlayer:
 		return animador_deus
 	for no in no_deus.find_children("*", "AnimationPlayer", true, false):
 		var player := no as AnimationPlayer
-		if AnimUtil.resolver(player, "JOGAR_CARTA") != "":
+		if AnimUtil.resolver(player, "Jogar_carta") != "":
 			return player
 	return null
 
@@ -340,6 +341,12 @@ func iniciar_jogo_por_interacao() -> void:
 	_preparar_jogador()
 	hud.mostrar(true)
 	await super.iniciar_jogo_por_interacao()   # anda até a cadeira, senta e chama iniciar_jogo()
+
+func ao_levantar_temporario() -> void:
+	hud.visible = false   # os textos do tutorial somem enquanto você anda
+
+func ao_voltar_a_mesa() -> void:
+	hud.visible = true
 
 func iniciar_jogo() -> void:
 	super.iniciar_jogo()
@@ -376,7 +383,6 @@ func verificar_fim_partida(vencedor: Jogador) -> void:
 	Som.sfx("vitoria_serie" if venceu else "derrota")
 	if venceu:
 		hud.mostrar_info("VITÓRIA", "Você derrotou %s! Tutorial concluído." % nome_deus)
-		Configuracoes.definir("tutorial_feito", true)
 	else:
 		hud.mostrar_info("DERROTA", "%s venceu. Sente de novo para tentar outra vez." % nome_deus)
 	await get_tree().create_timer(pausa_ao_fim, false).timeout
@@ -405,6 +411,7 @@ func _levantar(venceu: bool) -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 	em_andamento = false
+	levantado = false
 	await hud.fade(0.0, 0.5)
 	hud.mostrar(false)
 	tutorial_terminou.emit(venceu)

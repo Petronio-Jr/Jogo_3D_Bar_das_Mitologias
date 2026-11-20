@@ -56,7 +56,7 @@ func beber() -> void:
 		return
 
 	# As doses valem para o jogo todo, mesmo com intervalos entre elas
-	ctrl.visual.mensagem("Bebidas: %d/%d" % [doses, ctrl.limite_bebidas])
+	ctrl.visual.mensagem("Melhor manerar na bebida")
 
 # --- Olho fechando ---
 

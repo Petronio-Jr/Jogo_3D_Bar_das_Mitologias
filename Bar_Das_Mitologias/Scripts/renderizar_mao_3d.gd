@@ -24,6 +24,7 @@ const CARTA_UI_3D_SCENE = preload("res://Interagiveis/carta_ui_3d.tscn")
 @export var cor_verso_padrao: Color = Color(0.07, 0.07, 0.07)
  
 var cartas_visuais: Array = []
+var _fim_animacao_ms: int = 0   # até quando a animação de surgimento ainda está rolando
 
 # true = cartas viradas para o jogador (poder do baralho). Recriações da mão
 # durante o poder já nascem viradas.
@@ -37,84 +38,80 @@ func revelar(ativo: bool, animar: bool = true) -> void:
 			c.virar_frente(ativo, animar)
  
 func atualizar_mao(humano: Jogador, modo_animacao: int = 0, qtd_novas: int = 1) -> void:
-	# Limpa as cartas antigas
+	# Guarda onde cada carta antiga estava e se ainda estava subindo: se a mão for refeita no meio
+	# da animação (ex.: outra atualização logo depois de recomeçar), as cartas CONTINUAM subindo
+	# a partir de onde estavam, em vez de aparecerem paradas no lugar final.
+	var animando: bool = Time.get_ticks_msec() < _fim_animacao_ms
+	var posicoes_antigas: Array[Vector3] = []
+	for c in cartas_visuais:
+		posicoes_antigas.append((c as Node3D).position if is_instance_valid(c) else Vector3.ZERO)
+
+	# Remove as antigas na hora (sem esperar o queue_free): os índices não se misturam
 	for child in get_children():
+		remove_child(child)
 		child.queue_free()
 	cartas_visuais.clear()
 
-	var total = humano.mao.size()
+	var total: int = humano.mao.size()
 	if total == 0:
+		_fim_animacao_ms = 0
 		return
 
-	var centro = (total - 1) / 2.0
-	
-	# Descobre a cor do verso com base no nome do deus atual (ou usa a padrão)
-	var cor_deus = cores_verso_deuses.get(humano.nome, cor_verso_padrao)
+	var centro: float = (total - 1) / 2.0
+	var cor_deus: Color = cores_verso_deuses.get(humano.nome, cor_verso_padrao)   # cor do verso deste deus
+	var fim_ms: int = 0
 
 	for i in range(total):
-		var carta_dados = humano.mao[i]
 		var nova_carta = CARTA_UI_3D_SCENE.instantiate()
-		
 		add_child(nova_carta)
 		cartas_visuais.append(nova_carta)
-		
-		nova_carta.setup(carta_dados, i)
+
+		nova_carta.setup(humano.mao[i], i)
 		if not mostrar_frente and nova_carta.has_method("mostrar_verso"):
 			nova_carta.mostrar_verso()
-			
-			# Altera a cor do mesh Verso específico deste deus
 			var no_verso = nova_carta.get_node_or_null("Mesh/Verso")
 			if no_verso and no_verso is MeshInstance3D:
-				var mat = StandardMaterial3D.new()
+				var mat := StandardMaterial3D.new()
 				mat.albedo_color = cor_deus
 				no_verso.set_surface_override_material(0, mat)
 
 		nova_carta.carta_clicada.connect(func(idx): carta_clicada.emit(idx))
 		nova_carta.carta_jogada_com_cor.connect(func(idx, cor): carta_jogada_com_cor.emit(idx, cor))
 
-		# Cálculo da posição final na mão
-		var offset = i - centro
-		var pos_final = Vector3(offset * espacamento_x, 0.0, i * sobreposicao_z)
+		var offset: float = i - centro
+		var pos_final := Vector3(offset * espacamento_x, 0.0, i * sobreposicao_z)
 		nova_carta.rotation = Vector3.ZERO
 		if revelada and nova_carta.has_method("virar_frente"):
 			nova_carta.virar_frente(true, false)
 
-		# Define se esta carta deve subir com animação
-		var animar = false
+		var animar: bool = false
+		var pos_inicio: Vector3 = pos_final + Vector3(0.0, offset_surgimento_y, 0.0)
+		var atraso: float = 0.0
+		var duracao: float = duracao_surgimento
 		if modo_animacao == 1:
-			animar = true # Anima a mão toda (início)
+			animar = true   # anima a mão toda (início)
+			atraso = i * 0.08
 		elif modo_animacao == 2 and i >= (total - qtd_novas):
-			animar = true # Anima apenas as últimas N cartas compradas
+			animar = true   # anima só as últimas N cartas compradas
+			atraso = (i - (total - qtd_novas)) * 0.08
+		elif animando and i < posicoes_antigas.size() and posicoes_antigas[i].distance_to(pos_final) > 0.005:
+			animar = true   # mão refeita no meio da subida: continua de onde estava
+			pos_inicio = posicoes_antigas[i]
+			duracao = minf(duracao_surgimento, 0.25)
 
 		if animar:
-			# Define a posição inicial rebaixada (abaixo da mesa)
-			var pos_inicio = pos_final + Vector3(0.0, offset_surgimento_y, 0.0)
 			nova_carta.position = pos_inicio
-
-			# Calcula um pequeno atraso em cascata para cada carta nova
-			var indice_relativo = i - (total - qtd_novas) if modo_animacao == 2 else i
-			var atraso = indice_relativo * 0.08
-
-			var tween = create_tween()
-			tween.tween_property(nova_carta, "position", pos_final, duracao_surgimento)\
+			# O tween fica na própria carta: se ela for removida, ele morre junto (sem erros)
+			var tween: Tween = nova_carta.create_tween()
+			tween.tween_property(nova_carta, "position", pos_final, duracao)\
 				.set_delay(atraso)\
 				.set_trans(Tween.TRANS_BACK)\
 				.set_ease(Tween.EASE_OUT)
+			fim_ms = maxi(fim_ms, Time.get_ticks_msec() + int((atraso + duracao) * 1000.0))
 		else:
 			nova_carta.position = pos_final
+	_fim_animacao_ms = fim_ms
 
-# Detecta a carta através do raio disparado pelo centro da câmera
-func obter_indice_carta_por_collider(collider: Node) -> int:
-	if collider == null:
-		return -1
-	for i in range(cartas_visuais.size()):
-		var carta_visual = cartas_visuais[i]
-		if not is_instance_valid(carta_visual):
-			continue
-		if carta_visual == collider or carta_visual.is_ancestor_of(collider):
-			return i
-	return -1
- 
 # Devolve o nó visual pelo índice da mão (não depende da ordem de get_child,
 # que pode divergir enquanto os nós antigos aguardam queue_free)
 func obter_carta_visual(indice: int) -> Node3D:

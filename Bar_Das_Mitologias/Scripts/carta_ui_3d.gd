@@ -37,7 +37,6 @@ var _tem_verso: bool = false      # true se esta carta foi virada para baixo (mo
 var _revelada: bool = false       # true enquanto o poder mantém a carta virada para o jogador
 var _rot_y_antes: float = 0.0
 var _tween_virada: Tween
-var posicao_base: Vector3 
 var tween: Tween
 var carta_dados_atual: Carta
  
@@ -70,10 +69,17 @@ const CORES_CARTA = {
 	Carta.Cor.PRETA: Color(0.1, 0.1, 0.1)
 }
  
+## Mostra/esconde o menu de cores do coringa. O _process (hover dos quadrados) só roda com ele aberto.
+func _definir_menu(ativo: bool) -> void:
+	if menu_cores_3d:
+		menu_cores_3d.visible = ativo
+	set_process(ativo)
+
 func _ready():
+	set_process(false)
 	_guardar_posicoes_visuais()
 	if menu_cores_3d:
-		menu_cores_3d.visible = false
+		_definir_menu(false)
 		_guardar_posicoes_quadrados()
  
 func _guardar_posicoes_visuais() -> void:
@@ -124,7 +130,7 @@ func setup(carta_dado: Carta, index: int):
 	carta_dados_atual = carta_dado
 	atualizar_visual(carta_dado)
 	if menu_cores_3d:
-		menu_cores_3d.visible = false
+		_definir_menu(false)
 		resetar_hover_quadrados()
  
 # Distância da origem do raio até a face da carta (INF se o raio não acerta).
@@ -135,6 +141,8 @@ func distancia_do_raio(origem: Vector3, direcao: Vector3) -> float:
 		return INF
 	var base: Vector3 = _bases_visuais.get(mesh_instance, mesh_instance.position)
 	var t: Transform3D = global_transform * Transform3D(mesh_instance.transform.basis, base)
+	if absf(t.basis.determinant()) < 0.000001:
+		return INF
 	var inv: Transform3D = t.affine_inverse()
 	var caixa: AABB = mesh_instance.get_aabb().grow(margem_mira)
 	var hit = caixa.intersects_ray(inv * origem, inv.basis * direcao)
@@ -150,7 +158,7 @@ func mostrar_verso() -> void:
 		if rotulo:
 			rotulo.visible = false
 	if menu_cores_3d:
-		menu_cores_3d.visible = false
+		_definir_menu(false)
 	if mesh_instance:
 		var mat_original = mesh_instance.get_surface_override_material(0)
 		var mat: StandardMaterial3D = mat_original.duplicate() if mat_original else StandardMaterial3D.new()
@@ -215,10 +223,6 @@ func _aplicar_aparencia(frente_visivel: bool) -> void:
 		if _tem_verso:
 			mostrar_verso()
 
-func definir_posicao_base(pos: Vector3):
-	position = pos
-	posicao_base = pos
- 
 # Anima o destaque da carta (chamado quando a mira entra/sai dela).
 # Só os visuais se movem; o nó raiz e a Area3D permanecem na posição base.
 func definir_hover(ativo: bool) -> void:
@@ -251,7 +255,7 @@ func interagir_por_mira():
 		
 	if carta_dados_atual and (carta_dados_atual.valor == Carta.Valor.MAIS_QUATRO or carta_dados_atual.valor == Carta.Valor.MUDAR_COR or carta_dados_atual.cor == Carta.Cor.PRETA):
 		if menu_cores_3d:
-			menu_cores_3d.visible = !menu_cores_3d.visible
+			_definir_menu(not menu_cores_3d.visible)
 	else:
 		carta_clicada.emit(indice_na_mao)
  
@@ -288,7 +292,7 @@ func verificar_clique_menu_cores() -> bool:
 	
 	var escolhido = _quadrado_sob_mira()
 	
-	menu_cores_3d.visible = false
+	_definir_menu(false)
 	resetar_hover_quadrados()
 	
 	if not escolhido.is_empty():
